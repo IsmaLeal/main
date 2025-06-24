@@ -66,7 +66,7 @@ div.container {
         overflow: scroll;
         bottom: 0;
         left: 0;
-        background-color: #f7faff; /*#F9EBDC !important;*/
+        background-color: #e0ebf5; /*#F9EBDC !important;*/
     }
 }
 
@@ -132,7 +132,7 @@ nav ul {
         width: 100%;
         padding: 4rem;
         font-size: 100%;
-        background-color: #FCF5EE;
+        background-color: #f7faff; /*#FCF5EE;*/
     }
 }
 
@@ -147,7 +147,7 @@ nav ul {
         left: 21rem;
         bottom: 0;
         right: 0;
-        background-color: #FCF5EE;
+        background-color: #f7faff; /*#FCF5EE;*/
     }
 }
 
