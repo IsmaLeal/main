@@ -86,16 +86,6 @@ nav a {
     font-weight: bold;
 }
 
-nav a.top {
-    border-top-left-radius: 0.75rem;
-    border-top-right-radius: 0.75rem;
-}
-
-nav a.bottom {
-    border-bottom-left-radius: 0.75rem;
-    border-bottom-right-radius: 0.75rem;
-}
-
 /* Body */
 .mright { text-align: right; }
 .mcenter { text-align: center; }
