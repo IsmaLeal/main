@@ -90,13 +90,13 @@ nav a {
 }
 
 nav a.top {
-    border-top-left-radius: 0.9rem;
-    border-top-right-radius: 0.9rem;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
 }
 
 nav a.bottom {
-    border-bottom-left-radius: 0.9rem;
-    border-bottom-right-radius: 0.9rem;
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
 }
 
 /* Body */
