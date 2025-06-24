@@ -46,13 +46,6 @@ h2 {}
 
 .mycentredchild { margin: auto; }
 
-/* Container */
-div.container {
-    display: flex;
-    height: 100%;
-    width: 100%;
-}
-
 /* Body */
 .mright { text-align: right; }
 .mcenter { text-align: center; }
@@ -75,15 +68,10 @@ div.container {
 
 @media only screen and (min-width: 700px) {
     .mainbody {
-        height: 100%;
         padding: 4rem;
         font-size: 100%;
         display: inline-block;
-        position: fixed;
-        overflow: scroll;
         left: 21rem;
-        bottom: 0;
-        right: 0;
         background-color: #f7faff; /*#FCF5EE;*/
     }
 }
@@ -132,7 +120,7 @@ div.container {
         bottom: 0;
         left: 0;
         background-color: #e0ebf5 !important; /*#F9EBDC !important;*/
-        border-left: 6px solid #002147;
+        border-left: 10px solid #002147;
     }
 
     .rightsideimage {
