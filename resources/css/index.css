@@ -13,6 +13,7 @@
 body {
     font-weight: 350;
     line-height: 1.5;
+    border-top: 6px solid #002147;
 }
 
 .tab{padding-left:0.75rem;}
@@ -21,6 +22,14 @@ body {
 
 .name-highlight {
     color: #002147;
+}
+
+.oxford-footer {
+    background-color: #002147;
+    color: #f0f0f0;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
 }
 
 p { margin: 0 0 0.5rem 0; }
@@ -50,16 +59,21 @@ div.container {
 .sc { font-variant: small-caps; }
 .dsc { font-size: 75%; }
 
-@media only screen and (max-width: 1100px) {
+@media only screen and (max-width: 700px) {
     .mainbody {
         width: 100%;
         padding: 4rem;
         font-size: 100%;
         background-color: #f7faff; /*#FCF5EE;*/
     }
+
+    .oxford-footer {
+        font-size: 0.75rem;
+        padding: 0.5rem;
+    }
 }
 
-@media only screen and (min-width: 1100px) {
+@media only screen and (min-width: 700px) {
     .mainbody {
         height: 100%;
         padding: 4rem;
@@ -81,7 +95,7 @@ div.container {
 .circularimage { border-radius: 50%; }
 
 /* Header: sidebar with profile and sections */
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 700px) { /* Phones */
     header {
         width: 100%;
         margin-right: 1rem;
@@ -105,7 +119,7 @@ div.container {
     }
 }
 
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 700px) { /* Larger screens */
     header {
         height: 100%;
         width: 21rem;
@@ -118,6 +132,7 @@ div.container {
         bottom: 0;
         left: 0;
         background-color: #e0ebf5 !important; /*#F9EBDC !important;*/
+        border-left: 6px solid #002147;
     }
 
     .rightsideimage {
