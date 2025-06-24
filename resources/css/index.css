@@ -97,10 +97,12 @@ h2 {}
 }
 
 @media only screen and (min-width: 700px) {
+    .container {
+        padding-left: 21rem;
+    }
     .mainbody {
         padding: 4rem;
-        width: calc(100% - 21rem);
-        margin-left: 21rem;
+        width: 100%;
         overflow-y: auto;
         background-color: #f7faff; /*#FCF5EE;*/
     }
