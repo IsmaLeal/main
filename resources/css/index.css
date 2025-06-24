@@ -176,7 +176,6 @@ header a { text-decoration: none; }
 header p {
     width: 16rem;
     margin: 0.5rem auto;
-    text-align: center;
 }
 
 header .bio {
