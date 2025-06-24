@@ -45,10 +45,42 @@ div.container {
 
 nav {
     width: 100%;
+    margin: 2rem auto;
     border-style: solid;
-    border-width: 0.1rem;
+    border-width: 0.15rem;
     border-color: black;
     border-radius: 1rem;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem auto;
+    width: 80%;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+nav li a {
+    display: block;
+    padding: 0.8rem 1.2rem;
+    text-align: center;
+    color: #1a1a1a;
+    text-decoration: none;
+    background-color: #f4f7fb;
+    border-bottom: 1px solid #ccc;
+    transition: background-color 0.3s ease;
+}
+
+nav li a:hover {
+    background-color: #dde7f0;
+}
+
+nav li a.active {
+    background-color: #e0f0ff;
+    font-weight: bold;
+    border-left: 4px solid #e30613;
 }
 
 nav a {
