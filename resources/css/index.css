@@ -70,6 +70,7 @@ h2 {}
   color: #002147;
   text-align: justify;
   text-align-last: justify;
+  justify-content: center;
 }
 .links a:hover {
   color: #e30613;
@@ -159,6 +160,7 @@ header nav a {
     width: 100%;
     padding: 2rem;
     background-color: #e0ebf5;
+    position: static;
   }
 
   .rightsideimage,
