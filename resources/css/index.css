@@ -50,7 +50,7 @@ div.container {
         margin-right: 1rem;
         padding: 2rem;
         font-size: 90%;
-        background-color: #F9EBDC;
+        background-color: #e0ebf5; /*#F9EBDC;*/
     }
 }
 
@@ -66,7 +66,7 @@ div.container {
         overflow: scroll;
         bottom: 0;
         left: 0;
-        background-color: #F9EBDC !important;
+        background-color: #f7faff; /*#F9EBDC !important;*/
     }
 }
 
