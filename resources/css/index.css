@@ -118,7 +118,7 @@ nav a.active { background-color: #F3D7BA !important; }
 
 nav ul {
     list-style-type: none;
-    wifth: 100%;
+    width: 100%;
 }
 
 /* Body */
@@ -233,7 +233,7 @@ nav ul {
     background-color: #F6E1CB !important;
 }
 
-projlinks a.bottom {
+.projlinks a.bottom {
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
 }
@@ -246,11 +246,11 @@ projlinks a.bottom {
         height: auto;
         width: 15rem;
         margin: 0px 0px 15px 20px;
-        margin: 0 2rem;
+        padding: 0 2rem;
     }
 
     .leftsideimage {
-        float: center;
+        float: left;
         height: 14rem;
         width: auto;
         margin: 0px 0px 15px 50px;
@@ -261,7 +261,6 @@ projlinks a.bottom {
 @media only screen and (max-width:750px) {
     .rightsideimage {
         display: inline-block;
-        margin: 0 auto;
         height: 15rem;
         width: auto;
         margin: 1rem;
@@ -269,7 +268,6 @@ projlinks a.bottom {
 
     .leftsideimage {
         display: inline-block;
-        margin: 0 auto;
         height: 15rem;
         width: auto;
         margin: 1rem;
@@ -287,7 +285,7 @@ projlinks a.bottom {
 .borderimage{
     border-style: solid;
     border-color: #1c1c1c;
-    border-width: 0.1rem;
+    border-width: 0.2rem;
 }
 
 .talk { padding: 1rem; }
