@@ -62,6 +62,10 @@ body {
     z-index: 1000;
 }
 
+.oxford-footer p {
+    margin: 0;  /* This is crucial */
+}
+
 p { margin: 0 0 0.5rem 0; }
 
 h2 {}
