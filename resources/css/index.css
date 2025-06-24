@@ -56,6 +56,7 @@ body {
     background-color: #002147;
     color: #f0f0f0;
     text-align: center;
+    display: flex;
     line-height: 2.5rem;
     font-size: 0.9rem;
     z-index: 1000;
