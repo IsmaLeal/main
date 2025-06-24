@@ -85,7 +85,7 @@ header a:hover {
   color: #e30613;
 }
 header p {
-  width: 16rem;
+  width: 100%;
   margin: 0.5rem auto;
 }
 header .bio {
@@ -237,7 +237,6 @@ header nav a {
     top: 3rem;
     overflow-y: auto;
     background-color: #e0ebf5;
-    border-left: 10px solid #002147;
   }
 
   .mainbody {
