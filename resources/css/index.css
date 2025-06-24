@@ -43,47 +43,6 @@ div.container {
     width: 100%;
 }
 
-/* Side */
-@media only screen and (max-width: 1100px) {
-    header {
-        width: 100%;
-        margin-right: 1rem;
-        padding: 2rem;
-        font-size: 90%;
-        background-color: #e0ebf5 !important; /*#F9EBDC;*/
-    }
-}
-
-@media only screen and (min-width: 1100px) {
-    header {
-        height: 100%;
-        width: 21rem;
-        margin-right: 1rem;
-        padding: 5rem 2rem 5rem 2rem;
-        font-size: 90%;
-        display: inline-block;
-        position: fixed;
-        overflow: scroll;
-        bottom: 0;
-        left: 0;
-        background-color: #e0ebf5 !important; /*#F9EBDC !important;*/
-    }
-}
-
-header a { text-decoration: none; }
-
-header p {
-    width: 16rem;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.links a {
-    color: gray;
-    text-align: justify;
-    text-align-last: justify;
-}
-
 nav {
     width: 100%;
     border-style: solid;
@@ -151,6 +110,97 @@ nav ul {
     }
 }
 
+.circularimage { border-radius: 50%; }
+
+/* Header: sidebar with profile and sections */
+@media only screen and (max-width: 1100px) {
+    header {
+        width: 100%;
+        margin-right: 1rem;
+        padding: 2rem;
+        font-size: 90%;
+        background-color: #e0ebf5 !important; /*#F9EBDC;*/
+    }
+}
+
+@media only screen and (min-width: 1100px) {
+    header {
+        height: 100%;
+        width: 21rem;
+        margin-right: 1rem;
+        padding: 5rem 2rem 5rem 2rem;
+        font-size: 90%;
+        display: inline-block;
+        position: fixed;
+        overflow: scroll;
+        bottom: 0;
+        left: 0;
+        background-color: #e0ebf5 !important; /*#F9EBDC !important;*/
+    }
+}
+
+header a { text-decoration: none; }
+
+header p {
+    width: 16rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+@media only screen and (min-width: 750px) {
+    .rightsideimage {
+        float: right;
+        height: auto;
+        width: 15rem;
+        margin: 0px 0px 15px 20px;
+    }
+
+    .leftsideimage {
+        display: block;
+        height: 14rem;
+        width: auto;
+        margin: 0px 0px 15px 50px;
+        padding: 0rem;
+    }
+}
+
+@media only screen and (max-width:750px) {
+    .rightsideimage {
+        display: inline-block;
+        height: 15rem;
+        width: auto;
+        margin: 1rem;
+    }
+
+    .leftsideimage {
+        display: inline-block;
+        height: 15rem;
+        width: auto;
+        margin: 1rem;
+    }
+}
+
+.centerimage {
+    display: inline-block;
+    margin: 0 auto;
+    height: 15rem;
+    width: auto;
+    padding: 1rem;
+}
+
+.borderimage{
+    border-style: solid;
+    border-color: #1c1c1c;
+    border-width: 0.2rem;
+}
+
+.links a {
+    color: gray;
+    text-align: justify;
+    text-align-last: justify;
+}
+
+/* Projects section */
 @media only screen and (min-width: 750px) {
     .projgrid {
         margin-top: 1rem;
@@ -237,54 +287,3 @@ nav ul {
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
 }
-
-.circularimage { border-radius: 50%; }
-
-@media only screen and (min-width: 750px) {
-    .rightsideimage {
-        float: right;
-        height: auto;
-        width: 15rem;
-        margin: 0px 0px 15px 20px;
-    }
-
-    .leftsideimage {
-        float: left;
-        height: 14rem;
-        width: auto;
-        margin: 0px 0px 15px 50px;
-        padding: 0rem;
-    }
-}
-
-@media only screen and (max-width:750px) {
-    .rightsideimage {
-        display: inline-block;
-        height: 15rem;
-        width: auto;
-        margin: 1rem;
-    }
-
-    .leftsideimage {
-        display: inline-block;
-        height: 15rem;
-        width: auto;
-        margin: 1rem;
-    }
-}
-
-.centerimage {
-    display: inline-block;
-    margin: 0 auto;
-    height: 15rem;
-    width: auto;
-    padding: 1rem;
-}
-
-.borderimage{
-    border-style: solid;
-    border-color: #1c1c1c;
-    border-width: 0.2rem;
-}
-
-.talk { padding: 1rem; }
