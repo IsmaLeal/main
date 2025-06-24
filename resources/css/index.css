@@ -5,7 +5,7 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: Aleo, sans-serif;
+    font-family: Georgia, serif;
     box-sizing: border-box;
     text-align: justify;
 }
@@ -18,6 +18,10 @@ body {
 .tab{padding-left:0.75rem;}
 
 .listtext{ margin: 0 0 0.5rem 1rem; }
+
+.name-highlight {
+    color: #002147;
+}
 
 p { margin: 0 0 0.5rem 0; }
 
@@ -68,6 +72,10 @@ div.container {
         right: 0;
         background-color: #f7faff; /*#FCF5EE;*/
     }
+}
+
+.mainbody h1, .mainbody h2 {
+    color: #002147;
 }
 
 .circularimage { border-radius: 50%; }
@@ -130,7 +138,7 @@ div.container {
 
 header a {
     text-decoration: none;
-    color: #2a2a2a;
+    color: #002147;
     font-weight: bold;
     transition: color 0.3s ease;
 }
@@ -207,13 +215,17 @@ header nav a {
 .borderimage{
     border-style: solid;
     border-color: #1c1c1c;
-    border-width: 0.2rem;
+    border-width: 0.1rem;
 }
 
 .links a {
-    color: gray;
+    color: #002147;
     text-align: justify;
     text-align-last: justify;
+}
+
+.links a:hover {
+    color: #e30613;
 }
 
 /* Projects section */
