@@ -141,7 +141,7 @@ nav ul {
 
 header a { text-decoration: none; }
 
-header p {
+header .me p {
     width: 16rem;
     margin: 0.5rem auto;
     text-align: center;
