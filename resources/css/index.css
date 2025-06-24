@@ -71,7 +71,7 @@ h2 {}
         padding: 4rem;
         font-size: 100%;
         display: inline-block;
-        left: 21rem;
+        margin-left: 21rem;
         background-color: #f7faff; /*#FCF5EE;*/
     }
 }
