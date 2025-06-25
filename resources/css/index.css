@@ -156,6 +156,8 @@ header nav a {
     font-size: 0.85rem;
     padding: 0.5rem 1rem;
     text-align: center;
+    justify-content: center;
+    align-items: center;
     background-color: #002147;
     color: white;
   }
