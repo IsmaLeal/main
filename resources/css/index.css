@@ -152,7 +152,7 @@ header nav a {
   .topbar,
   .oxford-footer {
     position: static;
-    height: auto;
+    height: 3rem;
     font-size: 0.85rem;
     padding: 0.5rem 1rem;
     text-align: center;
@@ -205,8 +205,8 @@ header nav a {
     color: white;
     z-index: 10000;
     display: flex;
+    justify-content: center;
     align-items: center;
-    padding-left: 1rem;
   }
 
   .oxford-footer {
@@ -257,14 +257,14 @@ header nav a {
     float: right;
     height: auto;
     width: 15rem;
-    margin: 0px 0px 15px 20px;
+    margin: 0 0 15px 20px;
   }
 
   .leftsideimage {
     display: block;
     height: 14rem;
     width: auto;
-    margin: 0px 0px 15px 50px;
+    margin: 0 0 15px 50px;
   }
 }
 
