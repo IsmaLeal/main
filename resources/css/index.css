@@ -155,6 +155,7 @@ header nav a {
     height: 3rem;
     font-size: 0.85rem;
     padding: 0.5rem 1rem;
+    display: flex;
     text-align: center;
     justify-content: center;
     align-items: center;
