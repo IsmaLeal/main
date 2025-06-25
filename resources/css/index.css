@@ -25,7 +25,6 @@ body {
 
 .tab { padding-left: 0.75rem; }
 .listtext { margin: 0 0 0.5rem 1rem; }
-.name-highlight { color: #002147; }
 
 p { margin: 0 0 0.5rem 0; }
 
@@ -46,7 +45,7 @@ p { margin: 0 0 0.5rem 0; }
 
 .mainbody h1,
 .mainbody h2 {
-  color: #002147;
+  color: #002146; /* Real Oxford blue is #002146 */
 }
 
 .circularimage { border-radius: 50%; }
@@ -74,7 +73,7 @@ p { margin: 0 0 0.5rem 0; }
 }
 
 .links a {
-  color: #002147;
+  color: #002146; /* Real Oxford blue is #002146 */
   text-align: justify;
   text-align-last: justify;
 }
@@ -84,7 +83,7 @@ p { margin: 0 0 0.5rem 0; }
 
 header a {
   text-decoration: none;
-  color: #002147;
+  color: #002146; /* Real Oxford blue is #002146 */
   font-weight: bold;
   transition: color 0.3s ease;
 }
@@ -159,7 +158,7 @@ header nav a {
     text-align: center;
     justify-content: center;
     align-items: center;
-    background-color: #002147;
+    background-color: #002146; /* Real Oxford blue is #002146 */
     color: white;
   }
 
