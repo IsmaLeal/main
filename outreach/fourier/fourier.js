@@ -253,11 +253,34 @@ function setBtn(el, key) { el.dataset.i18n = key; el.textContent = t(key); }
    Audio: one context, created on the first press of a sound control
    ====================================================================== */
 let AC = null, master = null;
+/* iPhone: with the silent switch on, Web Audio is muted unless the page declares
+   itself as media playback. Newer Safari reads navigator.audioSession; older Safari
+   needs an HTML <audio> element playing (a looped silent clip) to take the media route. */
+let unlockEl = null;
+function silentWavUrl() {
+  const sr = 8000, n = 800, b = new ArrayBuffer(44 + n * 2), v = new DataView(b);
+  const w = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+  w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt '); v.setUint32(16, 16, true);
+  v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, sr, true); v.setUint32(28, sr * 2, true);
+  v.setUint16(32, 2, true); v.setUint16(34, 16, true); w(36, 'data'); v.setUint32(40, n * 2, true);
+  return URL.createObjectURL(new Blob([b], { type: 'audio/wav' }));
+}
+function unlockMediaRoute() {
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { /* not supported */ }
+  if (!unlockEl) {
+    try {
+      unlockEl = document.createElement('audio');
+      unlockEl.src = silentWavUrl(); unlockEl.loop = true; unlockEl.setAttribute('playsinline', '');
+      const pr = unlockEl.play(); if (pr && pr.catch) pr.catch(() => {});
+    } catch (e) { /* ignore */ }
+  }
+}
 function audio() {
+  unlockMediaRoute();
   if (!AC) {
     const A = window.AudioContext || window.webkitAudioContext;
     if (!A) return null;
-    AC = new A(); master = AC.createGain(); master.gain.value = 0.22; master.connect(AC.destination);
+    AC = new A(); master = AC.createGain(); master.gain.value = 0.35; master.connect(AC.destination);
   }
   if (AC.state === 'suspended') AC.resume();
   return AC;
