@@ -30,7 +30,7 @@ const T = {
     s1p2: 'Pausa el aire: unas partículas quedan a la izquierda de su posición de reposo, otras a la derecha, otras justo en ella. Dibuja el desplazamiento de cada una frente a su posición: sale una curva, una onda. Vuelve a darle al play a cámara lenta: la onda viaja.',
     s1p3: 'Ondas así de perfectas son notas puras: senos o cosenos.',
     pause: '⏸ pausar', play: '▶ seguir', slow: 'cámara lenta',
-    position: 'posición', displacement: 'desplazamiento', time: 'tiempo',
+    position: 'posición', displacement: 'desplazamiento', time: 'tiempo', right: 'derecha', left: 'izquierda',
     vocal: 'cuerdas vocales', ear: 'oído', pausehint: 'pausa el aire para dibujar la gráfica',
     rest: 'resto',
     s2h: 'Una nota es una frecuencia',
@@ -39,7 +39,7 @@ const T = {
     freq: 'frecuencia', listen: '▶ escuchar', stop: '■ parar',
     realspeed: 'velocidad real', realon: 'velocidad real: no se ve nada', slowmo: 'cámara lenta',
     s3h: 'Un micrófono',
-    s3p1: 'Un micrófono mide el desplazamiento del aire en un solo punto a lo largo del tiempo. La gráfica se parece. Toca el aire para mover el micrófono.',
+    s3p1: 'Un micrófono mide el desplazamiento del aire en un solo punto a lo largo del tiempo. La gráfica se parece.',
     s3p2: 'Mi voz grabada es esa gráfica, y es mucho menos perfecta que una nota pura. Prueba con la tuya.',
     mic: '🎙 tu voz', micoff: '🎙 apagar micrófono', rec: '● grabar 2 s', recording: '● grabando…', playrec: '▶ escuchar grabación',
     micask: 'pidiendo permiso para el micrófono…', micon: 'micrófono encendido: habla o canta',
@@ -79,7 +79,7 @@ const T = {
     s1p2: 'Pause the air: some particles are left of their rest position, some right, some exactly on it. Plot the displacement of each one against its position: you get a curve, a wave. Press play again in slow motion: the wave travels.',
     s1p3: 'Waves this perfect are pure notes: sines or cosines.',
     pause: '⏸ pause', play: '▶ play', slow: 'slow motion',
-    position: 'position', displacement: 'displacement', time: 'time',
+    position: 'position', displacement: 'displacement', time: 'time', right: 'right', left: 'left',
     vocal: 'vocal cords', ear: 'ear', pausehint: 'pause the air to draw the graph',
     rest: 'the rest',
     s2h: 'A note is a frequency',
@@ -88,7 +88,7 @@ const T = {
     freq: 'frequency', listen: '▶ listen', stop: '■ stop',
     realspeed: 'real speed', realon: 'real speed: nothing can be seen', slowmo: 'slow motion',
     s3h: 'A microphone',
-    s3p1: 'A microphone measures the displacement of the air at one single point over time. The graph looks alike. Tap the air to move the microphone.',
+    s3p1: 'A microphone measures the displacement of the air at one single point over time. The graph looks alike.',
     s3p2: 'My recorded voice is that graph, and it is much less perfect than a pure note. Try yours.',
     mic: '🎙 your voice', micoff: '🎙 microphone off', rec: '● record 2 s', recording: '● recording…', playrec: '▶ play recording',
     micask: 'asking for microphone permission…', micon: 'microphone on: speak or sing',
@@ -235,6 +235,14 @@ function axes(ctx, ox, oy, x1, hTop, hBot, xl, yl) {
   arrow(ctx, ox, oy + hBot, ox, oy - hTop);
   if (xl) label(ctx, xl, x1, oy + 18, { size: 13, align: 'right', alpha: 0.75, italic: true });
   if (yl) label(ctx, yl, ox + 8, oy - hTop + 4, { size: 13, alpha: 0.75, base: 'top', italic: true });
+}
+/* y-axis meaning for displacement plots: up = to the right, down = to the left */
+function dirLabels(ctx, ox, oy, hTop, hBot) {
+  const yT = oy - hTop + 8, yB = oy + hBot - 6;
+  arrow(ctx, ox + 10, yT, ox + 30, yT, C.a1, 1.3);
+  label(ctx, t('right'), ox + 36, yT, { size: 13, base: 'middle', italic: true, alpha: 0.85 });
+  arrow(ctx, ox + 30, yB, ox + 10, yB, C.a1, 1.3);
+  label(ctx, t('left'), ox + 36, yB, { size: 13, base: 'middle', italic: true, alpha: 0.85 });
 }
 function dot(ctx, x, y, r, color, alpha = 1) {
   ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill(); ctx.restore();
@@ -440,12 +448,15 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
       // displacement against position
       const py = top + airH + 34 + (H - top - airH - 34) / 2, ph = (H - top - airH - 34) * 0.38;
       if (!shown) { label(ctx, t('pausehint'), (L + R) / 2, py, { size: 15, align: 'center', alpha: 0.6, italic: true }); return; }
-      axes(ctx, L, py, R + 8, ph * 1.25, ph * 1.15, t('position'), t('displacement'));
+      axes(ctx, L, py, R + 8, ph * 1.25, ph * 1.15, t('position'), null);
+      dirLabels(ctx, L, py, ph * 1.25, ph * 1.15);
       const gy = ph / A;
       nibFn(ctx, L, R, (x) => py - xi(x) * gy, C.curve, 3.6);
       for (const h of HL) {
         const x0 = L + h.u * (R - L), d = xi(x0);
         pencil(ctx, x0, top + airH, x0, py - d * gy, C.ink, 0.4);
+        // the same displacement as the arrow in the air, turned upright: right = up, left = down
+        if (Math.abs(d * gy) > 6) arrow(ctx, x0, py, x0, py - d * gy, C.a1, 1.4);
         dot(ctx, x0, py - d * gy, 4, C.a1);
       }
     },
@@ -505,7 +516,8 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
       if (real) label(ctx, t('realon'), R, sy + 16, { size: 13, align: 'right', color: C.a1, alpha: 0.9, italic: true });
       // displacement against position
       const py = sy + 30 + (H - sy - 30) / 2, phh = (H - sy - 30) * 0.36;
-      axes(ctx, L, py, R + 6, phh * 1.25, phh * 1.15, t('position'), t('displacement'));
+      axes(ctx, L, py, R + 6, phh * 1.25, phh * 1.15, t('position'), null);
+      dirLabels(ctx, L, py, phh * 1.25, phh * 1.15);
       if (real) {
         for (let j = 0; j < 10; j++) nibFn(ctx, L, R, (x) => py - phh * Math.sin(k * (x - L) - j * TAU / 10), C.curve, 2.4, 0.16, 3);
       } else {
@@ -558,11 +570,7 @@ function makeSample(sr) { // synthetic example signal (not a real voice): harmon
   const ctx = canvas('c3');
   const air = makeAir(46, 4, 33);
   const bm = $('s3mic'), brc = $('s3rec'), bp = $('s3play'), st = $('s3st');
-  let tm = 0, mu = 0.5, stream = null, an = null, buf = null, peak = 0.05, recState = null;
-  ctx.cv.addEventListener('pointerdown', (e) => {
-    const r = ctx.cv.getBoundingClientRect(), L = 24, R = r.width - 24;
-    mu = clamp((e.clientX - r.left - L) / (R - L), 0.02, 0.98);
-  });
+  let tm = 0, stream = null, an = null, buf = null, peak = 0.05, recState = null;
   const status = (k) => { st.dataset.k = k || ''; st.textContent = k ? t(k) : ''; };
   async function micOn() {
     const ac = audio();
@@ -620,15 +628,15 @@ function makeSample(sr) { // synthetic example signal (not a real voice): harmon
       }
       ctx.restore();
       // microphone at x = xm
-      const xm = L + mu * (R - L);
-      pencil(ctx, xm, top - 6, xm, top + airH + 8, C.a1, 0.7);
+      const xm = R;                         // microphone at the right end, above the newest point of the plot
       ctx.save(); ctx.strokeStyle = C.a1; ctx.fillStyle = C.a1; ctx.lineWidth = 1.6;
       ctx.beginPath(); ctx.ellipse(xm, top - 14, 5, 7.5, 0, 0, TAU); ctx.fill();
       ctx.beginPath(); ctx.arc(xm, top - 14, 9, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke(); ctx.restore();
       dot(ctx, xm + xi(xm, tm), top + airH / 2, 4.5, C.a1);
       // displacement at the microphone against time
       const py = top + airH + 30 + (H - top - airH - 30) / 2, ph = (H - top - airH - 30) * 0.38;
-      axes(ctx, L, py, R + 6, ph * 1.25, ph * 1.15, t('time'), t('atmic'));
+      axes(ctx, L, py, R + 6, ph * 1.25, ph * 1.15, t('time'), null);
+      dirLabels(ctx, L, py, ph * 1.25, ph * 1.15);
       if (an) {
         an.getFloatTimeDomainData(buf);
         let i0 = 1; for (let i = 1; i < 1024; i++) { if (buf[i - 1] < 0 && buf[i] >= 0) { i0 = i; break; } }
@@ -642,7 +650,10 @@ function makeSample(sr) { // synthetic example signal (not a real voice): harmon
       } else {
         const Tw = 4;  // seconds of history; newest on the right
         nibFn(ctx, L, R, (x) => py - ph * xi(xm, tm - Tw + Tw * (x - L) / (R - L)) / A, C.curve, 3.4);
-        dot(ctx, R, py - ph * xi(xm, tm) / A, 4.5, C.a1);
+        const yd = py - ph * xi(xm, tm) / A;
+        pencil(ctx, xm, top - 4, xm, yd, C.a1, 0.7);
+        if (Math.abs(yd - py) > 6) arrow(ctx, xm, py, xm, yd, C.a1, 1.4);
+        dot(ctx, R, yd, 4.5, C.a1);
       }
     },
     leave() { micOff(); if (st.dataset.k === 'micon' || st.dataset.k === 'micask') status(''); },
