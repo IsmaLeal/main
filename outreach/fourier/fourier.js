@@ -48,7 +48,7 @@ const T = {
     s4h: 'Una cuerda de guitarra',
     s4p1: 'Una nota de guitarra tampoco es un seno puro. La cuerda está atada por los dos extremos, así que solo persisten las ondas que caben.',
     s4p2: 'Cada onda que cabe es una nota pura: la fundamental (Mi), la misma nota una octava más arriba (Mi), luego un Si, y más. Todas sonando a la vez: un Mi con timbre de guitarra.',
-    pluck: 'pulsar estas 6', all: 'las 6', guitar: (k) => `pulsar como una guitarra: ${k} frecuencias`, onlyfund: 'solo la fundamental', sum: 'suma',
+    pluck: 'pulsar estas 6', all: 'guitarra: solo las 6 primeras', guitar: (k) => `guitarra: ${k} frecuencias (pulsar)`, onlyfund: 'solo la fundamental', sum: 'suma',
     s5h: 'El timbre',
     s5p1: 'Qué frecuencias vibran y con qué fuerza es lo que el cerebro oye como una guitarra, o como la voz de una persona.',
     s5p2: 'Todo sonido es una suma de frecuencias puras. Arrastra las barras: la nota es la misma, el sonido no.',
@@ -97,7 +97,7 @@ const T = {
     s4h: 'A guitar string',
     s4p1: 'A guitar note is not a pure sine either. The string is tied at both ends, so only the waves that fit can persist.',
     s4p2: 'Each wave that fits is a pure note: the fundamental (E), the same note an octave up (E), then a B, and more. All sounding at once: an E with the timbre of a guitar.',
-    pluck: 'pluck these 6', all: 'all 6', guitar: (k) => `pluck like a guitar: ${k} frequencies`, onlyfund: 'fundamental only', sum: 'sum',
+    pluck: 'pluck these 6', all: 'guitar: first 6 only', guitar: (k) => `guitar: ${k} frequencies (pluck)`, onlyfund: 'fundamental only', sum: 'sum',
     s5h: 'Timbre',
     s5p1: 'Which frequencies vibrate, and how strongly, is what the brain hears as a guitar, or as one person’s voice.',
     s5p2: 'Every sound is a sum of pure frequencies. Drag the bars: the note stays the same, the sound does not.',
@@ -682,7 +682,12 @@ function makeSample(sr) { // synthetic example signal (not a real voice): harmon
 /* ======================================================================
    Stage 4 · guitar string: only the waves that fit
    ====================================================================== */
-const STRING_AMPS = [1, 0.55, 0.4, 0.26, 0.18, 0.12];   // illustrative amplitudes, chosen by eye
+/* Guitar string: amplitudes of an ideal string plucked at a fraction P of its length,
+   a_n ∝ sin(n π P) / n²  (Fletcher & Rossing, 1998, The Physics of Musical Instruments,
+   2nd ed., Springer, ch. 2). P is chosen by ear. The first 6 are the ones drawn. */
+const PLUCK_P = 0.18, KG = 100;
+const GUITAR = []; for (let n = 1; n <= KG; n++) GUITAR.push(Math.sin(n * Math.PI * PLUCK_P) / (n * n));
+const STRING_AMPS = (() => { const a = GUITAR.slice(0, 6).map(Math.abs), m = Math.max(...a); return a.map((v) => v / m); })();
 const MODE_COL = [C.a1, C.a2, C.a3, C.a1, C.a2, C.a3];
 const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
 {
@@ -724,18 +729,13 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
     }
     playBuffer(d, sr, 0.8);
   });
-  /* "Pluck like a guitar": the first KG frequencies f_n = n f_1 at once.
-     Amplitudes of an ideal string plucked at a fraction p of its length:
-     a_n ∝ sin(n π p) / n²  (Fletcher & Rossing, 1998, The Physics of Musical
-     Instruments, 2nd ed., Springer, ch. 2). The pluck point p and the decay
-     rates are chosen by ear. Only the first 6 are drawn. */
-  const KG = 100, P = 0.18, bg = $('s4guitar');
-  const gAmp = []; for (let n = 1; n <= KG; n++) gAmp.push(Math.sin(n * Math.PI * P) / (n * n));
+  /* "Pluck like a guitar": the first KG frequencies f_n = n f_1 at once, with the
+     GUITAR amplitudes; the 6 sliders are reset to the first 6. Decay rates chosen by ear. */
+  const bg = $('s4guitar'), gAmp = GUITAR;
   bg.addEventListener('click', () => {
     const ac = audio(); if (!ac) return;
     stopSounds(); snd = null; bs.setAttribute('aria-pressed', 'false'); setBtn(bs, 'listen');
-    const m6 = Math.max(...gAmp.slice(0, N).map(Math.abs));
-    setAll(gAmp.slice(0, N).map((a) => Math.abs(a) / m6), Array(N).fill(true));
+    setAll(STRING_AMPS, Array(N).fill(true));
     const sr = ac.sampleRate, len = Math.round(sr * 3), d = new Float32Array(len);
     for (let n = 1; n <= KG; n++) {
       const f = n * F1_STRING; if (f > 0.45 * sr) break;
