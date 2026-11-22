@@ -58,6 +58,7 @@ const T = {
     s4h: 'Una cuerda de guitarra',
     s4p1: 'Una nota de guitarra tampoco es un seno puro. La cuerda está atada por los dos extremos, así que solo persisten las ondas que caben.',
     s4p2: 'Cada onda que cabe es una nota pura: la fundamental (Mi), la misma nota una octava más arriba (Mi), luego un Si, y más. Todas sonando a la vez: un Mi con timbre de guitarra.',
+    sumof: 'la cuerda = suma de las ondas que caben:',
     pluck: '▶ pulsar', six: 'marcar las 6', guitar: (k) => `marcar las ${k} de una guitarra`, more: (m, a, b) => `+ ${m} frecuencias más, de n = ${a} a n = ${b} (no dibujadas)`, onlyfund: 'solo la fundamental', sum: 'suma',
     s5h: 'El timbre',
     s5p1: 'Qué frecuencias vibran y con qué fuerza es lo que el cerebro oye como una guitarra, o como la voz de una persona.',
@@ -117,6 +118,7 @@ const T = {
     s4h: 'A guitar string',
     s4p1: 'A guitar note is not a pure sine either. The string is tied at both ends, so only the waves that fit can persist.',
     s4p2: 'Each wave that fits is a pure note: the fundamental (E), the same note an octave up (E), then a B, and more. All sounding at once: an E with the timbre of a guitar.',
+    sumof: 'the string = sum of the waves that fit:',
     pluck: '▶ pluck', six: 'tick all 6', guitar: (k) => `tick the ${k} of a guitar`, more: (m, a, b) => `+ ${m} more frequencies, from n = ${a} to n = ${b} (not drawn)`, onlyfund: 'fundamental only', sum: 'sum',
     s5h: 'Timbre',
     s5p1: 'Which frequencies vibrate, and how strongly, is what the brain hears as a guitar, or as one person’s voice.',
@@ -866,7 +868,7 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
       const K = mode === 'all' ? KG : N;
       const as = []; for (let n = 1; n <= K; n++) as.push(ampOf(n) / g1);
       // the string: sum of the frequencies that will be plucked
-      const sy = H * 0.2, sh = H * 0.15;
+      const sy = H * 0.16, sh = H * 0.1;
       let amax = 0; for (let i = 0; i < N; i++) amax += STRING_AMPS[i];
       pencil(ctx, L, sy, R, sy, C.ink, 0.45);
       nibFn(ctx, L, R, (x) => {
@@ -876,18 +878,44 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
       }, C.curve, 3.8);
       for (const x of [L, R]) { dot(ctx, x, sy, 5, C.ink); }
       label(ctx, t('sum'), L - 4, sy - sh - 6, { size: 13, alpha: 0.7, italic: true });
-      // each wave that fits (first 6)
-      const top = H * 0.42, rowH = (H - top - 6) / N;
+      // each wave that fits (first 6): small panels, added together to make the string above
+      const gTop = sy + sh * 1.35 + 34;
+      label(ctx, t('sumof'), L - 4, gTop - 12, { size: 13, alpha: 0.75, italic: true });
+      const cols = W < 600 ? 2 : 3, rows = Math.ceil(N / cols), gap = 26;
+      const pw = (R - L + 8 - gap * (cols - 1)) / cols, phh = (H - gTop - 8 - gap * 0.6 * (rows - 1)) / rows;
       for (let n = 1; n <= N; n++) {
-        const cy = top + rowH * (n - 0.5), hh = rowH * 0.38, xl = L + 88, a = on[n - 1] ? amp[n - 1] : 0;
-        pencil(ctx, xl, cy, R, cy, C.ink, 0.35);
-        dot(ctx, xl, cy, 2.5, C.ink, 0.8); dot(ctx, R, cy, 2.5, C.ink, 0.8);
-        mlabel(ctx, [['n', 'i'], [` = ${n}`, 'r']], L - 10, cy + 5, { size: 14, alpha: on[n - 1] ? 0.9 : 0.35 });
-        label(ctx, noteName(n * F1_STRING), L + 46, cy + 5, { size: 13, alpha: on[n - 1] ? 0.9 : 0.35, color: MODE_COL[n - 1] });
-        if (a > 0) {
-          const sg = Math.sign(GUITAR[n - 1]);
-          nibFn(ctx, xl, R, (x) => cy - hh * sg * a * Math.sin(n * Math.PI * (x - xl) / (R - xl)) * Math.cos(TAU * n * nu * tm), MODE_COL[n - 1], 2.6);
+        const ci = (n - 1) % cols, ri = Math.floor((n - 1) / cols);
+        const x0 = L - 4 + ci * (pw + gap), y0 = gTop + ri * (phh + gap * 0.6);
+        const isOn = on[n - 1], a = isOn ? amp[n - 1] : 0, col = MODE_COL[n - 1];
+        // panel frame
+        ctx.save(); ctx.strokeStyle = C.ink; ctx.globalAlpha = isOn ? 0.35 : 0.15; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x0, y0, pw, phh, 8) : ctx.rect(x0, y0, pw, phh); ctx.stroke(); ctx.restore();
+        // "+" between panels
+        if (n > 1) {
+          const px = ci === 0 ? x0 - 15 : x0 - gap / 2;
+          label(ctx, '+', px, y0 + phh / 2 + 7, { size: 20, align: 'center', alpha: 0.7 });
         }
+        // title: n, note, frequency
+        mlabel(ctx, [['n', 'i'], [` = ${n}`, 'r']], x0 + 10, y0 + 19, { size: 14, alpha: isOn ? 0.95 : 0.35 });
+        label(ctx, noteName(n * F1_STRING), x0 + 58, y0 + 19, { size: 13, color: col, alpha: isOn ? 0.95 : 0.35 });
+        mlabel(ctx, n === 1 ? [['f', 'i'], ['1', 's']] : [[`${n}`, 'r'], ['f', 'i'], ['1', 's']], x0 + pw - 10, y0 + 19, { size: 14, align: 'right', alpha: isOn ? 0.8 : 0.3 });
+        if (isOn && phh >= 70) mlabel(ctx, [['a', 'i'], [`${n}`, 's'], [` = ${a.toFixed(2)}`, 'r']], x0 + pw - 10, y0 + phh - 8, { size: 13, align: 'right', alpha: 0.75 });
+        // a short string between two pegs, the envelope of the wave, its nodes, and the wave now
+        const xl = x0 + 16, xr = x0 + pw - 16, cy = y0 + 24 + (phh - 40) / 2, hmax = Math.max(4, (phh - 40) * 0.42);
+        const u = (x) => (x - xl) / (xr - xl);
+        pencil(ctx, xl, cy, xr, cy, C.ink, 0.3);
+        if (a > 0) {
+          ctx.save(); ctx.strokeStyle = col; ctx.globalAlpha = 0.45; ctx.lineWidth = 1; ctx.setLineDash([5, 4]);
+          for (const sg2 of [1, -1]) {
+            ctx.beginPath();
+            for (let x = xl; x <= xr + 0.5; x += 2) { const yy = cy - sg2 * hmax * Math.sin(n * Math.PI * u(x)); x === xl ? ctx.moveTo(x, yy) : ctx.lineTo(x, yy); }
+            ctx.stroke();
+          }
+          ctx.restore();
+          const sg = Math.sign(GUITAR[n - 1]);
+          nibFn(ctx, xl, xr, (x) => cy - hmax * sg * Math.sin(n * Math.PI * u(x)) * Math.cos(TAU * n * nu * tm), col, 2.6);
+        }
+        for (let j = 0; j <= n; j++) dot(ctx, xl + (xr - xl) * j / n, cy, j === 0 || j === n ? 3.2 : 2.4, C.ink, isOn ? 0.85 : 0.3);
       }
     },
     lang() { show(); },
