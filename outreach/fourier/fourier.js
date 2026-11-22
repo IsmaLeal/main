@@ -48,7 +48,7 @@ const T = {
     s4h: 'Una cuerda de guitarra',
     s4p1: 'Una nota de guitarra tampoco es un seno puro. La cuerda está atada por los dos extremos, así que solo persisten las ondas que caben.',
     s4p2: 'Cada onda que cabe es una nota pura: la fundamental (Mi), la misma nota una octava más arriba (Mi), luego un Si, y más. Todas sonando a la vez: un Mi con timbre de guitarra.',
-    pluck: 'pulsar estas 6', all: 'guitarra: solo las 6 primeras', guitar: (k) => `guitarra: ${k} frecuencias (pulsar)`, onlyfund: 'solo la fundamental', sum: 'suma',
+    pluck: '▶ pulsar', six: 'marcar las 6', guitar: (k) => `marcar las ${k} de una guitarra`, more: (m, a, b) => `+ ${m} frecuencias más, de n = ${a} a n = ${b} (no dibujadas)`, onlyfund: 'solo la fundamental', sum: 'suma',
     s5h: 'El timbre',
     s5p1: 'Qué frecuencias vibran y con qué fuerza es lo que el cerebro oye como una guitarra, o como la voz de una persona.',
     s5p2: 'Todo sonido es una suma de frecuencias puras. Arrastra las barras: la nota es la misma, el sonido no.',
@@ -97,7 +97,7 @@ const T = {
     s4h: 'A guitar string',
     s4p1: 'A guitar note is not a pure sine either. The string is tied at both ends, so only the waves that fit can persist.',
     s4p2: 'Each wave that fits is a pure note: the fundamental (E), the same note an octave up (E), then a B, and more. All sounding at once: an E with the timbre of a guitar.',
-    pluck: 'pluck these 6', all: 'guitar: first 6 only', guitar: (k) => `guitar: ${k} frequencies (pluck)`, onlyfund: 'fundamental only', sum: 'sum',
+    pluck: '▶ pluck', six: 'tick all 6', guitar: (k) => `tick the ${k} of a guitar`, more: (m, a, b) => `+ ${m} more frequencies, from n = ${a} to n = ${b} (not drawn)`, onlyfund: 'fundamental only', sum: 'sum',
     s5h: 'Timbre',
     s5p1: 'Which frequencies vibrate, and how strongly, is what the brain hears as a guitar, or as one person’s voice.',
     s5p2: 'Every sound is a sum of pure frequencies. Drag the bars: the note stays the same, the sound does not.',
@@ -692,56 +692,45 @@ const MODE_COL = [C.a1, C.a2, C.a3, C.a1, C.a2, C.a3];
 const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
 {
   const ctx = canvas('c4');
-  const N = 6, on = Array(N).fill(true), amp = STRING_AMPS.slice();
-  const box = $('s4modes'), bs = $('s4snd'), eq = $('s4eq');
-  let tm = 0, snd = null;
+  /* One "pulsar" button. Three presets choose which frequencies it plucks:
+     'one' = only n = 1, 'six' = n = 1..6, 'all' = n = 1..KG (first 6 from the sliders,
+     the rest with the GUITAR amplitudes). Moving a slider or a checkbox keeps the preset. */
+  const N = 6, on = [true, false, false, false, false, false], amp = STRING_AMPS.slice();
+  const box = $('s4modes'), eq = $('s4eq'), st = $('s4st');
+  const PRE = { one: $('s4one'), six: $('s4six'), all: $('s4all') };
+  let tm = 0, mode = 'one';
   const sliders = [], checks = [], names = [];
   for (let n = 1; n <= N; n++) {
     const lab = document.createElement('label');
     const sw = document.createElement('span'); sw.className = 'sw'; sw.style.background = MODE_COL[n - 1];
-    const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = true; cb.setAttribute('aria-label', `n = ${n}`);
+    const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = on[n - 1]; cb.setAttribute('aria-label', `n = ${n}`);
     const nm = document.createElement('span');
     const r = document.createElement('input'); r.type = 'range'; r.min = 0; r.max = 100; r.value = Math.round(amp[n - 1] * 100); r.setAttribute('aria-label', `a${n}`);
-    cb.addEventListener('change', () => { on[n - 1] = cb.checked; sync(); });
-    r.addEventListener('input', () => { amp[n - 1] = r.value / 100; sync(); });
+    cb.addEventListener('change', () => { on[n - 1] = cb.checked; });
+    r.addEventListener('input', () => { amp[n - 1] = r.value / 100; });
     lab.append(sw, cb, nm, r); box.appendChild(lab);
     sliders.push(r); checks.push(cb); names.push(nm);
   }
-  const eff = () => amp.map((a, i) => (on[i] ? a : 0));
-  function sync() { if (snd) snd.setAmps(eff()); }
-  function setAll(arr, onArr) {
-    for (let i = 0; i < N; i++) { amp[i] = arr[i]; on[i] = onArr[i]; sliders[i].value = Math.round(arr[i] * 100); checks[i].checked = onArr[i]; }
-    sync();
+  function setMode(m) {
+    mode = m;
+    const onArr = m === 'one' ? [true, false, false, false, false, false] : Array(N).fill(true);
+    for (let i = 0; i < N; i++) { amp[i] = STRING_AMPS[i]; on[i] = onArr[i]; sliders[i].value = Math.round(amp[i] * 100); checks[i].checked = on[i]; }
+    for (const k in PRE) PRE[k].setAttribute('aria-pressed', k === m ? 'true' : 'false');
+    st.textContent = m === 'all' ? T[lang].more(KG - N, N + 1, KG) : '';
   }
-  $('s4all').addEventListener('click', () => setAll(STRING_AMPS, Array(N).fill(true)));
-  $('s4one').addEventListener('click', () => setAll(STRING_AMPS, [true, false, false, false, false, false]));
-  bs.addEventListener('click', () => {
-    if (snd) { snd.stop(); snd = null; } else snd = tone(F1_STRING, eff());
-    bs.setAttribute('aria-pressed', snd ? 'true' : 'false'); setBtn(bs, snd ? 'stop' : 'listen');
-  });
-  $('s4pluck').addEventListener('click', () => {   // each mode decays; higher modes decay faster
+  for (const k in PRE) PRE[k].addEventListener('click', () => setMode(k));
+  /* signed amplitude of frequency n (1-based) as it will be plucked */
+  const g1 = Math.abs(GUITAR[0]);
+  const ampOf = (n) => (n <= N ? (on[n - 1] ? Math.sign(GUITAR[n - 1]) * amp[n - 1] * g1 : 0) : (mode === 'all' ? GUITAR[n - 1] : 0));
+  $('s4pluck').addEventListener('click', () => {
     const ac = audio(); if (!ac) return;
-    const sr = ac.sampleRate, n = Math.round(sr * 2.6), d = new Float32Array(n), a = eff();
-    for (let i = 0; i < n; i++) {
-      const tt = i / sr; let s = 0;
-      for (let m = 1; m <= N; m++) if (a[m - 1]) s += a[m - 1] * Math.exp(-tt * (0.9 + 0.55 * m)) * Math.sin(TAU * m * F1_STRING * tt);
-      d[i] = s * Math.min(1, tt / 0.004);
-    }
-    playBuffer(d, sr, 0.8);
-  });
-  /* "Pluck like a guitar": the first KG frequencies f_n = n f_1 at once, with the
-     GUITAR amplitudes; the 6 sliders are reset to the first 6. Decay rates chosen by ear. */
-  const bg = $('s4guitar'), gAmp = GUITAR;
-  bg.addEventListener('click', () => {
-    const ac = audio(); if (!ac) return;
-    stopSounds(); snd = null; bs.setAttribute('aria-pressed', 'false'); setBtn(bs, 'listen');
-    setAll(STRING_AMPS, Array(N).fill(true));
+    stopSounds();
     const sr = ac.sampleRate, len = Math.round(sr * 3), d = new Float32Array(len);
-    for (let n = 1; n <= KG; n++) {
-      const f = n * F1_STRING; if (f > 0.45 * sr) break;
+    const K = mode === 'all' ? KG : N;
+    for (let n = 1; n <= K; n++) {
+      const a = ampOf(n), f = n * F1_STRING; if (!a) continue; if (f > 0.45 * sr) break;
       const w = TAU * f / sr, cw = Math.cos(w), sw = Math.sin(w);
-      const k = Math.exp(-(0.7 + f / 1800) / sr);       // decay per sample: higher frequencies die faster
-      const a = gAmp[n - 1];
+      const k = Math.exp(-(0.7 + f / 1800) / sr);       // decay per sample: higher frequencies die faster (chosen by ear)
       let x = 1, y = 0;                                   // rotating phasor: y = e^{-γt} sin(2π f t)
       for (let i = 0; i < len; i++) {
         d[i] += a * y;
@@ -752,41 +741,46 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
     playBuffer(d, sr, 0.9);
   });
   const show = () => {
-    bg.textContent = T[lang].guitar(KG);
+    PRE.all.textContent = T[lang].guitar(KG);
     for (let n = 1; n <= N; n++) names[n - 1].textContent = `n=${n} · ${noteName(n * F1_STRING)}`;
+    st.textContent = mode === 'all' ? T[lang].more(KG - N, N + 1, KG) : '';
     tex(eq, `\\begin{gathered} f_n = n\\,f_1,\\quad n = 1, 2, 3, \\dots \\\\ f_1 = ${F1_STRING.toFixed(1)}\\ \\mathrm{Hz}\\ (\\text{${noteName(F1_STRING)}}) \\end{gathered}`);
   };
-  show();
+  setMode('one'); show();
   S[4] = {
     ctx,
     draw(dt) {
       const { W, H } = ctx.cv; clear(ctx); tm += dt;
-      const nu = 0.32, a = eff();
+      const nu = 0.32;
       const L = 34, R = W - 34;
-      const y = (n, x) => Math.sin(n * Math.PI * (x - L) / (R - L)) * Math.cos(TAU * n * nu * tm);
-      // the string: sum of the modes that are on
+      const K = mode === 'all' ? KG : N;
+      const as = []; for (let n = 1; n <= K; n++) as.push(ampOf(n) / g1);
+      // the string: sum of the frequencies that will be plucked
       const sy = H * 0.2, sh = H * 0.15;
       let amax = 0; for (let i = 0; i < N; i++) amax += STRING_AMPS[i];
       pencil(ctx, L, sy, R, sy, C.ink, 0.45);
-      nibFn(ctx, L, R, (x) => { let s = 0; for (let n = 1; n <= N; n++) s += a[n - 1] * y(n, x); return sy - sh * s / amax * 1.25; }, C.curve, 3.8);
+      nibFn(ctx, L, R, (x) => {
+        let s = 0; const u = (x - L) / (R - L);
+        for (let n = 1; n <= K; n++) if (as[n - 1]) s += as[n - 1] * Math.sin(n * Math.PI * u) * Math.cos(TAU * n * nu * tm);
+        return sy - sh * s / amax * 1.25;
+      }, C.curve, 3.8);
       for (const x of [L, R]) { dot(ctx, x, sy, 5, C.ink); }
       label(ctx, t('sum'), L - 4, sy - sh - 6, { size: 13, alpha: 0.7, italic: true });
-      // each wave that fits
+      // each wave that fits (first 6)
       const top = H * 0.42, rowH = (H - top - 6) / N;
       for (let n = 1; n <= N; n++) {
-        const cy = top + rowH * (n - 0.5), hh = rowH * 0.38, xl = L + 88;
+        const cy = top + rowH * (n - 0.5), hh = rowH * 0.38, xl = L + 88, a = on[n - 1] ? amp[n - 1] : 0;
         pencil(ctx, xl, cy, R, cy, C.ink, 0.35);
         dot(ctx, xl, cy, 2.5, C.ink, 0.8); dot(ctx, R, cy, 2.5, C.ink, 0.8);
         mlabel(ctx, [['n', 'i'], [` = ${n}`, 'r']], L - 10, cy + 5, { size: 14, alpha: on[n - 1] ? 0.9 : 0.35 });
         label(ctx, noteName(n * F1_STRING), L + 46, cy + 5, { size: 13, alpha: on[n - 1] ? 0.9 : 0.35, color: MODE_COL[n - 1] });
-        if (on[n - 1] && a[n - 1] > 0) {
-          const yy = (x) => Math.sin(n * Math.PI * (x - xl) / (R - xl)) * Math.cos(TAU * n * nu * tm);
-          nibFn(ctx, xl, R, (x) => cy - hh * a[n - 1] * yy(x), MODE_COL[n - 1], 2.6);
+        if (a > 0) {
+          const sg = Math.sign(GUITAR[n - 1]);
+          nibFn(ctx, xl, R, (x) => cy - hh * sg * a * Math.sin(n * Math.PI * (x - xl) / (R - xl)) * Math.cos(TAU * n * nu * tm), MODE_COL[n - 1], 2.6);
         }
       }
     },
-    leave() { snd = null; bs.setAttribute('aria-pressed', 'false'); setBtn(bs, 'listen'); },
-    lang() { show(); setBtn(bs, snd ? 'stop' : 'listen'); },
+    lang() { show(); },
   };
 }
 

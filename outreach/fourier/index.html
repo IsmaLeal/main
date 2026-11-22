@@ -96,12 +96,12 @@
     <div class="fig">
       <div class="cv"><canvas id="c4" role="img" aria-label="Cuerda atada por los dos extremos y las ondas que caben en ella"></canvas></div>
       <div class="modes" id="s4modes"></div>
+      <div class="status" id="s4st" aria-live="polite"></div>
       <div class="ctl">
-        <button type="button" id="s4snd" aria-pressed="false" data-i18n="listen">▶ escuchar</button>
-        <button type="button" id="s4guitar">guitarra: 100 frecuencias (pulsar)</button>
-        <button type="button" id="s4pluck" data-i18n="pluck">pulsar estas 6</button>
-        <button type="button" id="s4all" data-i18n="all">guitarra: solo las 6 primeras</button>
-        <button type="button" id="s4one" data-i18n="onlyfund">solo la fundamental</button>
+        <button type="button" id="s4pluck" class="primary" data-i18n="pluck">▶ pulsar</button>
+        <button type="button" id="s4one" aria-pressed="true" data-i18n="onlyfund">solo la fundamental</button>
+        <button type="button" id="s4six" aria-pressed="false" data-i18n="six">marcar las 6</button>
+        <button type="button" id="s4all" aria-pressed="false">marcar las 100 de una guitarra</button>
       </div>
     </div>
   </section>

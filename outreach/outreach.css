@@ -128,6 +128,8 @@ a:hover { color: var(--a1); }
 }
 .ctl button:hover, .ctl button:focus-visible { border-color: var(--curve); color: var(--curve); outline: none; }
 .ctl button[aria-pressed="true"] { background: rgba(205, 200, 122, 0.16); border-color: var(--curve); color: var(--curve); }
+.ctl button.primary { border-color: var(--curve); color: var(--bg); background: var(--curve); padding: 0.3rem 1.1rem; }
+.ctl button.primary:hover, .ctl button.primary:focus-visible { background: var(--a1); border-color: var(--a1); color: var(--bg); }
 .ctl button:disabled { opacity: 0.35; cursor: default; }
 .ctl label { display: inline-flex; align-items: center; gap: 0.5rem; }
 .ctl .val { min-width: 4.5rem; font-variant-numeric: tabular-nums; color: var(--curve); }
