@@ -252,37 +252,30 @@ function setBtn(el, key) { el.dataset.i18n = key; el.textContent = t(key); }
 /* ======================================================================
    Audio: one context, created on the first press of a sound control
    ====================================================================== */
-let AC = null, master = null;
-/* iPhone: with the silent switch on, Web Audio is muted unless the page declares
-   itself as media playback. Newer Safari reads navigator.audioSession; older Safari
-   needs an HTML <audio> element playing (a looped silent clip) to take the media route. */
-let unlockEl = null;
-function silentWavUrl() {
-  const sr = 8000, n = 800, b = new ArrayBuffer(44 + n * 2), v = new DataView(b);
-  const w = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
-  w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt '); v.setUint32(16, 16, true);
-  v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, sr, true); v.setUint32(28, sr * 2, true);
-  v.setUint16(32, 2, true); v.setUint16(34, 16, true); w(36, 'data'); v.setUint32(40, n * 2, true);
-  return URL.createObjectURL(new Blob([b], { type: 'audio/wav' }));
-}
-function unlockMediaRoute() {
-  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { /* not supported */ }
-  if (!unlockEl) {
-    try {
-      unlockEl = document.createElement('audio');
-      unlockEl.src = silentWavUrl(); unlockEl.loop = true; unlockEl.setAttribute('playsinline', '');
-      const pr = unlockEl.play(); if (pr && pr.catch) pr.catch(() => {});
-    } catch (e) { /* ignore */ }
-  }
-}
+let AC = null, master = null, outEl = null;
+/* iPhone/iPad: Web Audio sent to the speakers directly can stay silent (silent switch,
+   audio session). There, the sound is routed through an HTML <audio> element instead,
+   which iOS always treats as media playback. Elsewhere it goes straight to the speakers. */
+const IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 function audio() {
-  unlockMediaRoute();
+  try { if (navigator.audioSession && navigator.audioSession.type !== 'play-and-record') navigator.audioSession.type = 'playback'; } catch (e) { /* not supported */ }
   if (!AC) {
     const A = window.AudioContext || window.webkitAudioContext;
     if (!A) return null;
-    AC = new A(); master = AC.createGain(); master.gain.value = 0.35; master.connect(AC.destination);
+    AC = new A(); master = AC.createGain(); master.gain.value = 0.35;
+    if (IOS && AC.createMediaStreamDestination) {
+      const dest = AC.createMediaStreamDestination();
+      master.connect(dest);
+      outEl = document.createElement('audio');
+      outEl.setAttribute('playsinline', ''); outEl.autoplay = true;
+      outEl.srcObject = dest.stream;
+      document.body.appendChild(outEl);
+    } else {
+      master.connect(AC.destination);
+    }
   }
-  if (AC.state === 'suspended') AC.resume();
+  if (AC.state !== 'running') AC.resume();
+  if (outEl && outEl.paused) { const pr = outEl.play(); if (pr && pr.catch) pr.catch(() => {}); }
   return AC;
 }
 const voices = new Set();
@@ -599,6 +592,7 @@ function makeSample(sr) { // synthetic example signal (not a real voice): harmon
     const ac = audio();
     if (!ac || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { status('micno'); return; }
     status('micask');
+    try { if (navigator.audioSession) navigator.audioSession.type = 'play-and-record'; } catch (e) { /* not supported */ }
     try {
       stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
     } catch (e) { stream = null; status('micno'); return; }
@@ -613,6 +607,7 @@ function makeSample(sr) { // synthetic example signal (not a real voice): harmon
   function micOff() {
     if (recState) { try { recState.stop(); } catch (e) {} recState = null; }
     if (stream) stream.getTracks().forEach((tr) => tr.stop());
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { /* not supported */ }
     stream = null; an = null;
     bm.setAttribute('aria-pressed', 'false'); setBtn(bm, 'mic'); setBtn(brc, 'rec');
     brc.disabled = true;
