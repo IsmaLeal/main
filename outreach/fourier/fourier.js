@@ -89,7 +89,6 @@ const T = {
     s4k1: 'La cuerda = suma de las ondas que caben.',
     s4k3: 'Timbre: qué ondas suenan, y con qué fuerza.',
     rest7: (k) => `n = 7…${k}: las demás de una guitarra`, nofit: 'no cabe',
-    sumof: 'la cuerda = suma de las ondas que caben:',
     pluck: '▶ pulsar', six: 'marcar las 6', onlyfund: 'solo la fundamental', sum: 'suma',
     s5h: 'El timbre',
     s5p1: 'Qué frecuencias vibran y con qué fuerza es lo que el cerebro oye como una guitarra, o como la voz de una persona.',
@@ -181,7 +180,6 @@ const T = {
     s4k1: 'The string = the sum of the waves that fit.',
     s4k3: 'Timbre: which waves sound, and how strongly.',
     rest7: (k) => `n = 7…${k}: the rest of a guitar`, nofit: 'does not fit',
-    sumof: 'the string = sum of the waves that fit:',
     pluck: '▶ pluck', six: 'tick all 6', onlyfund: 'fundamental only', sum: 'sum',
     s5h: 'Timbre',
     s5p1: 'Which frequencies vibrate, and how strongly, is what the brain hears as a guitar, or as one person’s voice.',
@@ -1298,8 +1296,7 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
       for (const x of [L, R]) dot(ctx, x, sy, 5, C.ink);
       label(ctx, t('sum'), L - 4, Math.max(12, sy - sh - 6), { size: 13, alpha: 0.7, italic: true });
       // each wave that fits (the first 6): small panels, added together they make the string above
-      const gTop = sy + sh * 1.35 + 34;
-      label(ctx, t('sumof'), L - 4, gTop - 12, { size: 15, alpha: 0.95, color: C.curve });
+      const gTop = sy + sh * 1.35 + 18;
       // as many columns as bring the panels closest to 2.2 times wider than tall, for any screen
       const gap = 26;
       let lay = null;
