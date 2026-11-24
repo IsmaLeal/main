@@ -27,22 +27,19 @@ const T = {
     s0hint: '↓ desliza o usa las flechas del teclado',
     s1h: 'El aire vibra',
     s1p1: 'El sonido es aire que vibra. Las cuerdas vocales vibran y golpean las moléculas de aire, que golpean a sus vecinas. El aire oscila en su sitio; lo que viaja es la onda. Llega al oído, que la convierte en una señal eléctrica.',
-    s1p2: 'Pausa el aire: unas partículas quedan a la izquierda de su posición de reposo, otras a la derecha, otras justo en ella. Dibuja el desplazamiento de cada una frente a su posición: sale una curva, una onda. Vuelve a darle al play a cámara lenta: la onda viaja.',
-    s1p3: 'Ondas así de perfectas son notas puras: senos o cosenos.',
+    s1c0: '¿Cómo se describe esta onda?',
+    s1c1: 'Estas son las posiciones de equilibrio de unas pocas partículas: donde están cuando no suena nada.',
+    s1c2: 'Para describir la onda, necesito decir cuánto se ha movido cada una. Aquí todas se han movido 0, así que la gráfica queda así.',
+    s1c3: 'Si desplazo esta partícula hacia su derecha, la gráfica queda así: su punto sube.',
+    s1c4: 'Muévela tú: más a la derecha, o incluso a la izquierda. ¿Cómo queda la gráfica?',
+    s1c5: 'Ahora mueve las demás.',
+    s1c6: 'Así están en un instante mientras suena una nota. Con muchas partículas, los puntos forman una curva: la onda.',
+    s1c7: 'Ahora en movimiento: la onda viaja. Ondas así de perfectas son notas puras: senos o cosenos.',
+    next: 'siguiente →', again: '↻ otra vez',
     pause: '⏸ pausar', play: '▶ seguir', slow: 'cámara lenta',
     position: 'posición', displacement: 'desplazamiento', time: 'tiempo', right: 'derecha', left: 'izquierda',
-    vocal: 'cuerdas vocales', ear: 'oído', pausehint: 'pausa el aire para dibujar la gráfica',
+    vocal: 'cuerdas vocales', ear: 'oído',
     rest: 'resto',
-    s1bh: 'Izquierda-derecha → arriba-abajo',
-    s1bp1: 'La gráfica no es una foto del aire. Es una forma de dibujar cuánto se ha movido cada partícula desde su sitio.',
-    s1bp2: 'Se mueve a la derecha: el punto sube. Se mueve a la izquierda: el punto baja. Se queda en su sitio: el punto se queda en la línea. Cuanto más se mueve, más lejos de la línea.',
-    c1b0: 'Todas las partículas en su sitio. En la gráfica, todos los puntos en la línea.',
-    c1b1: 'Algunas partículas se mueven a la derecha.',
-    c1b2: 'Giramos su flecha un cuarto de vuelta: derecha se convierte en arriba, con el mismo largo.',
-    c1b3: 'Otras se mueven a la izquierda.',
-    c1b4: 'El mismo giro: izquierda se convierte en abajo.',
-    c1b5: 'Con muchas partículas, los puntos forman una curva: la onda.',
-    air: 'aire', again: '↻ otra vez',
     s2h: 'Una nota es una frecuencia',
     s2p1: 'Cuanto más rápido vibra el aire, más aguda es la nota. Una nota musical se define por su frecuencia: 440 vibraciones por segundo es un La.',
     s2p2: 'A la velocidad real del sonido, 343 m/s, no se ve nada.',
@@ -53,7 +50,7 @@ const T = {
     s3p2: 'Mi voz grabada es esa gráfica, y es mucho menos perfecta que una nota pura. Prueba con la tuya.',
     mic: '🎙 tu voz', micoff: '🎙 apagar micrófono', rec: '● grabar 2 s', recording: '● grabando…', playrec: '▶ escuchar grabación',
     micask: 'pidiendo permiso para el micrófono…', micon: 'micrófono encendido: habla o canta',
-    micno: 'sin micrófono: la etapa 7 usará una señal de ejemplo', recok: 'grabado: la etapa 7 usará tu voz',
+    micno: 'sin micrófono: la etapa 6 usará una señal de ejemplo', recok: 'grabado: la etapa 6 usará tu voz',
     recno: 'este navegador no permite grabar', atmic: 'desplazamiento en el micrófono', yourvoice: 'tu voz',
     s4h: 'Una cuerda de guitarra',
     s4p1: 'Una nota de guitarra tampoco es un seno puro. La cuerda está atada por los dos extremos, así que solo persisten las ondas que caben.',
@@ -68,7 +65,7 @@ const T = {
     s6p1: 'Un móvil encuentra las frecuencias y las amplitudes de una grabación, envía eso como datos comprimidos, y el otro móvil lo vuelve a reproducir.',
     s6p2: 'Basta con las frecuencias más fuertes. Quédate con pocas y escucha.',
     keep: 'frecuencias que se conservan', playorig: '▶ original', playrecon: '▶ reconstruida',
-    srcvoice: 'Grabación: tu voz (etapa 4).', srcsample: 'Grabación: señal de ejemplo sintética. Graba tu voz en la etapa 4 para usarla aquí.',
+    srcvoice: 'Grabación: tu voz (etapa 3).', srcsample: 'Grabación: señal de ejemplo sintética. Graba tu voz en la etapa 3 para usarla aquí.',
     numbers: (k, m) => `${k} frecuencias · ${3 * k} números (frecuencia, amplitud, fase) en lugar de ${m} muestras`,
     spectrum: 'frecuencias de la grabación', original: 'original', recon: 'reconstruida',
     s7h: 'Las mareas',
@@ -87,22 +84,19 @@ const T = {
     s0hint: '↓ scroll, swipe or use the arrow keys',
     s1h: 'Air vibrates',
     s1p1: 'Sound is vibrating air. The vocal cords vibrate and hit the air molecules, which hit their neighbours. The air oscillates in place; what travels is the wave. It reaches the ear, which turns it into an electric signal.',
-    s1p2: 'Pause the air: some particles are left of their rest position, some right, some exactly on it. Plot the displacement of each one against its position: you get a curve, a wave. Press play again in slow motion: the wave travels.',
-    s1p3: 'Waves this perfect are pure notes: sines or cosines.',
+    s1c0: 'How do you describe this wave?',
+    s1c1: 'These are the equilibrium positions of a few particles: where they sit when there is no sound.',
+    s1c2: 'To describe the wave, I need to say how far each one has moved. Here they have all moved 0, so the graph looks like this.',
+    s1c3: 'If I move this particle to its right, the graph looks like this: its point goes up.',
+    s1c4: 'Move it yourself: further right, or even left. What does the graph do?',
+    s1c5: 'Now move the others.',
+    s1c6: 'This is where they are at one instant while a note sounds. With many particles, the points make a curve: the wave.',
+    s1c7: 'Now in motion: the wave travels. Waves this perfect are pure notes: sines or cosines.',
+    next: 'next →', again: '↻ again',
     pause: '⏸ pause', play: '▶ play', slow: 'slow motion',
     position: 'position', displacement: 'displacement', time: 'time', right: 'right', left: 'left',
-    vocal: 'vocal cords', ear: 'ear', pausehint: 'pause the air to draw the graph',
+    vocal: 'vocal cords', ear: 'ear',
     rest: 'the rest',
-    s1bh: 'Left-right → up-down',
-    s1bp1: 'The graph is not a photo of the air. It is a way of drawing how far each particle has moved from its place.',
-    s1bp2: 'Moves right: the point goes up. Moves left: the point goes down. Stays in place: the point stays on the line. The further it moves, the further from the line.',
-    c1b0: 'All particles in their place. On the graph, all points on the line.',
-    c1b1: 'Some particles move to the right.',
-    c1b2: 'Turn their arrow a quarter turn: right becomes up, with the same length.',
-    c1b3: 'Others move to the left.',
-    c1b4: 'The same turn: left becomes down.',
-    c1b5: 'With many particles, the points make a curve: the wave.',
-    air: 'air', again: '↻ again',
     s2h: 'A note is a frequency',
     s2p1: 'The faster the air vibrates, the higher the note. A musical note is defined by its frequency: 440 vibrations per second is an A.',
     s2p2: 'At the real speed of sound, 343 m/s, nothing can be seen.',
@@ -113,7 +107,7 @@ const T = {
     s3p2: 'My recorded voice is that graph, and it is much less perfect than a pure note. Try yours.',
     mic: '🎙 your voice', micoff: '🎙 microphone off', rec: '● record 2 s', recording: '● recording…', playrec: '▶ play recording',
     micask: 'asking for microphone permission…', micon: 'microphone on: speak or sing',
-    micno: 'no microphone: stage 7 will use an example signal', recok: 'recorded: stage 7 will use your voice',
+    micno: 'no microphone: stage 6 will use an example signal', recok: 'recorded: stage 6 will use your voice',
     recno: 'this browser cannot record', atmic: 'displacement at the microphone', yourvoice: 'your voice',
     s4h: 'A guitar string',
     s4p1: 'A guitar note is not a pure sine either. The string is tied at both ends, so only the waves that fit can persist.',
@@ -128,7 +122,7 @@ const T = {
     s6p1: 'A phone finds the frequencies and amplitudes of a recording, sends those as compressed data, and the other phone plays them back.',
     s6p2: 'The strongest frequencies alone are enough. Keep only a few and listen.',
     keep: 'frequencies kept', playorig: '▶ original', playrecon: '▶ rebuilt',
-    srcvoice: 'Recording: your voice (stage 4).', srcsample: 'Recording: a synthetic example signal. Record your voice in stage 4 to use it here.',
+    srcvoice: 'Recording: your voice (stage 3).', srcsample: 'Recording: a synthetic example signal. Record your voice in stage 3 to use it here.',
     numbers: (k, m) => `${k} frequencies · ${3 * k} numbers (frequency, amplitude, phase) instead of ${m} samples`,
     spectrum: 'frequencies in the recording', original: 'original', recon: 'rebuilt',
     s7h: 'Tides',
@@ -354,7 +348,7 @@ function makeAir(cols, rows, seed) {
    ====================================================================== */
 const deck = $('deck');
 const sections = [...document.querySelectorAll('.stage')];
-const S = {};               // stage objects by section id (s0, s1, s1b, s2, …)
+const S = {};               // stage objects by section id (s0, s1, s2, …)
 let active = 0;
 const visible = new Set();
 
@@ -439,157 +433,140 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
 }
 
 /* ======================================================================
-   Stage 1 · vibrating air, pause, displacement against position
+   Stage 1 · vibrating air, and what the displacement graph means, told step by step.
+   Steps: 0 the air vibrates · 1 a few particles, at rest · 2 the graph, all at 0 ·
+   3 one particle moves right · 4 the reader drags it · 5 the reader drags any ·
+   6 one instant of a note, and the curve · 7 the air vibrates again, with its graph
    ====================================================================== */
 {
-  const ctx = canvas('c1');
+  const ctx = canvas('c1'), cv = ctx.cv;
   const air = makeAir(46, 7, 7);
-  const HL = [0.21, 0.43, 0.65].map((u) => ({ u, v: 0.5 }));
-  let tm = 0, playing = true, shown = false;
-  const btn = $('s1play'), sp = $('s1speed');
-  btn.addEventListener('click', () => {
-    playing = !playing; if (!playing) shown = true;
-    setBtn(btn, playing ? 'pause' : 'play');
+  const P = 2, LAST = 7;                        // the particle moved first; the last step
+  const cap = $('s1cap'), nx = $('s1next'), btn = $('s1play'), slow = $('s1slow'), sp = $('s1speed'), again = $('s1again');
+  const ease = (u) => { u = clamp(u, 0, 1); return u * u * (3 - 2 * u); };
+  const show = (el, on) => { el.style.display = on ? '' : 'none'; };
+  const dv = new Array(7).fill(0);              // displacement of each big particle, in units of their spacing
+  let from = dv.slice();                        // dv when the step started
+  let step = 0, st = 0, tm = 0, playing = true;
+  let G = null, grab = -1, grabX = 0, grab0 = 0; // G: layout of the last frame, for the pointer
+  function setStep(s) {
+    step = s; st = 0;
+    if (s === 0 || s === 2) dv.fill(0);
+    from = dv.slice();
+    cap.textContent = t('s1c' + s);
+    show(nx, s < LAST); nx.disabled = s === 4 || s === 5;   // steps 4 and 5 go on after a drag
+    show(btn, s === LAST); show(slow, s === LAST); show(again, s === LAST);
+    if (s === LAST) { playing = true; setBtn(btn, 'pause'); }
+  }
+  nx.addEventListener('click', () => setStep(step + 1));
+  again.addEventListener('click', () => setStep(0));
+  btn.addEventListener('click', () => { playing = !playing; setBtn(btn, playing ? 'pause' : 'play'); });
+  // dragging a big particle: only P in step 4, any in step 5
+  const at = (e) => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  function hit(x, y) {
+    if (!G || (step !== 4 && step !== 5) || Math.abs(y - G.yA) > G.airH / 2) return -1;
+    let best = -1, bd = Math.max(18, G.spc * 0.45);
+    for (let j = 0; j < G.N; j++) {
+      if (step === 4 && j !== P) continue;
+      const dd = Math.abs(x - G.xs[j] - dv[j] * G.spc); if (dd < bd) { bd = dd; best = j; }
+    }
+    return best;
+  }
+  cv.addEventListener('pointerdown', (e) => {
+    const [x, y] = at(e), j = hit(x, y); if (j < 0) return;
+    grab = j; grabX = x - dv[j] * G.spc; grab0 = dv[j];
+    cv.setPointerCapture(e.pointerId); cv.style.cursor = 'grabbing'; e.preventDefault();
   });
+  cv.addEventListener('pointermove', (e) => {
+    const [x, y] = at(e);
+    if (grab < 0) { cv.style.cursor = hit(x, y) >= 0 ? 'grab' : ''; return; }
+    dv[grab] = clamp((x - grabX) / G.spc, -G.dmax, G.dmax);
+  });
+  const release = () => {
+    if (grab < 0) return;
+    if (Math.abs(dv[grab] - grab0) > 0.08) nx.disabled = false;
+    grab = -1; cv.style.cursor = '';
+  };
+  cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', release);
   S.s1 = {
     ctx,
     draw(dt) {
-      const { W, H } = ctx.cv; clear(ctx);
-      if (playing) tm += dt * (1 - parseFloat(sp.value));
+      const { W, H } = cv; clear(ctx);
+      st += dt;
+      if (step === 0) tm += dt;
+      if (step === LAST && playing) tm += dt * (1 - parseFloat(sp.value));
       const L = 70, R = W - 34;                    // air spans [L, R]
-      const lam = (R - L) * 0.42, k = TAU / lam, w = TAU * 0.55;
-      const A = 0.55 / k;                           // displacement amplitude in px (A k = 0.55)
-      const xi = (x) => A * Math.sin(k * (x - L) - w * tm);
-      const top = 16, airH = H * 0.42, mid = top + airH / 2;
-      // vocal cords: a plate at x = L that moves with the air next to it
-      const px = L - 16 + xi(L);
-      ctx.save(); ctx.strokeStyle = C.a1; ctx.lineWidth = 3; ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.moveTo(px, top + 6); ctx.lineTo(px, top + airH - 6); ctx.stroke(); ctx.restore();
-      label(ctx, t('vocal'), L - 20, top + airH + 16, { size: 12, color: C.a1, align: 'center', alpha: 0.85 });
-      label(ctx, t('ear') + ' →', R, top + airH + 16, { size: 12, align: 'right', alpha: 0.7 });
-      // particles
-      ctx.save(); ctx.fillStyle = C.ink;
-      for (const p of air) {
-        if (W < 600 && !p.few) continue;
-        const x0 = L + p.u * (R - L), y = top + p.v * airH;
-        ctx.globalAlpha = 0.78; ctx.beginPath(); ctx.arc(x0 + xi(x0), y, p.s, 0, TAU); ctx.fill();
-      }
-      ctx.restore();
-      // highlighted particles: rest position (pencil) and displacement (accent arrow)
-      for (const h of HL) {
-        const x0 = L + h.u * (R - L), y = mid;
-        pencil(ctx, x0, top, x0, top + airH, C.ink, 0.45);
-        const d = xi(x0);
-        if (Math.abs(d) > 3) arrow(ctx, x0, y - 13, x0 + d, y - 13, C.a1, 1.2);
-        dot(ctx, x0 + d, y, 4.2, C.a1);
-      }
-      // displacement against position
+      const N = W < 600 ? 5 : 7, spc = (R - L) / N, xs = [];
+      for (let j = 0; j < N; j++) xs.push(L + (j + 0.5) * spc);
+      const top = 16, airH = H * 0.42, yA = top + airH / 2;
       const py = top + airH + 34 + (H - top - airH - 34) / 2, ph = (H - top - airH - 34) * 0.38;
-      if (!shown) { label(ctx, t('pausehint'), (L + R) / 2, py, { size: 15, align: 'center', alpha: 0.6, italic: true }); return; }
-      axes(ctx, L, py, R + 8, ph * 1.25, ph * 1.15, t('position'), null);
-      dirLabels(ctx, L, py, ph * 1.25, ph * 1.15);
-      const gy = ph / A;
-      nibFn(ctx, L, R, (x) => py - xi(x) * gy, C.curve, 3.6);
-      for (const h of HL) {
-        const x0 = L + h.u * (R - L), d = xi(x0);
-        pencil(ctx, x0, top + airH, x0, py - d * gy, C.ink, 0.4);
-        // the same displacement as the arrow in the air, turned upright: right = up, left = down
-        if (Math.abs(d * gy) > 6) arrow(ctx, x0, py, x0, py - d * gy, C.a1, 1.4);
-        dot(ctx, x0, py - d * gy, 4, C.a1);
+      const A = 0.42 * spc, dmax = 0.45;          // wave amplitude (px) and largest drag (spacings): neighbours never cross
+      const gy = 0.9 * ph / A;                      // graph scale: the wave fills the graph
+      const k = TAU / ((R - L) * 0.7), w = TAU * 0.55;
+      const xi = (x) => A * Math.sin(k * (x - L) - w * tm);
+      G = { N, xs, spc, yA, airH, dmax };
+      // the many small particles: how much they move (amp) and how visible they are (cloud)
+      const calm = step === 1 ? 1 - ease(st / 0.9) : 0, back = step === 6 ? ease((st - 0.6) / 1) : 0;
+      const amp = step === 0 || step === LAST ? 1 : step === 1 ? calm : back;
+      const cloud = step === 0 ? 0.78 : step === 1 ? 0.78 * calm : step === 6 ? 0.45 * back : step === LAST ? 0.45 : 0;
+      if (step === 1) for (let j = 0; j < N; j++) dv[j] = calm * xi(xs[j]) / spc;
+      if (step === 3) dv[P] = ease(st / 1.2) * 0.7 * dmax;
+      if (step === 6) for (let j = 0; j < N; j++) dv[j] = from[j] + (xi(xs[j]) / spc - from[j]) * ease(st / 1.2);
+      if (step === LAST) for (let j = 0; j < N; j++) dv[j] = xi(xs[j]) / spc;
+      // vocal cords: a plate at x = L that moves with the air next to it
+      if (amp > 0.01) {
+        const px = L - 16 + amp * xi(L);
+        ctx.save(); ctx.globalAlpha = amp; ctx.strokeStyle = C.a1; ctx.lineWidth = 3; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(px, top + 6); ctx.lineTo(px, top + airH - 6); ctx.stroke(); ctx.restore();
+        label(ctx, t('vocal'), L - 20, top + airH + 16, { size: 12, color: C.a1, align: 'center', alpha: 0.85 * amp });
+        label(ctx, t('ear') + ' →', R, top + airH + 16, { size: 12, align: 'right', alpha: 0.7 * amp });
       }
-    },
-    lang() { setBtn(btn, playing ? 'pause' : 'play'); },
-  };
-}
-
-/* ======================================================================
-   Stage 1b · from left/right in the air to up/down on the graph
-   A fixed, scripted animation that restarts every time the stage is shown.
-   ====================================================================== */
-{
-  const ctx = canvas('c1b');
-  const cap = $('s1bcap'), bp = $('s1bpause');
-  // timeline (seconds): rest, right moves, right arrows turn, left moves, left arrows turn, many particles
-  const PH = [0, 2.2, 4.2, 6.6, 8.6, 11.0, 14.0];
-  let tm = 0, playing = true, lastCap = -1;
-  const ease = (u) => { u = clamp(u, 0, 1); return u * u * (3 - 2 * u); };
-  const seg = (i) => ease((tm - PH[i]) / (PH[i + 1] - PH[i]));
-  const phase = () => { let k = 0; for (let i = 0; i < PH.length - 1; i++) if (tm >= PH[i]) k = i; return k; };
-  function restart() { tm = 0; playing = true; lastCap = -1; bp.hidden = false; setBtn(bp, 'pause'); }
-  bp.addEventListener('click', () => {
-    playing = !playing; setBtn(bp, playing ? 'pause' : 'play');
-  });
-  $('s1bagain').addEventListener('click', restart);
-  const showCap = (k) => { cap.textContent = t('c1b' + k); lastCap = k; };
-  S.s1b = {
-    ctx,
-    enter() { restart(); },
-    draw(dt) {
-      const { W, H } = ctx.cv; clear(ctx);
-      if (playing) tm = Math.min(tm + dt, PH[PH.length - 1]);
-      if (tm >= PH[PH.length - 1] && playing) { playing = false; bp.hidden = true; }
-      const k = Math.min(phase(), 5); if (k !== lastCap) showCap(k);
-      const L = 40, R = W - 30;
-      const N = 5;                       // particles 0 and N−1 and the middle one stay still
-      const sp = (R - L) / (N - 1), A = Math.min(sp * 0.42, H * 0.15);
-      const xs = [], ds = [];
-      for (let j = 0; j < N; j++) { xs.push(L + j * sp); ds.push(A * Math.sin(TAU * j / (N - 1))); }
-      const isR = (d) => d > 0.25 * A, isL = (d) => d < -0.25 * A;
-      // current displacement of each big particle
-      const cur = ds.map((d) => (isR(d) ? d * seg(1) : isL(d) ? d * seg(3) : 0));
-      const turnR = seg(2), turnL = seg(4), many = seg(5);
-      // layout
-      // the graph uses the same length as the air: a point is as far from the line as its particle moved
-      const ph = A * 1.15, total = 40 + 70 + ph * 2.5, yA = Math.max(46, (H - total) / 2 + 40), py = yA + 70 + ph * 1.3;
-      label(ctx, t('air'), L - 12, yA - 34, { size: 13, alpha: 0.7, italic: true });
-      // many small particles (last phase)
-      if (many > 0) {
-        const M = 60;
-        ctx.save(); ctx.fillStyle = C.ink; ctx.globalAlpha = 0.4 * many;
-        for (let j = 0; j <= M; j++) {
-          const x0 = L + (R - L) * j / M, d = A * Math.sin(TAU * j / M);
-          for (const dy of [-15, 15]) { ctx.beginPath(); ctx.arc(x0 + d, yA + dy, 2, 0, TAU); ctx.fill(); }
+      if (cloud > 0.01) {
+        ctx.save(); ctx.fillStyle = C.ink; ctx.globalAlpha = cloud;
+        for (const p of air) {
+          if (W < 600 && !p.few) continue;
+          const x0 = L + p.u * (R - L), y = top + p.v * airH;
+          ctx.beginPath(); ctx.arc(x0 + amp * xi(x0), y, p.s, 0, TAU); ctx.fill();
         }
         ctx.restore();
       }
-      // rest positions and the vertical guides joining air and graph
+      if (step === 0) return;
+      // big particles: rest position (pencil), displacement (arrow), particle
+      const big = step === 1 ? ease((st - 0.3) / 0.8) : 1;
+      const col = (j) => (step >= 5 || (step >= 3 && j === P) ? C.a1 : C.ink);
       for (let j = 0; j < N; j++) {
-        pencil(ctx, xs[j], yA - 22, xs[j], yA + 22, C.ink, 0.55);
-        pencil(ctx, xs[j], yA + 26, xs[j], py + ph * 1.1, C.ink, 0.18);
+        const x0 = xs[j], d = dv[j] * spc;
+        pencil(ctx, x0, yA - 26, x0, yA + 26, C.ink, 0.55 * big);
+        if (step > 1 && Math.abs(d) > 3) arrow(ctx, x0, yA - 20, x0 + d, yA - 20, col(j), 1.4);
+        dot(ctx, x0 + d, yA, 7, col(j), big);
       }
-      // graph axes
-      axes(ctx, L - 20, py, R + 14, ph * 1.3, ph * 1.25, t('position'), null);
-      dirLabels(ctx, L - 20, py, ph * 1.3, ph * 1.25);
-      // curve through the points (last phase), drawn from left to right
-      if (many > 0) {
-        const xe = L + (R - L) * many;
-        nibFn(ctx, L, xe, (x) => py - A * Math.sin(TAU * (x - L) / (R - L)), C.curve, 3.6);
+      // until the reader drags, a hint under each particle that can be dragged
+      if ((step === 4 || step === 5) && nx.disabled && grab < 0) {
+        for (let j = 0; j < N; j++) {
+          if (step === 4 && j !== P) continue;
+          const x = xs[j] + dv[j] * spc, y = yA + 16;
+          arrow(ctx, x + 3, y, x + 15, y, C.a1, 1); arrow(ctx, x - 3, y, x - 15, y, C.a1, 1);
+        }
       }
-      // big particles, their arrows in the air, and their points on the graph
+      if (step < 2) return;
+      // displacement against position
+      axes(ctx, L, py, R + 8, ph * 1.25, ph * 1.15, t('position'), null);
+      dirLabels(ctx, L, py, ph * 1.25, ph * 1.15);
+      if (step >= 6) {
+        const xe = step === 6 ? L + (R - L) * ease((st - 1.2) / 1.3) : R;
+        if (xe > L + 2) nibFn(ctx, L, xe, (x) => py - xi(x) * gy, C.curve, 3.6);
+      }
       for (let j = 0; j < N; j++) {
-        const d = ds[j], x0 = xs[j];
-        const c = isR(d) && tm >= PH[1] ? C.a1 : isL(d) && tm >= PH[3] ? C.a2 : C.ink;
-        const moved = Math.abs(cur[j]) > 0.5;
-        if (moved) arrow(ctx, x0, yA - 30, x0 + cur[j], yA - 30, c, 1.6);
-        dot(ctx, x0 + cur[j], yA, 7, c);
-        // the arrow turning a quarter turn: from (d, 0) at the particle to (0, −d) on the graph
-        const turn = isR(d) ? turnR : isL(d) ? turnL : 1;
-        if ((isR(d) || isL(d)) && turn > 0 && turn < 1) {
-          const oy = yA + (py - yA) * turn, th = -Math.PI / 2 * turn;
-          arrow(ctx, x0, oy, x0 + d * Math.cos(th), oy + d * Math.sin(th), c, 1.8);
-        }
-        // point on the graph
-        const done = !(isR(d) || isL(d)) || turn >= 1;
-        if (done) {
-          if (Math.abs(d) > 0.5 && (isR(d) || isL(d))) arrow(ctx, x0, py, x0, py - d, c, 1.6);
-          dot(ctx, x0, py - (isR(d) || isL(d) ? d : 0), 5.5, c);
-        } else {
-          dot(ctx, x0, py, 5.5, C.ink, 0.35);
-        }
+        const x0 = xs[j], d = dv[j] * spc;
+        pencil(ctx, x0, yA + 30, x0, py + ph * 1.1, C.ink, 0.18);
+        // the same displacement as the arrow in the air, turned upright: right = up, left = down
+        if (Math.abs(d * gy) > 6) arrow(ctx, x0, py, x0, py - d * gy, col(j), 1.4);
+        dot(ctx, x0, py - d * gy, 5, col(j));
       }
     },
-    lang() { if (lastCap >= 0) showCap(lastCap); setBtn(bp, playing ? 'pause' : 'play'); },
+    lang() { cap.textContent = t('s1c' + step); setBtn(btn, playing ? 'pause' : 'play'); },
   };
+  setStep(0);
 }
 
 /* ======================================================================

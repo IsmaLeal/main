@@ -36,39 +36,23 @@
     <div class="txt">
       <h2 id="s1h"><span class="num">1</span><span data-i18n="s1h">El aire vibra</span></h2>
       <p data-i18n="s1p1">El sonido es aire que vibra. Las cuerdas vocales vibran y golpean las moléculas de aire, que golpean a sus vecinas. El aire oscila en su sitio; lo que viaja es la onda. Llega al oído, que la convierte en una señal eléctrica.</p>
-      <p data-i18n="s1p2">Pausa el aire: unas partículas quedan a la izquierda de su posición de reposo, otras a la derecha, otras justo en ella. Dibuja el desplazamiento de cada una frente a su posición: sale una curva, una onda. Vuelve a darle al play a cámara lenta: la onda viaja.</p>
-      <p data-i18n="s1p3">Ondas así de perfectas son notas puras: senos o cosenos.</p>
     </div>
     <div class="fig">
       <div class="cv"><canvas id="c1" role="img" aria-label="Partículas de aire oscilando y gráfica de su desplazamiento"></canvas></div>
+      <p class="caption" id="s1cap" aria-live="polite"></p>
       <div class="ctl">
+        <button type="button" id="s1next" class="primary" data-i18n="next">siguiente →</button>
         <button type="button" id="s1play" data-i18n="pause">⏸ pausar</button>
-        <label><span data-i18n="slow">cámara lenta</span> <input type="range" id="s1speed" min="0" max="0.95" step="0.01" value="0" aria-label="cámara lenta"></label>
+        <label id="s1slow"><span data-i18n="slow">cámara lenta</span> <input type="range" id="s1speed" min="0" max="0.95" step="0.01" value="0" aria-label="cámara lenta"></label>
+        <button type="button" id="s1again" data-i18n="again">↻ otra vez</button>
       </div>
     </div>
   </section>
 
-  <!-- 2 · left/right in the air → up/down on the graph -->
-  <section class="stage" id="s1b" aria-labelledby="s1bh">
-    <div class="txt">
-      <h2 id="s1bh"><span class="num">2</span><span data-i18n="s1bh">Izquierda-derecha → arriba-abajo</span></h2>
-      <p data-i18n="s1bp1">La gráfica no es una foto del aire. Es una forma de dibujar cuánto se ha movido cada partícula desde su sitio.</p>
-      <p data-i18n="s1bp2">Se mueve a la derecha: el punto sube. Se mueve a la izquierda: el punto baja. Se queda en su sitio: el punto se queda en la línea. Cuanto más se mueve, más lejos de la línea.</p>
-    </div>
-    <div class="fig">
-      <div class="cv"><canvas id="c1b" role="img" aria-label="Partículas que se mueven a izquierda y derecha y sus puntos en la gráfica, arriba y abajo"></canvas></div>
-      <p class="caption" id="s1bcap" aria-live="polite"></p>
-      <div class="ctl">
-        <button type="button" id="s1bpause" data-i18n="pause">⏸ pausar</button>
-        <button type="button" id="s1bagain" data-i18n="again">↻ otra vez</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- 3 · a note is a frequency (beat 2) -->
+  <!-- 2 · a note is a frequency (beat 2) -->
   <section class="stage" id="s2" aria-labelledby="s2h">
     <div class="txt">
-      <h2 id="s2h"><span class="num">3</span><span data-i18n="s2h">Una nota es una frecuencia</span></h2>
+      <h2 id="s2h"><span class="num">2</span><span data-i18n="s2h">Una nota es una frecuencia</span></h2>
       <p data-i18n="s2p1">Cuanto más rápido vibra el aire, más aguda es la nota. Una nota musical se define por su frecuencia: 440 vibraciones por segundo es un La.</p>
       <p data-i18n="s2p2">A la velocidad real del sonido, 343 m/s, no se ve nada.</p>
       <div class="eq" id="s2eq"></div>
@@ -87,7 +71,7 @@
   <!-- 3 · microphone (beat 4) -->
   <section class="stage" id="s3" aria-labelledby="s3h">
     <div class="txt">
-      <h2 id="s3h"><span class="num">4</span><span data-i18n="s3h">Un micrófono</span></h2>
+      <h2 id="s3h"><span class="num">3</span><span data-i18n="s3h">Un micrófono</span></h2>
       <p data-i18n="s3p1">Un micrófono mide el desplazamiento del aire en un solo punto a lo largo del tiempo. La gráfica se parece.</p>
       <p data-i18n="s3p2">Mi voz grabada es esa gráfica, y es mucho menos perfecta que una nota pura. Prueba con la tuya.</p>
     </div>
@@ -105,7 +89,7 @@
   <!-- 4 · guitar string (beat 5) -->
   <section class="stage" id="s4" aria-labelledby="s4h">
     <div class="txt">
-      <h2 id="s4h"><span class="num">5</span><span data-i18n="s4h">Una cuerda de guitarra</span></h2>
+      <h2 id="s4h"><span class="num">4</span><span data-i18n="s4h">Una cuerda de guitarra</span></h2>
       <p data-i18n="s4p1">Una nota de guitarra tampoco es un seno puro. La cuerda está atada por los dos extremos, así que solo persisten las ondas que caben.</p>
       <p data-i18n="s4p2">Cada onda que cabe es una nota pura: la fundamental (Mi), la misma nota una octava más arriba (Mi), luego un Si, y más. Todas sonando a la vez: un Mi con timbre de guitarra.</p>
       <div class="eq" id="s4eq"></div>
@@ -126,7 +110,7 @@
   <!-- 5 · timbre (beat 6) -->
   <section class="stage" id="s5" aria-labelledby="s5h">
     <div class="txt">
-      <h2 id="s5h"><span class="num">6</span><span data-i18n="s5h">El timbre</span></h2>
+      <h2 id="s5h"><span class="num">5</span><span data-i18n="s5h">El timbre</span></h2>
       <p data-i18n="s5p1">Qué frecuencias vibran y con qué fuerza es lo que el cerebro oye como una guitarra, o como la voz de una persona.</p>
       <p data-i18n="s5p2">Todo sonido es una suma de frecuencias puras. Arrastra las barras: la nota es la misma, el sonido no.</p>
       <div class="eq" id="s5eq"></div>
@@ -144,7 +128,7 @@
   <!-- 6 · how a voice message travels (beat 7) -->
   <section class="stage" id="s6" aria-labelledby="s6h">
     <div class="txt">
-      <h2 id="s6h"><span class="num">7</span><span data-i18n="s6h">Cómo viaja tu audio</span></h2>
+      <h2 id="s6h"><span class="num">6</span><span data-i18n="s6h">Cómo viaja tu audio</span></h2>
       <p data-i18n="s6p1">Un móvil encuentra las frecuencias y las amplitudes de una grabación, envía eso como datos comprimidos, y el otro móvil lo vuelve a reproducir.</p>
       <p data-i18n="s6p2">Basta con las frecuencias más fuertes. Quédate con pocas y escucha.</p>
       <p class="note" id="s6src"></p>
@@ -164,7 +148,7 @@
   <!-- 7 · tides (beat 8) -->
   <section class="stage" id="s7" aria-labelledby="s7h">
     <div class="txt">
-      <h2 id="s7h"><span class="num">8</span><span data-i18n="s7h">Las mareas</span></h2>
+      <h2 id="s7h"><span class="num">7</span><span data-i18n="s7h">Las mareas</span></h2>
       <p data-i18n="s7p1">La marea sube y baja; a lo largo de un día dibuja una onda. La mueven fuerzas periódicas: la gravedad de la Luna, la del Sol, y más. Cada una es un seno puro.</p>
       <p data-i18n="s7p2">Basta con conocer las causas dominantes: la Luna sola, el Sol solo, el resto; se suman con sus amplitudes y la marea futura queda predicha.</p>
       <div class="eq" id="s7eq"></div>
