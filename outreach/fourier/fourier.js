@@ -48,8 +48,8 @@ const T = {
     vocal: 'cuerdas vocales', ear: 'oído',
     rest: 'resto',
     s2h: 'Una nota es una frecuencia',
-    s2p1: 'Cuanto más rápido vibra el aire, más aguda es la nota. Una nota musical se define por su frecuencia: 440 vibraciones por segundo es un La.',
-    s2p2: 'A la velocidad real del sonido, 343 m/s, no se ve nada.',
+    s2p1: 'Una nota musical se define por su frecuencia: cuántas veces por segundo vibra el aire. 440 veces es un La.',
+    s2k: 'Cuanto más rápido vibra el aire, más aguda es la nota.',
     freq: 'frecuencia', listen: '▶ escuchar', stop: '■ parar',
     realspeed: 'velocidad real', realon: 'velocidad real: no se ve nada', slowmo: 'cámara lenta',
     s3h: 'Un micrófono',
@@ -81,23 +81,31 @@ const T = {
     s4all: (e) => `Las 100 primeras: un ${e} con timbre de guitarra.`,
     s4mix: 'Otra mezcla de ondas, otro sonido.',
     s4c3: 'Cada onda suena con su propia fuerza, su amplitud: cámbiala con su barra y pulsa. Qué ondas suenan y con qué fuerza: eso es el timbre.',
+    s1k1: 'Derecha en el aire: arriba en la gráfica. Izquierda: abajo.',
+    s1k2: 'La gráfica de una onda dice cuánto se ha movido el aire en cada sitio.',
+    s1k3: 'Una nota pura es una onda perfecta: un seno.',
+    s3k: 'Una voz también es aire que va y viene: una onda, mucho menos perfecta que una nota pura.',
+    s4k0: 'En una cuerda atada solo caben ondas con medias ondas justas: 1, 2, 3, 4…',
+    s4k1: 'La cuerda = suma de las ondas que caben.',
+    s4k3: 'Timbre: qué ondas suenan, y con qué fuerza.',
     rest7: (k) => `n = 7…${k}: las demás de una guitarra`, nofit: 'no cabe',
     sumof: 'la cuerda = suma de las ondas que caben:',
     pluck: '▶ pulsar', six: 'marcar las 6', onlyfund: 'solo la fundamental', sum: 'suma',
     s5h: 'El timbre',
     s5p1: 'Qué frecuencias vibran y con qué fuerza es lo que el cerebro oye como una guitarra, o como la voz de una persona.',
-    s5p2: 'Todo sonido es una suma de frecuencias puras. Arrastra las barras: la nota es la misma, el sonido no.',
+    s5p2: 'Arrastra las barras: la nota es la misma, el sonido no.',
+    s5k: 'Todo sonido es una suma de frecuencias puras.',
     pure: 'nota pura', likestring: 'como la cuerda', amplitude: 'amplitud', frequency: 'frecuencia',
     s6h: 'Cómo viaja tu audio',
     s6p1: 'Un móvil encuentra las frecuencias y las amplitudes de una grabación, envía eso como datos comprimidos, y el otro móvil lo vuelve a reproducir.',
-    s6p2: 'Basta con las frecuencias más fuertes. Quédate con pocas y escucha.',
+    s6k: 'Basta con las frecuencias más fuertes.',
     keep: 'frecuencias que se conservan', playorig: '▶ original', playrecon: '▶ reconstruida',
     srcvoice: 'Grabación: tu voz (etapa 3).', srcsample: 'Grabación: señal de ejemplo sintética. Graba tu voz en la etapa 3 para usarla aquí.',
     numbers: (k, m) => `${k} frecuencias · ${3 * k} números (frecuencia, amplitud, fase) en lugar de ${m} muestras`,
     spectrum: 'frecuencias de la grabación', original: 'original', recon: 'reconstruida',
     s7h: 'Las mareas',
     s7p1: 'La marea sube y baja; a lo largo de un día dibuja una onda. La mueven fuerzas periódicas: la gravedad de la Luna, la del Sol, y más. Cada una es un seno puro.',
-    s7p2: 'Basta con conocer las causas dominantes: la Luna sola, el Sol solo, el resto; se suman con sus amplitudes y la marea futura queda predicha.',
+    s7k: 'Sumando unas pocas ondas puras se predice la marea.',
     moon: 'Luna', sun: 'Sol', today: 'hoy', advance: '▶ avanzar', halt: '⏸ parar',
     tide: 'marea', predicted: 'predicción', day: 'día', days: 'días',
     s8h: 'El vídeo', soon: 'Vídeo próximamente.',
@@ -132,8 +140,8 @@ const T = {
     vocal: 'vocal cords', ear: 'ear',
     rest: 'the rest',
     s2h: 'A note is a frequency',
-    s2p1: 'The faster the air vibrates, the higher the note. A musical note is defined by its frequency: 440 vibrations per second is an A.',
-    s2p2: 'At the real speed of sound, 343 m/s, nothing can be seen.',
+    s2p1: 'A musical note is defined by its frequency: how many times per second the air vibrates. 440 times is an A.',
+    s2k: 'The faster the air vibrates, the higher the note.',
     freq: 'frequency', listen: '▶ listen', stop: '■ stop',
     realspeed: 'real speed', realon: 'real speed: nothing can be seen', slowmo: 'slow motion',
     s3h: 'A microphone',
@@ -165,23 +173,31 @@ const T = {
     s4all: (e) => `The first 100: an ${e} with the timbre of a guitar.`,
     s4mix: 'Another mix of waves, another sound.',
     s4c3: 'Each wave sounds with its own strength, its amplitude: change it with its slider and pluck. Which waves sound, and how strongly: that is timbre.',
+    s1k1: 'Right in the air: up on the graph. Left: down.',
+    s1k2: 'The graph of a wave tells how far the air has moved at each place.',
+    s1k3: 'A pure note is a perfect wave: a sine.',
+    s3k: 'A voice is also air going back and forth: a wave, far less perfect than a pure note.',
+    s4k0: 'On a tied string only waves with a whole number of half waves fit: 1, 2, 3, 4…',
+    s4k1: 'The string = the sum of the waves that fit.',
+    s4k3: 'Timbre: which waves sound, and how strongly.',
     rest7: (k) => `n = 7…${k}: the rest of a guitar`, nofit: 'does not fit',
     sumof: 'the string = sum of the waves that fit:',
     pluck: '▶ pluck', six: 'tick all 6', onlyfund: 'fundamental only', sum: 'sum',
     s5h: 'Timbre',
     s5p1: 'Which frequencies vibrate, and how strongly, is what the brain hears as a guitar, or as one person’s voice.',
-    s5p2: 'Every sound is a sum of pure frequencies. Drag the bars: the note stays the same, the sound does not.',
+    s5p2: 'Drag the bars: the note stays the same, the sound does not.',
+    s5k: 'Every sound is a sum of pure frequencies.',
     pure: 'pure note', likestring: 'like the string', amplitude: 'amplitude', frequency: 'frequency',
     s6h: 'How your voice message travels',
     s6p1: 'A phone finds the frequencies and amplitudes of a recording, sends those as compressed data, and the other phone plays them back.',
-    s6p2: 'The strongest frequencies alone are enough. Keep only a few and listen.',
+    s6k: 'The strongest frequencies alone are enough.',
     keep: 'frequencies kept', playorig: '▶ original', playrecon: '▶ rebuilt',
     srcvoice: 'Recording: your voice (stage 3).', srcsample: 'Recording: a synthetic example signal. Record your voice in stage 3 to use it here.',
     numbers: (k, m) => `${k} frequencies · ${3 * k} numbers (frequency, amplitude, phase) instead of ${m} samples`,
     spectrum: 'frequencies in the recording', original: 'original', recon: 'rebuilt',
     s7h: 'Tides',
     s7p1: 'The tide goes up and down; over a day it draws a wave. It is driven by periodic forces: the Moon’s gravity, the Sun’s, and more. Each one is a pure sine.',
-    s7p2: 'Knowing the dominant causes is enough: the Moon alone, the Sun alone, the rest; add them with their amplitudes and the future tide is predicted.',
+    s7k: 'Adding a few pure waves predicts the tide.',
     moon: 'Moon', sun: 'Sun', today: 'today', advance: '▶ run', halt: '⏸ stop',
     tide: 'tide', predicted: 'prediction', day: 'day', days: 'days',
     s8h: 'The video', soon: 'Video coming soon.',
@@ -321,6 +337,12 @@ function setBtn(el, key) { el.dataset.i18n = key; el.textContent = t(key); }
 const ease = (u) => { u = clamp(u, 0, 1); return u * u * (3 - 2 * u); };
 const show = (el, on) => { el.style.display = on ? '' : 'none'; };
 const hint = (el, on) => el.classList.toggle('hint', !!on);   // the control the story points at pulses
+/* the key idea of a moment, big in the text column: text key k fades in; '' hides it */
+function keyMsg(el, k) {
+  if (el.dataset.k === (k || '')) return;
+  el.dataset.k = k || ''; el.classList.remove('on'); el.textContent = k ? t(k) : '';
+  if (k) requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('on')));
+}
 /* a stage told step by step: its caption (id + 'cap') and its ← back / next → buttons (id + 'prev', id + 'next').
    onStep(step) runs on every change of step; o.st counts the seconds since the step began. */
 function stepper(id, last, onStep) {
@@ -478,6 +500,7 @@ function applyLang() {
   });
   document.querySelectorAll('.lang button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.lang === lang ? 'true' : 'false'));
   document.title = `${t('s0h')} | Isma Leal`;
+  document.querySelectorAll('.key').forEach((el) => { if (el.dataset.k) el.textContent = t(el.dataset.k); });
   for (const k in S) if (S[k].lang) S[k].lang();
   for (const k in S) if (S[k].ctx) S[k].ctx.cv.dirty = true;
   updateDots();
@@ -516,7 +539,7 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
   const P = 2, LAST = 7;                        // the particle moved first; the last step
   const AMP = 0.42, DMAX = 0.45, TOL = 0.1;     // wave amplitude, largest drag, circle tolerance, in spacings between big particles
   const W0 = TAU * 0.55;                        // angular frequency of the wave (rad/s)
-  const cap = $('s1cap'), pv = $('s1prev'), nx = $('s1next'), btn = $('s1play'), slow = $('s1slow'), sp = $('s1speed'), again = $('s1again');
+  const key1 = $('s1key'), cap = $('s1cap'), pv = $('s1prev'), nx = $('s1next'), btn = $('s1play'), slow = $('s1slow'), sp = $('s1speed'), again = $('s1again');
   const ease = (u) => { u = clamp(u, 0, 1); return u * u * (3 - 2 * u); };
   const show = (el, on) => { el.style.display = on ? '' : 'none'; };
   const dv = new Array(7).fill(0);              // displacement of each big particle, in spacings
@@ -530,6 +553,7 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
   const done = (j) => Math.abs(dv[j] - wave(j, nBig())) < TOL;
   const left = () => { let c = 0; for (let j = 0; j < nBig(); j++) if (!done(j)) c++; return c; };
   function caption() {
+    keyMsg(key1, (step === 4 && seenR && seenL) || step === 5 ? 's1k1' : step === 6 ? 's1k2' : step === LAST ? 's1k3' : '');
     let s = t('s1c' + step);
     if (step === 4) s = t(seenR && seenL ? 's1c4ok' : seenR ? 's1c4r' : seenL ? 's1c4l' : 's1c4');
     if (step === 5) {
@@ -704,7 +728,8 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
     const lam = c / f;
     tex(eq, `\\begin{gathered} f = ${Math.round(f)}\\ \\mathrm{Hz} \\\\ \\lambda = \\dfrac{c}{f} = \\dfrac{343\\ \\mathrm{m/s}}{${Math.round(f)}\\ \\mathrm{Hz}} = ${lam.toFixed(2)}\\ \\mathrm{m} \\end{gathered}`);
   };
-  sl.addEventListener('input', () => { f = fromSlider(); show(); if (snd) snd.setFreq(f); });
+  hint(sl.closest('label'), true);
+  sl.addEventListener('input', () => { hint(sl.closest('label'), false); f = fromSlider(); show(); if (snd) snd.setFreq(f); });
   bs.addEventListener('click', () => {
     if (snd) { snd.stop(); snd = null; } else snd = tone(f);
     bs.setAttribute('aria-pressed', snd ? 'true' : 'false'); setBtn(bs, snd ? 'stop' : 'listen');
@@ -850,6 +875,7 @@ function makeSample(sr) { // synthetic example signal (not a real voice): harmon
     hint(brc, s === 2 && !clip); hint(bex, false);
     if (s < 3) { stopSounds(); playT0 = -1; }
     if (s === 4) setCenter(center);
+    keyMsg($('s3key'), s === 4 ? 's3k' : '');
   });
   async function record() {
     if (mr) return;
@@ -1136,6 +1162,7 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
     hint(bpk, false); hint(box, s >= 2);
     if (s === 0) P4.nx.disabled = found.size < 3;
     if (s === 1) P4.nx.disabled = heard.size < 3 && !pluckedOnce;
+    keyMsg($('s4key'), s === 0 ? (found.size >= 3 ? 's4k0' : '') : s <= 2 ? 's4k1' : 's4k3');
   });
   bpk.addEventListener('click', () => {
     const list = []; for (let n = 1; n <= (rest ? KG : N); n++) list.push([n, ampOf(n)]);
@@ -1206,7 +1233,7 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
         // a wave of q half waves, starting at the left peg; it fits when q is a whole number
         const sy = H * 0.4, Aw = Math.min(H * 0.2, (R - L) * 0.18), ry = Math.min(H - 42, sy + Aw + 58);
         G.ry = ry;
-        const n0 = fitN(); if (n0) { found.add(n0); if (found.size >= 3) P4.nx.disabled = false; }
+        const n0 = fitN(); if (n0) { found.add(n0); if (found.size >= 3) { P4.nx.disabled = false; keyMsg($('s4key'), 's4k0'); } }
         const vd = n0 ? (n0 - 0.5) / 6 : clamp(v + (touched ? 0 : 0.025 * Math.sin(tm * 2.2)), 0, 1);   // untouched, the knob wiggles
         const qq = n0 || qOf(vd), col = n0 ? MODE_COL[(n0 - 1) % 6] : C.ink, osc = n0 ? Math.cos(TAU * 0.8 * tm) : 1;
         const peg = (x, c) => { ctx.save(); ctx.fillStyle = c; ctx.fillRect(x - 3, sy - 18, 6, 36); ctx.restore(); };
@@ -1266,7 +1293,7 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
       label(ctx, t('sum'), L - 4, Math.max(12, sy - sh - 6), { size: 13, alpha: 0.7, italic: true });
       // each wave that fits (the first 6): small panels, added together they make the string above
       const gTop = sy + sh * 1.35 + 34;
-      label(ctx, t('sumof'), L - 4, gTop - 12, { size: 13, alpha: 0.75, italic: true });
+      label(ctx, t('sumof'), L - 4, gTop - 12, { size: 15, alpha: 0.95, color: C.curve });
       // as many columns as bring the panels closest to 2.2 times wider than tall, for any screen
       const gap = 26;
       let lay = null;
@@ -1329,7 +1356,7 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
   const ctx = canvas('c5');
   const N = 8, F1 = 220, amp = [1, 0, 0, 0, 0, 0, 0, 0];
   const bs = $('s5snd'), eq = $('s5eq');
-  let snd = null, drag = false, sel = 0, geo = null;
+  let snd = null, drag = false, sel = 0, geo = null, touched = false;
   tex(eq, `p(t) = \\sum_{n=1}^{8} a_n \\sin(2\\pi\\, n f_1 t), \\qquad f_1 = ${F1}\\ \\mathrm{Hz}`);
   const sync = () => { if (snd) snd.setAmps(amp); ctx.cv.dirty = true; };
   $('s5pure').addEventListener('click', () => { amp.fill(0); amp[0] = 1; sync(); });
@@ -1347,7 +1374,7 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
   };
   const cv = ctx.cv;
   cv.tabIndex = 0;
-  cv.addEventListener('pointerdown', (e) => { drag = true; cv.setPointerCapture(e.pointerId); hit(e); });
+  cv.addEventListener('pointerdown', (e) => { drag = true; touched = true; cv.setPointerCapture(e.pointerId); hit(e); });
   cv.addEventListener('pointermove', (e) => { if (drag) hit(e); });
   cv.addEventListener('pointerup', () => { drag = false; });
   cv.addEventListener('pointercancel', () => { drag = false; });
@@ -1376,6 +1403,12 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
         if (document.activeElement === cv && i === sel) { ctx.save(); ctx.strokeStyle = C.a1; ctx.setLineDash([3, 3]); ctx.strokeRect(cx - w / 2 - 4, base - bh - 4, w + 8, bh + 8); ctx.restore(); }
         const parts = i === 0 ? [['f', 'i'], ['1', 's']] : [[`${i + 1}`, 'r'], ['f', 'i'], ['1', 's']];
         mlabel(ctx, parts, cx, base + 20, { align: 'center', size: 14 });
+        if (!touched && i === 1) {             // until the first drag: what to touch
+          const pulse = 0.5 + 0.5 * Math.sin(performance.now() / 250);
+          ctx.save(); ctx.strokeStyle = C.a1; ctx.globalAlpha = 0.35 + 0.5 * pulse; ctx.lineWidth = 1.6;
+          ctx.strokeRect(cx - w / 2 - 5 - 3 * pulse, base - bh - 5 - 3 * pulse, w + 10 + 6 * pulse, bh + 10 + 6 * pulse); ctx.restore();
+          label(ctx, '↕ ' + t('dragme'), cx, base - bh - 14, { size: 14, color: C.a1, align: 'center', alpha: 0.95 });
+        }
       }
       // resulting wave, three periods of the fundamental
       const py = H * 0.79, ph = H * 0.16;
@@ -1451,7 +1484,8 @@ function fft(re, im, inverse) {     // in-place radix-2 complex FFT, length a po
     rec = Float32Array.from(re.subarray(0, D.M));
     D.kept = new Uint8Array(NF / 2); for (let j = 0; j < K; j++) D.kept[D.order[j]] = 1;
   }
-  sl.addEventListener('input', () => { needK = true; });
+  hint(sl.closest('label'), true);
+  sl.addEventListener('input', () => { hint(sl.closest('label'), false); needK = true; });
   $('s6orig').addEventListener('click', () => { if (D) { stopSounds(); playBuffer(D.orig, D.sr); } });
   $('s6rec').addEventListener('click', () => { if (rec) { stopSounds(); playBuffer(rec, D.sr); } });
   S.s6 = {
@@ -1511,7 +1545,8 @@ function fft(re, im, inverse) {     // in-place radix-2 complex FFT, length a po
   const cb = [$('s7m1'), $('s7m2'), $('s7m3')], sl = $('s7t'), br = $('s7run'), eq = $('s7eq');
   let running = false;
   tex(eq, '\\begin{gathered} h(t) = \\sum_{i=1}^{3} A_i \\cos\\!\\left(\\frac{2\\pi t}{T_i}\\right) \\\\ T_i = 12.42,\\ 12.00,\\ 25.82\\ \\mathrm{h} \\\\ A_i = 1,\\ 0.46,\\ 0.42 \\end{gathered}');
-  br.addEventListener('click', () => { running = !running; br.setAttribute('aria-pressed', running ? 'true' : 'false'); setBtn(br, running ? 'halt' : 'advance'); });
+  hint(br, true);
+  br.addEventListener('click', () => { hint(br, false); running = !running; br.setAttribute('aria-pressed', running ? 'true' : 'false'); setBtn(br, running ? 'halt' : 'advance'); });
   const comp = (i, hours) => AI[i] * Math.cos(TAU * hours / TI[i]);
   S.s7 = {
     ctx,
