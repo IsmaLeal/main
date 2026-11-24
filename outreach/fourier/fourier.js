@@ -744,18 +744,14 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
       const L = 24, R = W - 24, metres = 3;          // the row shows 3 m of air
       const pxm = (R - L) / metres, lamPx = (c / f) * pxm, k = TAU / lamPx;
       ph += dt * TAU * 0.5 * (f / 440);              // slow motion: 440 Hz shown as 0.5 Hz
+      const phase = real ? TAU * f * performance.now() / 1000 : ph;   // real speed: the phase of the wave at this very moment
       const A = Math.min(0.5 / k, 14);
       const top = 14, airH = H * 0.46;
       ctx.save(); ctx.fillStyle = C.ink;
       for (const p of air) {
         if (W < 600 && !p.few) continue;
         const x0 = L + p.u * (R - L), y = top + p.v * airH;
-        if (real) {        // the eye only sees the blur of the vibration
-          ctx.globalAlpha = 0.28; ctx.fillRect(x0 - A, y - p.s * 0.8, 2 * A, p.s * 1.6);
-          ctx.globalAlpha = 0.25; ctx.beginPath(); ctx.arc(x0, y, p.s, 0, TAU); ctx.fill();
-        } else {
-          ctx.globalAlpha = 0.8; ctx.beginPath(); ctx.arc(x0 + A * Math.sin(k * (x0 - L) - ph), y, p.s, 0, TAU); ctx.fill();
-        }
+        ctx.globalAlpha = 0.8; ctx.beginPath(); ctx.arc(x0 + A * Math.sin(k * (x0 - L) - phase), y, p.s, 0, TAU); ctx.fill();
       }
       ctx.restore();
       // scale bar: 1 m
@@ -768,14 +764,8 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
       const py = sy + 30 + (H - sy - 30) / 2, phh = (H - sy - 30) * 0.36;
       axes(ctx, L, py, R + 6, phh * 1.25, phh * 1.15, t('position'), null);
       dirLabels(ctx, L, py, phh * 1.25, phh * 1.15);
-      if (real) {
-        // too fast for the eye: each point of the curve sweeps the band between its two extremes,
-        // and spends most time near them, so the blur is brightest at the edges
-        const gr = ctx.createLinearGradient(0, py - phh, 0, py + phh);
-        [[0, 0.5], [0.12, 0.2], [0.5, 0.08], [0.88, 0.2], [1, 0.5]].forEach(([o, a]) => gr.addColorStop(o, `rgba(205, 200, 122, ${a})`));
-        ctx.save(); ctx.fillStyle = gr; ctx.fillRect(L, py - phh, R - L, 2 * phh); ctx.restore();
-      } else {
-        nibFn(ctx, L, R, (x) => py - phh * Math.sin(k * (x - L) - ph), C.curve, 3.6);
+      nibFn(ctx, L, R, (x) => py - phh * Math.sin(k * (x - L) - phase), C.curve, 3.6);
+      if (!real) {
         // one wavelength, marked with pencil
         let x1 = L + ((ph / k) % lamPx + lamPx * 0.25); if (x1 < L + 110) x1 += lamPx; const x2 = x1 + lamPx;
         if (x2 < R) {
