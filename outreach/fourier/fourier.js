@@ -66,8 +66,10 @@ const T = {
     exsynth: 'de momento, la grabación de ejemplo es una señal sintética',
     s4h: 'Una cuerda de guitarra',
     s4p1: 'Una nota de guitarra tampoco es un seno puro. ¿Por qué?',
-    s4c0: 'La cuerda está atada por los dos extremos: ahí no se puede mover. Arrastra la onda para estirarla o encogerla. ¿Cuáles caben?',
-    s4cno: 'No cabe: el extremo derecho tendría que moverse, y está atado.',
+    s4c0: 'La cuerda está atada por los dos extremos. Arrastra el botón para estirar o encoger la onda: ¿consigues que acabe justo en el extremo derecho?',
+    s4cno: 'No cabe: acaba fuera del extremo derecho, y ese extremo está atado.',
+    s4cnear: (r) => `Casi: un poco más a la ${r ? 'derecha' : 'izquierda'}.`,
+    s4cmore: 'Busca otra.',
     s4cfit: (n) => `¡Cabe! n = ${n}: ${n === 1 ? 'media onda justa' : `${n} medias ondas justas`}.`,
     s4cok: 'Solo caben las ondas con un número entero de medias ondas: 1, 2, 3, 4…',
     s4c1: 'Cada onda que cabe es una nota pura. Toca cada una para escucharla.',
@@ -80,7 +82,7 @@ const T = {
     s4all: (e) => `Las 100 primeras: un ${e} con timbre de guitarra.`,
     s4mix: 'Otra mezcla de ondas, otro sonido.',
     s4c4: 'Cada onda suena con su propia fuerza, su amplitud: cámbiala con su barra y pulsa. Qué ondas suenan y con qué fuerza: eso es el timbre.',
-    rest7: (k) => `n = 7…${k}: las demás de una guitarra`, fits: 'caben:', nofit: 'no cabe',
+    rest7: (k) => `n = 7…${k}: las demás de una guitarra`, nofit: 'no cabe',
     sumof: 'la cuerda = suma de las ondas que caben:',
     pluck: '▶ pulsar', six: 'marcar las 6', onlyfund: 'solo la fundamental', sum: 'suma',
     s5h: 'El timbre',
@@ -149,8 +151,10 @@ const T = {
     exsynth: 'for now, the example recording is a synthetic signal',
     s4h: 'A guitar string',
     s4p1: 'A guitar note is not a pure sine either. Why?',
-    s4c0: 'The string is tied at both ends: there it cannot move. Drag the wave to stretch or squeeze it. Which ones fit?',
-    s4cno: 'It does not fit: the right end would have to move, and it is tied.',
+    s4c0: 'The string is tied at both ends. Drag the knob to stretch or squeeze the wave: can you make it end exactly at the right end?',
+    s4cno: 'It does not fit: it ends away from the right end, and that end is tied.',
+    s4cnear: (r) => `Almost: a little more to the ${r ? 'right' : 'left'}.`,
+    s4cmore: 'Find another one.',
     s4cfit: (n) => `It fits! n = ${n}: ${n === 1 ? 'exactly half a wave' : `exactly ${n} half waves`}.`,
     s4cok: 'Only waves with a whole number of half waves fit: 1, 2, 3, 4…',
     s4c1: 'Each wave that fits is a pure note. Tap each one to hear it.',
@@ -163,7 +167,7 @@ const T = {
     s4all: (e) => `The first 100: an ${e} with the timbre of a guitar.`,
     s4mix: 'Another mix of waves, another sound.',
     s4c4: 'Each wave sounds with its own strength, its amplitude: change it with its slider and pluck. Which waves sound, and how strongly: that is timbre.',
-    rest7: (k) => `n = 7…${k}: the rest of a guitar`, fits: 'fit:', nofit: 'does not fit',
+    rest7: (k) => `n = 7…${k}: the rest of a guitar`, nofit: 'does not fit',
     sumof: 'the string = sum of the waves that fit:',
     pluck: '▶ pluck', six: 'tick all 6', onlyfund: 'fundamental only', sum: 'sum',
     s5h: 'Timbre',
@@ -1089,9 +1093,11 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
   const ampOf = (n) => (n <= N ? (on[n - 1] ? Math.sign(GUITAR[n - 1]) * amp[n - 1] * g1 : 0) : (rest ? GUITAR[n - 1] : 0));
   const gam = (n) => 0.7 + n * F1_STRING / 1800;         // how fast frequency n dies out (1/s): the higher, the faster (chosen by ear)
   const NU = 1;                                          // drawn vibration of n = 1 (Hz): slow motion
-  let tm = 0, q = 1.5;                                   // q: half waves on the string in step 0
-  const found = new Set(), heard = new Set(), plucked = new Set();
-  let lastHeard = 0, pluckAt = -1, toneN = 0, toneAt = -1, lastCfg = '', touched = false, grab = false, grabDx = 0, G = null;
+  // step 0: a knob on a rail sets q, the number of half waves on the string, from 0.5 (left) to 6.5 (right)
+  let tm = 0, v = 1 / 6;                                 // position of the knob on the rail, 0 to 1
+  const qOf = (u) => 0.5 + 6 * u, SNAP = 0.15;           // within SNAP of a whole number, the wave fits and the knob clicks there
+  const found = new Set(), heard = new Set();
+  let lastHeard = 0, pluckAt = -1, toneN = 0, toneAt = -1, lastCfg = '', touched = false, grab = false, gx0 = 0, gv0 = 0, G = null;
   const cfg = () => on.map((b) => (b ? 1 : 0)).join('') + (rest ? '+' : '');
   // controls: one row per frequency (checkbox, name, amplitude slider), and one checkbox for n = 7…KG
   const sliders = [], checks = [], names = [];
@@ -1133,14 +1139,13 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
     if (s === 0) P4.nx.disabled = found.size < 3;
     if (s === 1) P4.nx.disabled = heard.size < 3;
     if (s === 2) P4.nx.disabled = true;
-    if (s === 3) { plucked.clear(); P4.nx.disabled = true; }
   });
   bpk.addEventListener('click', () => {
     const list = []; for (let n = 1; n <= (rest ? KG : N); n++) list.push([n, ampOf(n)]);
     if (!sound(list)) return;
     pluckAt = tm; toneAt = -1; hint(bpk, false);
-    lastCfg = cfg(); plucked.add(lastCfg);
-    if (P4.step === 2 || (P4.step === 3 && plucked.size >= 2)) P4.nx.disabled = false;
+    lastCfg = cfg();
+    if (P4.step === 2) P4.nx.disabled = false;
   });
   function tapMode(n) {
     if (!sound([[n, 1]])) return;
@@ -1151,33 +1156,43 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
   const envP = (n) => (pluckAt >= 0 ? Math.exp(-gam(n) * (tm - pluckAt)) : 0);              // after a pluck
   const envT = (n) => (toneAt >= 0 && n === toneN ? Math.exp(-gam(n) * (tm - toneAt)) : 0); // after a tap on its panel
   const env = (n) => Math.max(envP(n), envT(n));
-  const fitN = () => { const n0 = Math.round(q); return n0 >= 1 && Math.abs(Math.log(q / n0)) < 0.035 ? n0 : 0; };
+  const fitN = () => { const q = qOf(v), n0 = Math.round(q); return n0 >= 1 && Math.abs(q - n0) < SNAP ? n0 : 0; };
   function caption() {
     const s = P4.step, e = noteName(F1_STRING); let c = t('s4c' + s);
-    if (s === 0) { const n0 = fitN(); c = n0 ? t('s4cfit')(n0) : found.size >= 3 ? t('s4cok') : touched ? t('s4cno') : t('s4c0'); }
+    if (s === 0) {
+      const n0 = fitN(), q = qOf(v), near = Math.abs(q - Math.round(q)) < 0.4;
+      c = n0 ? t('s4cfit')(n0) + (found.size < 3 ? ' ' + t('s4cmore') : '')
+        : found.size >= 3 ? t('s4cok')
+        : !touched ? t('s4c0')
+        : near ? t('s4cnear')(q < Math.round(q))
+        : t('s4cno');
+    }
     if (s === 1 && lastHeard) c = t('s4hear')(lastHeard, noteName(lastHeard * F1_STRING), e);
     if (s === 2 && pluckAt >= 0) c = t('s4c2ok')(e);
     if (s === 3 && pluckAt >= 0 && cfg() === lastCfg) c = lastCfg === '100000' ? t('s4only') : lastCfg === '111111+' ? t('s4all')(e) : lastCfg === '111111' ? t('s4six6') : t('s4mix');
     P4.say(c);
   }
-  // pointer: step 0, drag the wave (its first crest) to stretch or squeeze it; later, tap a panel to hear its note
+  // pointer: step 0, drag anywhere to move the knob (a press on the rail puts it there); later, tap a panel to hear its note
   const at = (e) => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
   const panelAt = (x, y) => (G ? G.panels.find((p) => x >= p.x && x <= p.x + p.w && y >= p.y && y <= p.y + p.h) : null);
   cv.addEventListener('pointerdown', (e) => {
     if (!G) return;
     const [x, y] = at(e);
-    if (P4.step === 0) { grab = true; touched = true; grabDx = x - G.xc; cv.setPointerCapture(e.pointerId); e.preventDefault(); return; }
+    if (P4.step === 0) {
+      grab = true; touched = true;
+      if (Math.abs(y - G.ry) < 32) v = clamp((x - G.rx0) / (G.rx1 - G.rx0), 0, 1);
+      gx0 = x; gv0 = v; cv.setPointerCapture(e.pointerId); e.preventDefault(); return;
+    }
     const p = panelAt(x, y); if (p) { touched = true; tapMode(p.n); }
   });
   cv.addEventListener('pointermove', (e) => {
     if (!G) return;
     const [x, y] = at(e);
-    if (grab) { const xc = clamp(x - grabDx, G.L + (G.R - G.L) / 13, G.R); q = clamp((G.R - G.L) / (2 * (xc - G.L)), 0.5, 6.5); return; }
+    if (grab) { v = clamp(gv0 + (x - gx0) / (G.rx1 - G.rx0), 0, 1); return; }
     cv.style.cursor = P4.step === 0 ? 'grab' : panelAt(x, y) ? 'pointer' : '';
   });
-  const release = () => { grab = false; };
+  const release = () => { if (grab && fitN()) v = (fitN() - 0.5) / 6; grab = false; };
   cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', release);
-  const textW = (s, size) => { ctx.save(); ctx.font = `${size}px ${TEXT}`; const w = ctx.measureText(s).width; ctx.restore(); return w; };
   const names6 = () => {
     for (let n = 1; n <= N; n++) names[n - 1].textContent = `n=${n} · ${noteName(n * F1_STRING)}`;
     restNm.textContent = t('rest7')(KG);
@@ -1189,12 +1204,14 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
       const { W, H } = cv; clear(ctx); tm += dt; P4.st += dt;
       const s = P4.step, pulse = 0.5 + 0.5 * Math.sin(P4.st * 4);
       const L = 34, R = W - 34;
-      G = { L, R, xc: 0, panels: [] };
+      G = { L, R, rx0: L, rx1: R, ry: 0, panels: [] };
       if (s === 0) {
         // a wave of q half waves, starting at the left peg; it fits when q is a whole number
-        const sy = H * 0.46, Aw = Math.min(H * 0.24, (R - L) * 0.2);
+        const sy = H * 0.4, Aw = Math.min(H * 0.2, (R - L) * 0.18), ry = Math.min(H - 42, sy + Aw + 58);
+        G.ry = ry;
         const n0 = fitN(); if (n0) { found.add(n0); if (found.size >= 3) P4.nx.disabled = false; }
-        const qq = n0 || q, col = n0 ? MODE_COL[(n0 - 1) % 6] : C.ink, osc = n0 ? Math.cos(TAU * 0.8 * tm) : 1;
+        const vd = n0 ? (n0 - 0.5) / 6 : clamp(v + (touched ? 0 : 0.025 * Math.sin(tm * 2.2)), 0, 1);   // untouched, the knob wiggles
+        const qq = n0 || qOf(vd), col = n0 ? MODE_COL[(n0 - 1) % 6] : C.ink, osc = n0 ? Math.cos(TAU * 0.8 * tm) : 1;
         const peg = (x, c) => { ctx.save(); ctx.fillStyle = c; ctx.fillRect(x - 3, sy - 18, 6, 36); ctx.restore(); };
         pencil(ctx, L, sy, R, sy, C.ink, 0.35);
         if (n0) {
@@ -1205,26 +1222,35 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
         nibFn(ctx, L, R, (x) => sy - Aw * Math.sin(qq * Math.PI * (x - L) / (R - L)) * osc, col, 3.4, n0 ? 1 : 0.85);
         peg(L, n0 ? C.a2 : C.ink); peg(R, n0 ? C.a2 : C.a1);
         if (n0) for (let j = 1; j < n0; j++) dot(ctx, L + (R - L) * j / n0, sy, 3, C.ink, 0.85);
-        else {     // the right end would have to leave its peg
+        else {     // where the wave ends, away from the right peg; and the target, on the peg
           const yE = sy - Aw * Math.sin(qq * Math.PI);
+          ctx.save(); ctx.strokeStyle = C.a2; ctx.globalAlpha = 0.35 + 0.5 * pulse; ctx.lineWidth = 1.8;
+          ctx.beginPath(); ctx.arc(R, sy, 14 + 4 * pulse, 0, TAU); ctx.stroke(); ctx.restore();
           ctx.save(); ctx.strokeStyle = C.a1; ctx.lineWidth = 1.8; ctx.setLineDash([4, 3]);
           ctx.beginPath(); ctx.moveTo(R, yE); ctx.lineTo(R, sy); ctx.stroke(); ctx.setLineDash([]);
           ctx.beginPath(); ctx.moveTo(R - 6, yE - 6); ctx.lineTo(R + 6, yE + 6); ctx.moveTo(R - 6, yE + 6); ctx.lineTo(R + 6, yE - 6); ctx.stroke(); ctx.restore();
-          if (Math.abs(yE - sy) > 14) label(ctx, t('nofit'), R - 12, yE + (yE < sy ? -10 : 20), { size: 13, align: 'right', color: C.a1 });
+          if (Math.abs(yE - sy) > 22) label(ctx, t('nofit'), R - 12, yE + (yE < sy ? -10 : 20), { size: 13, align: 'right', color: C.a1 });
         }
-        // the handle: the first crest
-        G.xc = L + (R - L) / (2 * qq);
+        // the rail: long waves at the left end, short ones at the right; a mark where each wave found fits
+        const kx = (u) => L + (R - L) * u;
+        ctx.save(); ctx.strokeStyle = C.ink; ctx.globalAlpha = 0.6; ctx.lineWidth = 2; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(L, ry); ctx.lineTo(R, ry); ctx.stroke(); ctx.restore();
+        nibFn(ctx, L, L + 30, (x) => ry + 22 - 6 * Math.sin(TAU * (x - L) / 30), C.ink, 1.6, 0.75, 1);
+        nibFn(ctx, R - 30, R, (x) => ry + 22 - 6 * Math.sin(TAU * 4 * (x - R + 30) / 30), C.ink, 1.6, 0.75, 1);
+        for (const n of found) {
+          const x = kx((n - 0.5) / 6), cn = MODE_COL[(n - 1) % 6];
+          ctx.save(); ctx.strokeStyle = cn; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x, ry - 7); ctx.lineTo(x, ry + 7); ctx.stroke(); ctx.restore();
+          label(ctx, `n=${n}`, x, ry - 13, { size: 12, color: cn, align: 'center' });
+        }
+        // the knob
+        const xk = kx(vd);
         if (!touched) {
           ctx.save(); ctx.strokeStyle = C.a1; ctx.globalAlpha = 0.35 + 0.5 * pulse; ctx.lineWidth = 1.6;
-          ctx.beginPath(); ctx.arc(G.xc, sy - Aw, 12 + 4 * pulse, 0, TAU); ctx.stroke(); ctx.restore();
-          label(ctx, '◀ ' + t('dragme') + ' ▶', clamp(G.xc, L + 60, R - 60), sy - Aw - 24, { size: 14, color: C.a1, align: 'center', alpha: 0.95 });
+          ctx.beginPath(); ctx.arc(xk, ry, 16 + 5 * pulse, 0, TAU); ctx.stroke(); ctx.restore();
+          label(ctx, '◀ ' + t('dragme') + ' ▶', clamp(xk, L + 60, R - 60), ry - 28, { size: 14, color: C.a1, align: 'center', alpha: 0.95 });
         }
-        // the ones found
-        if (found.size) {
-          let x = L; const y = Math.min(H - 14, sy + Aw + 44);
-          label(ctx, t('fits'), x, y, { size: 14, alpha: 0.8 }); x += textW(t('fits'), 14) + 10;
-          for (const n of [...found].sort((a, b) => a - b)) { const sN = `n = ${n}`; label(ctx, sN, x, y, { size: 14, color: MODE_COL[(n - 1) % 6] }); x += textW(sN, 14) + 14; }
-        }
+        dot(ctx, xk, ry, 11, n0 ? col : C.curve);
+        ctx.save(); ctx.strokeStyle = C.bg; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(xk - 3, ry - 5); ctx.lineTo(xk - 3, ry + 5); ctx.moveTo(xk + 3, ry - 5); ctx.lineTo(xk + 3, ry + 5); ctx.stroke(); ctx.restore();
         caption();
         return;
       }
