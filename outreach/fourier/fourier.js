@@ -28,18 +28,18 @@ const T = {
     s1h: 'El aire vibra',
     s1p1: 'El sonido es aire que vibra. Las cuerdas vocales vibran y golpean las moléculas de aire, que golpean a sus vecinas. El aire oscila en su sitio; lo que viaja es la onda. Llega al oído, que la convierte en una señal eléctrica.',
     s1c0: '¿Cómo se describe esta onda?',
-    s1c1: 'Fíjate solo en unas pocas partículas. Las rayas marcan sus posiciones de equilibrio: donde están cuando no suena nada.',
+    s1c1: 'Fíjate en unas pocas columnas de aire. Las rayas marcan sus posiciones de equilibrio: donde están cuando no suena nada.',
     s1c2: 'Para describir la onda, necesito decir cuánto se ha movido cada una. Lo apunto justo debajo, en una gráfica. Aquí todas se han movido 0.',
-    s1c3: 'Si desplazo esta partícula hacia su derecha, la gráfica queda así: su punto sube.',
-    s1c4: 'Ahora tú: arrastra la partícula marcada hacia los lados, con el ratón o con el dedo.',
+    s1c3: 'Si desplazo esta columna hacia su derecha, la gráfica queda así: su punto sube.',
+    s1c4: 'Ahora tú: arrastra la columna marcada hacia los lados, con el ratón o con el dedo.',
     s1c4r: 'A la derecha, su punto sube. Ahora llévala a la izquierda.',
     s1c4l: 'A la izquierda, su punto baja. Ahora llévala a la derecha.',
-    s1c4ok: 'Eso es: derecha, arriba; izquierda, abajo. Y cuanto más se aleja la partícula de su sitio, más se aleja su punto de la línea.',
-    s1c5: (n) => `Ahora coloca tú cada partícula para que su punto caiga en su círculo. ${n === 1 ? 'Falta 1' : `Faltan ${n}`}.`,
+    s1c4ok: 'Eso es: derecha, arriba; izquierda, abajo. Y cuanto más se aleja la columna de su sitio, más se aleja su punto de la línea.',
+    s1c5: (n) => `Ahora coloca tú cada columna para que su punto caiga en su círculo. ${n === 1 ? 'Falta 1' : `Faltan ${n}`}.`,
     s1c5up: 'Al revés: para que su punto suba, muévela a la derecha.',
     s1c5down: 'Al revés: para que su punto baje, muévela a la izquierda.',
     s1c5ok: '¡Eso es!',
-    s1c6: 'Así está el aire en un instante mientras suena una nota. Con muchas partículas, los puntos forman una curva: la onda.',
+    s1c6: 'Así está el aire en un instante mientras suena una nota. Con muchas columnas, los puntos forman una curva: la onda.',
     s1c7: 'Ahora en movimiento: la onda viaja. Ondas así de perfectas son notas puras: senos o cosenos.',
     dragme: 'arrástrame', prev: '← atrás',
     next: 'siguiente →', again: '↻ otra vez',
@@ -120,18 +120,18 @@ const T = {
     s1h: 'Air vibrates',
     s1p1: 'Sound is vibrating air. The vocal cords vibrate and hit the air molecules, which hit their neighbours. The air oscillates in place; what travels is the wave. It reaches the ear, which turns it into an electric signal.',
     s1c0: 'How do you describe this wave?',
-    s1c1: 'Look at just a few particles. The dashes mark their equilibrium positions: where they sit when there is no sound.',
+    s1c1: 'Look at a few columns of air. The dashes mark their equilibrium positions: where they sit when there is no sound.',
     s1c2: 'To describe the wave, I need to say how far each one has moved. I note it right below, on a graph. Here they have all moved 0.',
-    s1c3: 'If I move this particle to its right, the graph looks like this: its point goes up.',
-    s1c4: 'Your turn: drag the marked particle sideways, with the mouse or your finger.',
+    s1c3: 'If I move this column to its right, the graph looks like this: its point goes up.',
+    s1c4: 'Your turn: drag the marked column sideways, with the mouse or your finger.',
     s1c4r: 'To the right, its point goes up. Now take it to the left.',
     s1c4l: 'To the left, its point goes down. Now take it to the right.',
-    s1c4ok: 'That’s it: right is up, left is down. And the further the particle moves from its place, the further its point from the line.',
-    s1c5: (n) => `Now place each particle so its point lands in its circle. ${n} to go.`,
+    s1c4ok: 'That’s it: right is up, left is down. And the further the column moves from its place, the further its point from the line.',
+    s1c5: (n) => `Now place each column so its point lands in its circle. ${n} to go.`,
     s1c5up: 'The other way: to make its point go up, move it right.',
     s1c5down: 'The other way: to make its point go down, move it left.',
     s1c5ok: 'That’s it!',
-    s1c6: 'This is the air at one instant while a note sounds. With many particles, the points make a curve: the wave.',
+    s1c6: 'This is the air at one instant while a note sounds. With many columns, the points make a curve: the wave.',
     s1c7: 'Now in motion: the wave travels. Waves this perfect are pure notes: sines or cosines.',
     dragme: 'drag me', prev: '← back',
     next: 'next →', again: '↻ again',
@@ -622,7 +622,8 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
       const L = 70, R = W - 34;                    // air spans [L, R]
       const N = W < 600 ? 5 : 7, spc = (R - L) / N, xs = [];
       for (let j = 0; j < N; j++) xs.push(L + (j + 0.5) * spc);
-      const top = 16, airH = H * 0.42, yA = top + airH / 2;
+      const top = 34, airH = H * 0.4;
+      const M = 7, rowY = (r) => top + airH * (0.1 + 0.8 * r / (M - 1));   // the particles of a column
       const py = top + airH + 34 + (H - top - airH - 34) / 2, ph = (H - top - airH - 34) * 0.38;
       const A = AMP * spc, k = TAU / ((R - L) * 0.7);
       const gy = 0.9 * ph / A;                     // graph scale: the wave fills the graph
@@ -631,7 +632,7 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
       // the many small particles: how much they move (amp) and how visible they are (cloud)
       const calm = step === 1 ? 1 - ease(st / 0.9) : 0, back = step === 6 ? ease((st - 0.6) / 1) : 0;
       const amp = step === 0 || step === LAST ? 1 : step === 1 ? calm : back;
-      const cloud = step === 0 ? 0.78 : step === 1 ? 0.78 * calm : step === 6 ? 0.45 * back : step === LAST ? 0.45 : 0;
+      const cloud = step === 0 ? 0.78 : step === 1 ? 0.3 + 0.48 * calm : step <= 5 ? 0.3 : step === 6 ? 0.3 + 0.15 * back : 0.45;   // dimmer behind the columns
       if (step === 1) for (let j = 0; j < N; j++) dv[j] = calm * xi(xs[j]) / spc;
       if (step === 3) dv[P] = ease(st / 1.2) * 0.7 * DMAX;
       if (step === 6) for (let j = 0; j < N; j++) dv[j] = from[j] + (xi(xs[j]) / spc - from[j]) * ease(st / 1.2);
@@ -654,14 +655,14 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
         ctx.restore();
       }
       if (step === 0) return;
-      // big particles: rest position (pencil), displacement (arrow), particle
+      // columns of particles: rest position (pencil), displacement (arrow, above), the particles
       const big = step === 1 ? ease((st - 0.3) / 0.8) : 1;
       const col = (j) => (step === 5 && done(j) ? C.a2 : step >= 5 || (step >= 3 && j === P) ? C.a1 : C.ink);
       for (let j = 0; j < N; j++) {
         const x0 = xs[j], d = dv[j] * spc;
-        pencil(ctx, x0, yA - 26, x0, yA + 26, C.ink, 0.55 * big);
-        if (step > 1 && Math.abs(d) > 3) arrow(ctx, x0, yA - 20, x0 + d, yA - 20, col(j), 1.4);
-        dot(ctx, x0 + d, yA, j === grab ? 9 : 7, col(j), big);
+        pencil(ctx, x0, top - 2, x0, top + airH + 2, C.ink, 0.55 * big);
+        if (step > 1 && Math.abs(d) > 3) arrow(ctx, x0, top - 8, x0 + d, top - 8, col(j), 1.4);
+        for (let r = 0; r < M; r++) dot(ctx, x0 + d, rowY(r), j === grab ? 5.5 : 4.5, col(j), big);
       }
       // what can be dragged: a pulsing ring and "drag me".
       // Step 4: on the particle, until the reader first grabs it.
@@ -675,9 +676,10 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
         for (let j = 0; j < N; j++) {
           if (!(j === lab || (step === 5 && !touched && !done(j)))) continue;
           ctx.save(); ctx.strokeStyle = C.a1; ctx.globalAlpha = 0.35 + 0.5 * pulse; ctx.lineWidth = 1.6;
-          ctx.beginPath(); ctx.arc(xs[j] + dv[j] * spc, yA, 12 + 4 * pulse, 0, TAU); ctx.stroke(); ctx.restore();
+          const x = xs[j] + dv[j] * spc, e = 9 + 3 * pulse;
+          ctx.strokeRect(x - e, top + airH * 0.04 - e + 9, 2 * e, airH * 0.92 + 2 * e - 18); ctx.restore();
         }
-        if (lab >= 0) label(ctx, '◀ ' + t('dragme') + ' ▶', xs[lab] + dv[lab] * spc, yA - 36, { size: 14, color: C.a1, align: 'center', alpha: 0.95 });
+        if (lab >= 0) label(ctx, '◀ ' + t('dragme') + ' ▶', clamp(xs[lab] + dv[lab] * spc, L + 40, R - 40), top - 16, { size: 14, color: C.a1, align: 'center', alpha: 0.95 });
       }
       if (step < 2) return;
       // displacement against position
@@ -697,10 +699,10 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
       }
       for (let j = 0; j < N; j++) {
         const x0 = xs[j], d = dv[j] * spc;
-        pencil(ctx, x0, yA + 30, x0, py + ph * 1.1, C.ink, 0.18);
-        if (step === 2) {                          // each point drops from its particle onto the line
-          const e = ease((st - 0.15 * j) / 0.5);
-          if (e > 0) dot(ctx, x0, yA + (py - yA) * e, 5, col(j));
+        pencil(ctx, x0, top + airH + 4, x0, py + ph * 1.1, C.ink, 0.18);
+        if (step === 2) {                          // each point drops from its column onto the line
+          const e = ease((st - 0.15 * j) / 0.5), y0 = top + airH;
+          if (e > 0) dot(ctx, x0, y0 + (py - y0) * e, 5, col(j));
           continue;
         }
         // the same displacement as the arrow in the air, turned upright: right = up, left = down
@@ -769,7 +771,11 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
       axes(ctx, L, py, R + 6, phh * 1.25, phh * 1.15, t('position'), null);
       dirLabels(ctx, L, py, phh * 1.25, phh * 1.15);
       if (real) {
-        for (let j = 0; j < 10; j++) nibFn(ctx, L, R, (x) => py - phh * Math.sin(k * (x - L) - j * TAU / 10), C.curve, 2.4, 0.16, 3);
+        // too fast for the eye: each point of the curve sweeps the band between its two extremes,
+        // and spends most time near them, so the blur is brightest at the edges
+        const gr = ctx.createLinearGradient(0, py - phh, 0, py + phh);
+        [[0, 0.5], [0.12, 0.2], [0.5, 0.08], [0.88, 0.2], [1, 0.5]].forEach(([o, a]) => gr.addColorStop(o, `rgba(205, 200, 122, ${a})`));
+        ctx.save(); ctx.fillStyle = gr; ctx.fillRect(L, py - phh, R - L, 2 * phh); ctx.restore();
       } else {
         nibFn(ctx, L, R, (x) => py - phh * Math.sin(k * (x - L) - ph), C.curve, 3.6);
         // one wavelength, marked with pencil
