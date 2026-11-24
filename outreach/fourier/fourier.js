@@ -28,13 +28,20 @@ const T = {
     s1h: 'El aire vibra',
     s1p1: 'El sonido es aire que vibra. Las cuerdas vocales vibran y golpean las moléculas de aire, que golpean a sus vecinas. El aire oscila en su sitio; lo que viaja es la onda. Llega al oído, que la convierte en una señal eléctrica.',
     s1c0: '¿Cómo se describe esta onda?',
-    s1c1: 'Estas son las posiciones de equilibrio de unas pocas partículas: donde están cuando no suena nada.',
-    s1c2: 'Para describir la onda, necesito decir cuánto se ha movido cada una. Aquí todas se han movido 0, así que la gráfica queda así.',
+    s1c1: 'Fíjate solo en unas pocas partículas. Las rayas marcan sus posiciones de equilibrio: donde están cuando no suena nada.',
+    s1c2: 'Para describir la onda, necesito decir cuánto se ha movido cada una. Lo apunto justo debajo, en una gráfica. Aquí todas se han movido 0.',
     s1c3: 'Si desplazo esta partícula hacia su derecha, la gráfica queda así: su punto sube.',
-    s1c4: 'Muévela tú: más a la derecha, o incluso a la izquierda. ¿Cómo queda la gráfica?',
-    s1c5: 'Ahora mueve las demás.',
-    s1c6: 'Así están en un instante mientras suena una nota. Con muchas partículas, los puntos forman una curva: la onda.',
+    s1c4: 'Ahora tú: arrastra la partícula marcada hacia los lados, con el ratón o con el dedo.',
+    s1c4r: 'A la derecha, su punto sube. Ahora llévala a la izquierda.',
+    s1c4l: 'A la izquierda, su punto baja. Ahora llévala a la derecha.',
+    s1c4ok: 'Eso es: derecha, arriba; izquierda, abajo. Y cuanto más se aleja la partícula de su sitio, más se aleja su punto de la línea.',
+    s1c5: (n) => `Ahora coloca tú cada partícula para que su punto caiga en su círculo. ${n === 1 ? 'Falta 1' : `Faltan ${n}`}.`,
+    s1c5up: 'Al revés: para que su punto suba, muévela a la derecha.',
+    s1c5down: 'Al revés: para que su punto baje, muévela a la izquierda.',
+    s1c5ok: '¡Eso es!',
+    s1c6: 'Así está el aire en un instante mientras suena una nota. Con muchas partículas, los puntos forman una curva: la onda.',
     s1c7: 'Ahora en movimiento: la onda viaja. Ondas así de perfectas son notas puras: senos o cosenos.',
+    dragme: 'arrástrame', prev: '← atrás',
     next: 'siguiente →', again: '↻ otra vez',
     pause: '⏸ pausar', play: '▶ seguir', slow: 'cámara lenta',
     position: 'posición', displacement: 'desplazamiento', time: 'tiempo', right: 'derecha', left: 'izquierda',
@@ -85,13 +92,20 @@ const T = {
     s1h: 'Air vibrates',
     s1p1: 'Sound is vibrating air. The vocal cords vibrate and hit the air molecules, which hit their neighbours. The air oscillates in place; what travels is the wave. It reaches the ear, which turns it into an electric signal.',
     s1c0: 'How do you describe this wave?',
-    s1c1: 'These are the equilibrium positions of a few particles: where they sit when there is no sound.',
-    s1c2: 'To describe the wave, I need to say how far each one has moved. Here they have all moved 0, so the graph looks like this.',
+    s1c1: 'Look at just a few particles. The dashes mark their equilibrium positions: where they sit when there is no sound.',
+    s1c2: 'To describe the wave, I need to say how far each one has moved. I note it right below, on a graph. Here they have all moved 0.',
     s1c3: 'If I move this particle to its right, the graph looks like this: its point goes up.',
-    s1c4: 'Move it yourself: further right, or even left. What does the graph do?',
-    s1c5: 'Now move the others.',
-    s1c6: 'This is where they are at one instant while a note sounds. With many particles, the points make a curve: the wave.',
+    s1c4: 'Your turn: drag the marked particle sideways, with the mouse or your finger.',
+    s1c4r: 'To the right, its point goes up. Now take it to the left.',
+    s1c4l: 'To the left, its point goes down. Now take it to the right.',
+    s1c4ok: 'That’s it: right is up, left is down. And the further the particle moves from its place, the further its point from the line.',
+    s1c5: (n) => `Now place each particle so its point lands in its circle. ${n} to go.`,
+    s1c5up: 'The other way: to make its point go up, move it right.',
+    s1c5down: 'The other way: to make its point go down, move it left.',
+    s1c5ok: 'That’s it!',
+    s1c6: 'This is the air at one instant while a note sounds. With many particles, the points make a curve: the wave.',
     s1c7: 'Now in motion: the wave travels. Waves this perfect are pure notes: sines or cosines.',
+    dragme: 'drag me', prev: '← back',
     next: 'next →', again: '↻ again',
     pause: '⏸ pause', play: '▶ play', slow: 'slow motion',
     position: 'position', displacement: 'displacement', time: 'time', right: 'right', left: 'left',
@@ -435,57 +449,85 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
 /* ======================================================================
    Stage 1 · vibrating air, and what the displacement graph means, told step by step.
    Steps: 0 the air vibrates · 1 a few particles, at rest · 2 the graph, all at 0 ·
-   3 one particle moves right · 4 the reader drags it · 5 the reader drags any ·
-   6 one instant of a note, and the curve · 7 the air vibrates again, with its graph
+   3 one particle moves right · 4 the reader drags it both ways ·
+   5 the reader places every particle so that its point lands in a circle ·
+   6 that was one instant of a note: the curve · 7 the air vibrates again, with its graph
    ====================================================================== */
 {
   const ctx = canvas('c1'), cv = ctx.cv;
   const air = makeAir(46, 7, 7);
   const P = 2, LAST = 7;                        // the particle moved first; the last step
-  const cap = $('s1cap'), nx = $('s1next'), btn = $('s1play'), slow = $('s1slow'), sp = $('s1speed'), again = $('s1again');
+  const AMP = 0.42, DMAX = 0.45, TOL = 0.1;     // wave amplitude, largest drag, circle tolerance, in spacings between big particles
+  const W0 = TAU * 0.55;                        // angular frequency of the wave (rad/s)
+  const cap = $('s1cap'), pv = $('s1prev'), nx = $('s1next'), btn = $('s1play'), slow = $('s1slow'), sp = $('s1speed'), again = $('s1again');
   const ease = (u) => { u = clamp(u, 0, 1); return u * u * (3 - 2 * u); };
   const show = (el, on) => { el.style.display = on ? '' : 'none'; };
-  const dv = new Array(7).fill(0);              // displacement of each big particle, in units of their spacing
+  const dv = new Array(7).fill(0);              // displacement of each big particle, in spacings
   let from = dv.slice();                        // dv when the step started
   let step = 0, st = 0, tm = 0, playing = true;
-  let G = null, grab = -1, grabX = 0, grab0 = 0; // G: layout of the last frame, for the pointer
-  function setStep(s) {
-    step = s; st = 0;
-    if (s === 0 || s === 2) dv.fill(0);
-    from = dv.slice();
-    cap.textContent = t('s1c' + s);
-    show(nx, s < LAST); nx.disabled = s === 4 || s === 5;   // steps 4 and 5 go on after a drag
-    show(btn, s === LAST); show(slow, s === LAST); show(again, s === LAST);
-    if (s === LAST) { playing = true; setBtn(btn, 'pause'); }
+  let touched = false, seenR = false, seenL = false, solved = -1;
+  let G = null, grab = -1, grabX = 0;           // G: layout of the last frame, for the pointer
+  // displacement of big particle j (of n) in the wave at time tm, in spacings
+  const wave = (j, n) => AMP * Math.sin(TAU * (j + 0.5) / (n * 0.7) - W0 * tm);
+  const nBig = () => (G ? G.N : 7);
+  const done = (j) => Math.abs(dv[j] - wave(j, nBig())) < TOL;
+  const left = () => { let c = 0; for (let j = 0; j < nBig(); j++) if (!done(j)) c++; return c; };
+  function caption() {
+    let s = t('s1c' + step);
+    if (step === 4) s = t(seenR && seenL ? 's1c4ok' : seenR ? 's1c4r' : seenL ? 's1c4l' : 's1c4');
+    if (step === 5) {
+      const tg = grab >= 0 ? wave(grab, nBig()) : 0;
+      s = solved >= 0 ? t('s1c5ok')
+        : tg > 0.12 && dv[grab] < -0.08 ? t('s1c5up')
+        : tg < -0.12 && dv[grab] > 0.08 ? t('s1c5down')
+        : t('s1c5')(left());
+    }
+    if (cap.textContent !== s) cap.textContent = s;
   }
+  function setStep(s) {
+    const back = s < step;
+    step = s; st = 0; touched = false; seenR = false; seenL = false; solved = -1;
+    if (s === 0 || s === 2 || s === 3) dv.fill(0);
+    if (s === 4) { dv.fill(0); dv[P] = 0.7 * DMAX; }
+    if (s === 5) { tm = 0; if (back) dv.fill(0); }   // the circles: the wave at time 0
+    from = dv.slice();
+    show(pv, s > 0); show(nx, s < LAST); show(btn, s === LAST); show(slow, s === LAST); show(again, s === LAST);
+    nx.disabled = s === 4 || s === 5;             // step 4 goes on after both directions; step 5 when every point is in its circle
+    if (s === LAST) { playing = true; setBtn(btn, 'pause'); }
+    caption();
+  }
+  pv.addEventListener('click', () => setStep(step - 1));
   nx.addEventListener('click', () => setStep(step + 1));
   again.addEventListener('click', () => setStep(0));
   btn.addEventListener('click', () => { playing = !playing; setBtn(btn, playing ? 'pause' : 'play'); });
-  // dragging a big particle: only P in step 4, any in step 5
+  // dragging: a press anywhere in the air band grabs the particle (step 4) or the nearest one (step 5)
   const at = (e) => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
-  function hit(x, y) {
-    if (!G || (step !== 4 && step !== 5) || Math.abs(y - G.yA) > G.airH / 2) return -1;
-    let best = -1, bd = Math.max(18, G.spc * 0.45);
-    for (let j = 0; j < G.N; j++) {
-      if (step === 4 && j !== P) continue;
-      const dd = Math.abs(x - G.xs[j] - dv[j] * G.spc); if (dd < bd) { bd = dd; best = j; }
-    }
+  function pick(x, y) {
+    if (!G || (step !== 4 && step !== 5) || solved >= 0 || y < G.top || y > G.top + G.airH) return -1;
+    if (step === 4) return P;
+    let best = 0, bd = Infinity;
+    for (let j = 0; j < G.N; j++) { const dd = Math.abs(x - G.xs[j] - dv[j] * G.spc); if (dd < bd) { bd = dd; best = j; } }
     return best;
   }
   cv.addEventListener('pointerdown', (e) => {
-    const [x, y] = at(e), j = hit(x, y); if (j < 0) return;
-    grab = j; grabX = x - dv[j] * G.spc; grab0 = dv[j];
+    const [x, y] = at(e), j = pick(x, y); if (j < 0) return;
+    grab = j; grabX = x - dv[j] * G.spc; touched = true;
     cv.setPointerCapture(e.pointerId); cv.style.cursor = 'grabbing'; e.preventDefault();
   });
   cv.addEventListener('pointermove', (e) => {
     const [x, y] = at(e);
-    if (grab < 0) { cv.style.cursor = hit(x, y) >= 0 ? 'grab' : ''; return; }
-    dv[grab] = clamp((x - grabX) / G.spc, -G.dmax, G.dmax);
+    if (grab < 0) { cv.style.cursor = pick(x, y) >= 0 ? 'grab' : ''; return; }
+    const v = clamp((x - grabX) / G.spc, -DMAX, DMAX); dv[grab] = v;
+    if (step === 4) { if (v > 0.15) seenR = true; if (v < -0.15) seenL = true; if (seenR && seenL) nx.disabled = false; }
+    caption();
   });
   const release = () => {
     if (grab < 0) return;
-    if (Math.abs(dv[grab] - grab0) > 0.08) nx.disabled = false;
-    grab = -1; cv.style.cursor = '';
+    if (step === 5) {
+      const tg = wave(grab, nBig()); if (Math.abs(dv[grab] - tg) < TOL) dv[grab] = tg;   // snap into the circle
+      if (left() === 0) solved = st;
+    }
+    grab = -1; cv.style.cursor = ''; caption();
   };
   cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', release);
   S.s1 = {
@@ -495,22 +537,22 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
       st += dt;
       if (step === 0) tm += dt;
       if (step === LAST && playing) tm += dt * (1 - parseFloat(sp.value));
+      if (step === 5 && solved >= 0 && st - solved > 0.9) setStep(6);
       const L = 70, R = W - 34;                    // air spans [L, R]
       const N = W < 600 ? 5 : 7, spc = (R - L) / N, xs = [];
       for (let j = 0; j < N; j++) xs.push(L + (j + 0.5) * spc);
       const top = 16, airH = H * 0.42, yA = top + airH / 2;
       const py = top + airH + 34 + (H - top - airH - 34) / 2, ph = (H - top - airH - 34) * 0.38;
-      const A = 0.42 * spc, dmax = 0.45;          // wave amplitude (px) and largest drag (spacings): neighbours never cross
-      const gy = 0.9 * ph / A;                      // graph scale: the wave fills the graph
-      const k = TAU / ((R - L) * 0.7), w = TAU * 0.55;
-      const xi = (x) => A * Math.sin(k * (x - L) - w * tm);
-      G = { N, xs, spc, yA, airH, dmax };
+      const A = AMP * spc, k = TAU / ((R - L) * 0.7);
+      const gy = 0.9 * ph / A;                     // graph scale: the wave fills the graph
+      const xi = (x) => A * Math.sin(k * (x - L) - W0 * tm);
+      G = { N, xs, spc, top, airH };
       // the many small particles: how much they move (amp) and how visible they are (cloud)
       const calm = step === 1 ? 1 - ease(st / 0.9) : 0, back = step === 6 ? ease((st - 0.6) / 1) : 0;
       const amp = step === 0 || step === LAST ? 1 : step === 1 ? calm : back;
       const cloud = step === 0 ? 0.78 : step === 1 ? 0.78 * calm : step === 6 ? 0.45 * back : step === LAST ? 0.45 : 0;
       if (step === 1) for (let j = 0; j < N; j++) dv[j] = calm * xi(xs[j]) / spc;
-      if (step === 3) dv[P] = ease(st / 1.2) * 0.7 * dmax;
+      if (step === 3) dv[P] = ease(st / 1.2) * 0.7 * DMAX;
       if (step === 6) for (let j = 0; j < N; j++) dv[j] = from[j] + (xi(xs[j]) / spc - from[j]) * ease(st / 1.2);
       if (step === LAST) for (let j = 0; j < N; j++) dv[j] = xi(xs[j]) / spc;
       // vocal cords: a plate at x = L that moves with the air next to it
@@ -533,25 +575,35 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
       if (step === 0) return;
       // big particles: rest position (pencil), displacement (arrow), particle
       const big = step === 1 ? ease((st - 0.3) / 0.8) : 1;
-      const col = (j) => (step >= 5 || (step >= 3 && j === P) ? C.a1 : C.ink);
+      const col = (j) => (step === 5 && done(j) ? C.a2 : step >= 5 || (step >= 3 && j === P) ? C.a1 : C.ink);
       for (let j = 0; j < N; j++) {
         const x0 = xs[j], d = dv[j] * spc;
         pencil(ctx, x0, yA - 26, x0, yA + 26, C.ink, 0.55 * big);
         if (step > 1 && Math.abs(d) > 3) arrow(ctx, x0, yA - 20, x0 + d, yA - 20, col(j), 1.4);
-        dot(ctx, x0 + d, yA, 7, col(j), big);
+        dot(ctx, x0 + d, yA, j === grab ? 9 : 7, col(j), big);
       }
-      // until the reader drags, a hint under each particle that can be dragged
-      if ((step === 4 || step === 5) && nx.disabled && grab < 0) {
+      // what can be dragged: a pulsing ring, until the reader first grabs something in this step
+      if ((step === 4 || step === 5) && !touched && solved < 0) {
+        const pulse = 0.5 + 0.5 * Math.sin(st * 4);
         for (let j = 0; j < N; j++) {
-          if (step === 4 && j !== P) continue;
-          const x = xs[j] + dv[j] * spc, y = yA + 16;
-          arrow(ctx, x + 3, y, x + 15, y, C.a1, 1); arrow(ctx, x - 3, y, x - 15, y, C.a1, 1);
+          if (step === 4 ? j !== P : done(j)) continue;
+          ctx.save(); ctx.strokeStyle = C.a1; ctx.globalAlpha = 0.35 + 0.5 * pulse; ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.arc(xs[j] + dv[j] * spc, yA, 12 + 4 * pulse, 0, TAU); ctx.stroke(); ctx.restore();
         }
+        if (step === 4) label(ctx, '◀ ' + t('dragme') + ' ▶', xs[P] + dv[P] * spc, yA - 36, { size: 14, color: C.a1, align: 'center', alpha: 0.95 });
       }
       if (step < 2) return;
       // displacement against position
       axes(ctx, L, py, R + 8, ph * 1.25, ph * 1.15, t('position'), null);
       dirLabels(ctx, L, py, ph * 1.25, ph * 1.15);
+      label(ctx, '0', L - 8, py, { size: 13, align: 'right', base: 'middle', alpha: 0.75 });
+      if (step === 5) {                            // the circles to land the points in
+        for (let j = 0; j < N; j++) {
+          const ok = done(j);
+          ctx.save(); ctx.strokeStyle = ok ? C.a2 : C.curve; ctx.lineWidth = 1.6; if (!ok) ctx.setLineDash([3, 3]);
+          ctx.beginPath(); ctx.arc(xs[j], py - wave(j, N) * spc * gy, 10, 0, TAU); ctx.stroke(); ctx.restore();
+        }
+      }
       if (step >= 6) {
         const xe = step === 6 ? L + (R - L) * ease((st - 1.2) / 1.3) : R;
         if (xe > L + 2) nibFn(ctx, L, xe, (x) => py - xi(x) * gy, C.curve, 3.6);
@@ -559,12 +611,17 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
       for (let j = 0; j < N; j++) {
         const x0 = xs[j], d = dv[j] * spc;
         pencil(ctx, x0, yA + 30, x0, py + ph * 1.1, C.ink, 0.18);
+        if (step === 2) {                          // each point drops from its particle onto the line
+          const e = ease((st - 0.15 * j) / 0.5);
+          if (e > 0) dot(ctx, x0, yA + (py - yA) * e, 5, col(j));
+          continue;
+        }
         // the same displacement as the arrow in the air, turned upright: right = up, left = down
         if (Math.abs(d * gy) > 6) arrow(ctx, x0, py, x0, py - d * gy, col(j), 1.4);
         dot(ctx, x0, py - d * gy, 5, col(j));
       }
     },
-    lang() { cap.textContent = t('s1c' + step); setBtn(btn, playing ? 'pause' : 'play'); },
+    lang() { caption(); setBtn(btn, playing ? 'pause' : 'play'); },
   };
   setStep(0);
 }
