@@ -72,16 +72,15 @@ const T = {
     s4cmore: 'Busca otra.',
     s4cfit: (n) => `¡Cabe! n = ${n}: ${n === 1 ? 'media onda justa' : `${n} medias ondas justas`}.`,
     s4cok: 'Solo caben las ondas con un número entero de medias ondas: 1, 2, 3, 4…',
-    s4c1: 'Cada onda que cabe es una nota pura. Toca cada una para escucharla.',
+    s4c1: 'Cada onda que cabe es una nota pura. Toca cada una para escucharla, o pulsa la cuerda: suenan todas a la vez.',
     s4hear: (n, x, e) => [`n = 1, la fundamental: ${x}, la nota que tocas.`, `n = 2: ${x} otra vez, una octava más aguda.`, `n = 3: ¡${x}! Tocas un ${e} y también suena un ${x}.`, `n = 4: ${x}, dos octavas más aguda que la fundamental.`, `n = 5: ${x}, otra nota más.`, `n = 6: ${x} otra vez, una octava más aguda que el de n = 3.`][n - 1],
-    s4c2: 'Al pulsar la cuerda suenan todas a la vez. Púlsala.',
     s4c2ok: (e) => `Todas a la vez: un ${e} con timbre de guitarra.`,
-    s4c3: 'Elige con las casillas qué ondas suenan, y pulsa otra vez.',
+    s4c2: 'Elige con las casillas qué ondas suenan, y pulsa otra vez.',
     s4only: 'Solo la fundamental: un seno puro. Suena a pitido, no a guitarra.',
     s4six6: 'Las 6 primeras: ya suena a cuerda, pero más apagada: le faltan las más agudas.',
     s4all: (e) => `Las 100 primeras: un ${e} con timbre de guitarra.`,
     s4mix: 'Otra mezcla de ondas, otro sonido.',
-    s4c4: 'Cada onda suena con su propia fuerza, su amplitud: cámbiala con su barra y pulsa. Qué ondas suenan y con qué fuerza: eso es el timbre.',
+    s4c3: 'Cada onda suena con su propia fuerza, su amplitud: cámbiala con su barra y pulsa. Qué ondas suenan y con qué fuerza: eso es el timbre.',
     rest7: (k) => `n = 7…${k}: las demás de una guitarra`, nofit: 'no cabe',
     sumof: 'la cuerda = suma de las ondas que caben:',
     pluck: '▶ pulsar', six: 'marcar las 6', onlyfund: 'solo la fundamental', sum: 'suma',
@@ -157,16 +156,15 @@ const T = {
     s4cmore: 'Find another one.',
     s4cfit: (n) => `It fits! n = ${n}: ${n === 1 ? 'exactly half a wave' : `exactly ${n} half waves`}.`,
     s4cok: 'Only waves with a whole number of half waves fit: 1, 2, 3, 4…',
-    s4c1: 'Each wave that fits is a pure note. Tap each one to hear it.',
+    s4c1: 'Each wave that fits is a pure note. Tap each one to hear it, or pluck the string: they all sound at once.',
     s4hear: (n, x, e) => [`n = 1, the fundamental: ${x}, the note you play.`, `n = 2: ${x} again, one octave higher.`, `n = 3: ${x}! You play an ${e} and a ${x} sounds too.`, `n = 4: ${x}, two octaves above the fundamental.`, `n = 5: ${x}, yet another note.`, `n = 6: ${x} again, one octave above the one at n = 3.`][n - 1],
-    s4c2: 'Plucking the string makes them all sound at once. Pluck it.',
     s4c2ok: (e) => `All at once: an ${e} with the timbre of a guitar.`,
-    s4c3: 'Choose with the boxes which waves sound, and pluck again.',
+    s4c2: 'Choose with the boxes which waves sound, and pluck again.',
     s4only: 'The fundamental alone: a pure sine. It sounds like a beep, not a guitar.',
     s4six6: 'The first 6: it already sounds like a string, but duller: the highest ones are missing.',
     s4all: (e) => `The first 100: an ${e} with the timbre of a guitar.`,
     s4mix: 'Another mix of waves, another sound.',
-    s4c4: 'Each wave sounds with its own strength, its amplitude: change it with its slider and pluck. Which waves sound, and how strongly: that is timbre.',
+    s4c3: 'Each wave sounds with its own strength, its amplitude: change it with its slider and pluck. Which waves sound, and how strongly: that is timbre.',
     rest7: (k) => `n = 7…${k}: the rest of a guitar`, nofit: 'does not fit',
     sumof: 'the string = sum of the waves that fit:',
     pluck: '▶ pluck', six: 'tick all 6', onlyfund: 'fundamental only', sum: 'sum',
@@ -1073,8 +1071,8 @@ function makeSample(sr) { // synthetic example signal (not a real voice): harmon
 /* ======================================================================
    Stage 4 · guitar string, told step by step.
    Steps: 0 which waves fit on a string tied at both ends (the reader drags the wave) ·
-   1 each wave that fits is a pure note (tap to hear it) · 2 plucking: all at once ·
-   3 which ones sound (checkboxes) · 4 how strongly each one sounds (sliders)
+   1 each wave that fits is a pure note: tap one to hear it, or pluck to hear them all at once ·
+   2 which ones sound (checkboxes) · 3 how strongly each one sounds (sliders)
    ====================================================================== */
 /* Guitar string: amplitudes of an ideal string plucked at a fraction P of its length,
    a_n ∝ sin(n π P) / n²  (Fletcher & Rossing, 1998, The Physics of Musical Instruments,
@@ -1097,7 +1095,7 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
   let tm = 0, v = 1 / 6;                                 // position of the knob on the rail, 0 to 1
   const qOf = (u) => 0.5 + 6 * u, SNAP = 0.15;           // within SNAP of a whole number, the wave fits and the knob clicks there
   const found = new Set(), heard = new Set();
-  let lastHeard = 0, pluckAt = -1, toneN = 0, toneAt = -1, lastCfg = '', touched = false, grab = false, gx0 = 0, gv0 = 0, G = null;
+  let pluckedOnce = false, lastHeard = 0, pluckAt = -1, toneN = 0, toneAt = -1, lastCfg = '', touched = false, grab = false, gx0 = 0, gv0 = 0, G = null;
   const cfg = () => on.map((b) => (b ? 1 : 0)).join('') + (rest ? '+' : '');
   // controls: one row per frequency (checkbox, name, amplitude slider), and one checkbox for n = 7…KG
   const sliders = [], checks = [], names = [];
@@ -1131,21 +1129,20 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
     playBuffer(d, sr, 0.9);
     return true;
   }
-  const P4 = stepper('s4', 4, (s) => {
+  const P4 = stepper('s4', 3, (s) => {
     touched = false; lastHeard = 0; stopSounds(); pluckAt = -1; toneAt = -1;
-    show(bpk, s >= 2); show(bone, s >= 3); show(bsix, s >= 3); show(box, s >= 3);
-    box.classList.toggle('noamp', s < 4);
-    hint(bpk, s === 2); hint(box, s >= 3);
+    show(bpk, s >= 1); show(bone, s >= 2); show(bsix, s >= 2); show(box, s >= 2);
+    box.classList.toggle('noamp', s < 3);
+    hint(bpk, false); hint(box, s >= 2);
     if (s === 0) P4.nx.disabled = found.size < 3;
-    if (s === 1) P4.nx.disabled = heard.size < 3;
-    if (s === 2) P4.nx.disabled = true;
+    if (s === 1) P4.nx.disabled = heard.size < 3 && !pluckedOnce;
   });
   bpk.addEventListener('click', () => {
     const list = []; for (let n = 1; n <= (rest ? KG : N); n++) list.push([n, ampOf(n)]);
     if (!sound(list)) return;
     pluckAt = tm; toneAt = -1; hint(bpk, false);
     lastCfg = cfg();
-    if (P4.step === 2) P4.nx.disabled = false;
+    pluckedOnce = true; if (P4.step === 1) P4.nx.disabled = false;
   });
   function tapMode(n) {
     if (!sound([[n, 1]])) return;
@@ -1167,9 +1164,9 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
         : near ? t('s4cnear')(q < Math.round(q))
         : t('s4cno');
     }
-    if (s === 1 && lastHeard) c = t('s4hear')(lastHeard, noteName(lastHeard * F1_STRING), e);
-    if (s === 2 && pluckAt >= 0) c = t('s4c2ok')(e);
-    if (s === 3 && pluckAt >= 0 && cfg() === lastCfg) c = lastCfg === '100000' ? t('s4only') : lastCfg === '111111+' ? t('s4all')(e) : lastCfg === '111111' ? t('s4six6') : t('s4mix');
+    if (s === 1 && pluckAt >= 0) c = t('s4c2ok')(e);
+    else if (s === 1 && lastHeard) c = t('s4hear')(lastHeard, noteName(lastHeard * F1_STRING), e);
+    if (s === 2 && pluckAt >= 0 && cfg() === lastCfg) c = lastCfg === '100000' ? t('s4only') : lastCfg === '111111+' ? t('s4all')(e) : lastCfg === '111111' ? t('s4six6') : t('s4mix');
     P4.say(c);
   }
   // pointer: step 0, drag anywhere to move the knob (a press on the rail puts it there); later, tap a panel to hear its note
@@ -1264,7 +1261,7 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
         let v = 0; const u = (x - L) / (R - L);
         for (let n = 1; n <= K; n++) if (as[n - 1]) v += as[n - 1] * Math.sin(n * Math.PI * u) * Math.cos(n * ph);
         return sy - sh * v / amax * 1.25;
-      }, C.curve, 3.8, s === 1 ? 0.5 : 1);
+      }, C.curve, 3.8);
       for (const x of [L, R]) dot(ctx, x, sy, 5, C.ink);
       label(ctx, t('sum'), L - 4, Math.max(12, sy - sh - 6), { size: 13, alpha: 0.7, italic: true });
       // each wave that fits (the first 6): small panels, added together they make the string above
@@ -1300,12 +1297,12 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
         mlabel(ctx, [['n', 'i'], [` = ${n}`, 'r']], x0 + 8, y0 + ty, { size: small ? 12 : 14, alpha: isOn ? 0.95 : 0.35 });
         label(ctx, noteName(n * F1_STRING), x0 + (small ? 46 : 58), y0 + ty, { size: small ? 12 : 13, color: col, alpha: isOn ? 0.95 : 0.35 });
         if (pw > 110) mlabel(ctx, n === 1 ? [['f', 'i'], ['1', 's']] : [[`${n}`, 'r'], ['f', 'i'], ['1', 's']], x0 + pw - 10, y0 + ty, { size: small ? 12 : 14, align: 'right', alpha: isOn ? 0.8 : 0.3 });
-        if (s === 4 && isOn && phh >= 70) mlabel(ctx, [['a', 'i'], [`${n}`, 's'], [` = ${a.toFixed(2)}`, 'r']], x0 + pw - 10, y0 + phh - 8, { size: 13, align: 'right', alpha: 0.75 });
+        if (s === 3 && isOn && phh >= 70) mlabel(ctx, [['a', 'i'], [`${n}`, 's'], [` = ${a.toFixed(2)}`, 'r']], x0 + pw - 10, y0 + phh - 8, { size: 13, align: 'right', alpha: 0.75 });
         // a short string between two pegs: the shape of the wave (dashed), its nodes, and the wave while it sounds
         const xl = x0 + 14, xr = x0 + pw - 14, cy = y0 + ty + 4 + (phh - ty - 4) / 2, hmax = Math.max(3, (phh - ty - 12) * 0.42);
         const u = (x) => (x - xl) / (xr - xl);
         pencil(ctx, xl, cy, xr, cy, C.ink, 0.3);
-        if (isOn || s < 3) {
+        if (isOn || s < 2) {
           ctx.save(); ctx.strokeStyle = col; ctx.globalAlpha = 0.45; ctx.lineWidth = 1; ctx.setLineDash([5, 4]);
           for (const sg2 of [1, -1]) {
             ctx.beginPath();
