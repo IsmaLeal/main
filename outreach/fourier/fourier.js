@@ -53,17 +53,36 @@ const T = {
     freq: 'frecuencia', listen: '▶ escuchar', stop: '■ parar',
     realspeed: 'velocidad real', realon: 'velocidad real: no se ve nada', slowmo: 'cámara lenta',
     s3h: 'Un micrófono',
-    s3p1: 'Un micrófono mide el desplazamiento del aire en un solo punto a lo largo del tiempo. La gráfica se parece.',
-    s3p2: 'Mi voz grabada es esa gráfica, y es mucho menos perfecta que una nota pura. Prueba con la tuya.',
-    mic: '🎙 tu voz', micoff: '🎙 apagar micrófono', rec: '● grabar 2 s', recording: '● grabando…', playrec: '▶ escuchar grabación',
-    micask: 'pidiendo permiso para el micrófono…', micon: 'micrófono encendido: habla o canta',
-    micno: 'sin micrófono: la etapa 6 usará una señal de ejemplo', recok: 'grabado: la etapa 6 usará tu voz',
-    recno: 'este navegador no permite grabar', atmic: 'desplazamiento en el micrófono', yourvoice: 'tu voz',
+    s3p1: 'Un micrófono mide el desplazamiento del aire en un solo punto, a lo largo del tiempo.',
+    s3c0: 'Un micrófono escucha en un solo punto del aire. Ahí, la partícula que tiene delante va a la derecha y a la izquierda, y nada más.',
+    s3c1: 'El micrófono apunta cuánto se ha movido a cada instante: derecha arriba, izquierda abajo. El eje horizontal ya no es la posición: es el tiempo.',
+    s3c2: 'Una nota pura da un seno perfecto. ¿Y una voz de verdad? Graba la tuya, hablando o cantando, o usa la grabación de ejemplo.',
+    s3crec: (n) => `Grabando: habla o canta… ${n}`,
+    s3c3: 'Así se ve la grabación entera: el aire va y viene tan rápido que solo se distinguen las sílabas. Toca la gráfica donde quieras para verla a cámara lenta.',
+    s3c4: 'A cámara lenta, 150 veces más despacio: el aire va y viene como con la nota pura, pero con una forma mucho menos perfecta.',
+    recvoice: '🎙 grabar mi voz', recagain: '🎙 grabar otra vez', example: '▶ grabación de ejemplo', micro: 'micrófono', tapme: 'tócame',
+    micask: 'pidiendo permiso para el micrófono…', micno: 'no hay micrófono, o no hay permiso: usa la grabación de ejemplo',
+    recok: 'grabado: la etapa 6 usará tu voz', recno: 'este navegador no permite grabar: usa la grabación de ejemplo',
+    exsynth: 'de momento, la grabación de ejemplo es una señal sintética',
     s4h: 'Una cuerda de guitarra',
-    s4p1: 'Una nota de guitarra tampoco es un seno puro. La cuerda está atada por los dos extremos, así que solo persisten las ondas que caben.',
-    s4p2: 'Cada onda que cabe es una nota pura: la fundamental (Mi), la misma nota una octava más arriba (Mi), luego un Si, y más. Todas sonando a la vez: un Mi con timbre de guitarra.',
+    s4p1: 'Una nota de guitarra tampoco es un seno puro. ¿Por qué?',
+    s4c0: 'La cuerda está atada por los dos extremos: ahí no se puede mover. Arrastra la onda para estirarla o encogerla. ¿Cuáles caben?',
+    s4cno: 'No cabe: el extremo derecho tendría que moverse, y está atado.',
+    s4cfit: (n) => `¡Cabe! n = ${n}: ${n === 1 ? 'media onda justa' : `${n} medias ondas justas`}.`,
+    s4cok: 'Solo caben las ondas con un número entero de medias ondas: 1, 2, 3, 4…',
+    s4c1: 'Cada onda que cabe es una nota pura. Toca cada una para escucharla.',
+    s4hear: (n, x, e) => [`n = 1, la fundamental: ${x}, la nota que tocas.`, `n = 2: ${x} otra vez, una octava más aguda.`, `n = 3: ¡${x}! Tocas un ${e} y también suena un ${x}.`, `n = 4: ${x}, dos octavas más aguda que la fundamental.`, `n = 5: ${x}, otra nota más.`, `n = 6: ${x} otra vez, una octava más aguda que el de n = 3.`][n - 1],
+    s4c2: 'Al pulsar la cuerda suenan todas a la vez. Púlsala.',
+    s4c2ok: (e) => `Todas a la vez: un ${e} con timbre de guitarra.`,
+    s4c3: 'Elige con las casillas qué ondas suenan, y pulsa otra vez.',
+    s4only: 'Solo la fundamental: un seno puro. Suena a pitido, no a guitarra.',
+    s4six6: 'Las 6 primeras: ya suena a cuerda, pero más apagada: le faltan las más agudas.',
+    s4all: (e) => `Las 100 primeras: un ${e} con timbre de guitarra.`,
+    s4mix: 'Otra mezcla de ondas, otro sonido.',
+    s4c4: 'Cada onda suena con su propia fuerza, su amplitud: cámbiala con su barra y pulsa. Qué ondas suenan y con qué fuerza: eso es el timbre.',
+    rest7: (k) => `n = 7…${k}: las demás de una guitarra`, fits: 'caben:', nofit: 'no cabe',
     sumof: 'la cuerda = suma de las ondas que caben:',
-    pluck: '▶ pulsar', six: 'marcar las 6', guitar: (k) => `marcar las ${k} de una guitarra`, more: (m, a, b) => `+ ${m} frecuencias más, de n = ${a} a n = ${b} (no dibujadas)`, onlyfund: 'solo la fundamental', sum: 'suma',
+    pluck: '▶ pulsar', six: 'marcar las 6', onlyfund: 'solo la fundamental', sum: 'suma',
     s5h: 'El timbre',
     s5p1: 'Qué frecuencias vibran y con qué fuerza es lo que el cerebro oye como una guitarra, o como la voz de una persona.',
     s5p2: 'Todo sonido es una suma de frecuencias puras. Arrastra las barras: la nota es la misma, el sonido no.',
@@ -117,17 +136,36 @@ const T = {
     freq: 'frequency', listen: '▶ listen', stop: '■ stop',
     realspeed: 'real speed', realon: 'real speed: nothing can be seen', slowmo: 'slow motion',
     s3h: 'A microphone',
-    s3p1: 'A microphone measures the displacement of the air at one single point over time. The graph looks alike.',
-    s3p2: 'My recorded voice is that graph, and it is much less perfect than a pure note. Try yours.',
-    mic: '🎙 your voice', micoff: '🎙 microphone off', rec: '● record 2 s', recording: '● recording…', playrec: '▶ play recording',
-    micask: 'asking for microphone permission…', micon: 'microphone on: speak or sing',
-    micno: 'no microphone: stage 6 will use an example signal', recok: 'recorded: stage 6 will use your voice',
-    recno: 'this browser cannot record', atmic: 'displacement at the microphone', yourvoice: 'your voice',
+    s3p1: 'A microphone measures the displacement of the air at one single point, over time.',
+    s3c0: 'A microphone listens at one single point of the air. There, the particle in front of it goes right and left, and that is all.',
+    s3c1: 'The microphone notes how far it has moved at each instant: right up, left down. The horizontal axis is no longer position: it is time.',
+    s3c2: 'A pure note gives a perfect sine. And a real voice? Record yours, speaking or singing, or use the example recording.',
+    s3crec: (n) => `Recording: speak or sing… ${n}`,
+    s3c3: 'This is the whole recording: the air goes back and forth so fast that only the syllables show. Tap the graph anywhere to see it in slow motion.',
+    s3c4: 'In slow motion, 150 times slower: the air goes back and forth as with the pure note, but in a far less perfect shape.',
+    recvoice: '🎙 record my voice', recagain: '🎙 record again', example: '▶ example recording', micro: 'microphone', tapme: 'tap me',
+    micask: 'asking for microphone permission…', micno: 'no microphone, or no permission: use the example recording',
+    recok: 'recorded: stage 6 will use your voice', recno: 'this browser cannot record: use the example recording',
+    exsynth: 'for now, the example recording is a synthetic signal',
     s4h: 'A guitar string',
-    s4p1: 'A guitar note is not a pure sine either. The string is tied at both ends, so only the waves that fit can persist.',
-    s4p2: 'Each wave that fits is a pure note: the fundamental (E), the same note an octave up (E), then a B, and more. All sounding at once: an E with the timbre of a guitar.',
+    s4p1: 'A guitar note is not a pure sine either. Why?',
+    s4c0: 'The string is tied at both ends: there it cannot move. Drag the wave to stretch or squeeze it. Which ones fit?',
+    s4cno: 'It does not fit: the right end would have to move, and it is tied.',
+    s4cfit: (n) => `It fits! n = ${n}: ${n === 1 ? 'exactly half a wave' : `exactly ${n} half waves`}.`,
+    s4cok: 'Only waves with a whole number of half waves fit: 1, 2, 3, 4…',
+    s4c1: 'Each wave that fits is a pure note. Tap each one to hear it.',
+    s4hear: (n, x, e) => [`n = 1, the fundamental: ${x}, the note you play.`, `n = 2: ${x} again, one octave higher.`, `n = 3: ${x}! You play an ${e} and a ${x} sounds too.`, `n = 4: ${x}, two octaves above the fundamental.`, `n = 5: ${x}, yet another note.`, `n = 6: ${x} again, one octave above the one at n = 3.`][n - 1],
+    s4c2: 'Plucking the string makes them all sound at once. Pluck it.',
+    s4c2ok: (e) => `All at once: an ${e} with the timbre of a guitar.`,
+    s4c3: 'Choose with the boxes which waves sound, and pluck again.',
+    s4only: 'The fundamental alone: a pure sine. It sounds like a beep, not a guitar.',
+    s4six6: 'The first 6: it already sounds like a string, but duller: the highest ones are missing.',
+    s4all: (e) => `The first 100: an ${e} with the timbre of a guitar.`,
+    s4mix: 'Another mix of waves, another sound.',
+    s4c4: 'Each wave sounds with its own strength, its amplitude: change it with its slider and pluck. Which waves sound, and how strongly: that is timbre.',
+    rest7: (k) => `n = 7…${k}: the rest of a guitar`, fits: 'fit:', nofit: 'does not fit',
     sumof: 'the string = sum of the waves that fit:',
-    pluck: '▶ pluck', six: 'tick all 6', guitar: (k) => `tick the ${k} of a guitar`, more: (m, a, b) => `+ ${m} more frequencies, from n = ${a} to n = ${b} (not drawn)`, onlyfund: 'fundamental only', sum: 'sum',
+    pluck: '▶ pluck', six: 'tick all 6', onlyfund: 'fundamental only', sum: 'sum',
     s5h: 'Timbre',
     s5p1: 'Which frequencies vibrate, and how strongly, is what the brain hears as a guitar, or as one person’s voice.',
     s5p2: 'Every sound is a sum of pure frequencies. Drag the bars: the note stays the same, the sound does not.',
@@ -278,6 +316,23 @@ function dot(ctx, x, y, r, color, alpha = 1) {
   ctx.save(); ctx.globalAlpha = alpha; ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill(); ctx.restore();
 }
 function setBtn(el, key) { el.dataset.i18n = key; el.textContent = t(key); }
+const ease = (u) => { u = clamp(u, 0, 1); return u * u * (3 - 2 * u); };
+const show = (el, on) => { el.style.display = on ? '' : 'none'; };
+const hint = (el, on) => el.classList.toggle('hint', !!on);   // the control the story points at pulses
+/* a stage told step by step: its caption (id + 'cap') and its ← back / next → buttons (id + 'prev', id + 'next').
+   onStep(step) runs on every change of step; o.st counts the seconds since the step began. */
+function stepper(id, last, onStep) {
+  const o = { step: 0, st: 0, cap: $(id + 'cap'), pv: $(id + 'prev'), nx: $(id + 'next') };
+  o.go = (s) => {
+    o.step = clamp(s, 0, last); o.st = 0;
+    show(o.pv, o.step > 0); show(o.nx, o.step < last); o.nx.disabled = false;
+    onStep(o.step);
+  };
+  o.say = (s) => { if (o.cap.textContent !== s) o.cap.textContent = s; };
+  o.pv.addEventListener('click', () => o.go(o.step - 1));
+  o.nx.addEventListener('click', () => o.go(o.step + 1));
+  return o;
+}
 
 /* ======================================================================
    Audio: one context, created on the first press of a sound control
@@ -582,15 +637,21 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
         if (step > 1 && Math.abs(d) > 3) arrow(ctx, x0, yA - 20, x0 + d, yA - 20, col(j), 1.4);
         dot(ctx, x0 + d, yA, j === grab ? 9 : 7, col(j), big);
       }
-      // what can be dragged: a pulsing ring, until the reader first grabs something in this step
-      if ((step === 4 || step === 5) && !touched && solved < 0) {
+      // what can be dragged: a pulsing ring and "drag me".
+      // Step 4: on the particle, until the reader first grabs it.
+      // Step 5: "drag me" on the first particle whose point is not in its circle; rings on all of those
+      // until the reader first grabs one, then only on that first one.
+      if ((step === 4 || step === 5) && grab < 0 && solved < 0) {
+        let lab = -1;
+        if (step === 4 && !touched) lab = P;
+        if (step === 5) for (let j = 0; j < N; j++) if (!done(j)) { lab = j; break; }
         const pulse = 0.5 + 0.5 * Math.sin(st * 4);
         for (let j = 0; j < N; j++) {
-          if (step === 4 ? j !== P : done(j)) continue;
+          if (!(j === lab || (step === 5 && !touched && !done(j)))) continue;
           ctx.save(); ctx.strokeStyle = C.a1; ctx.globalAlpha = 0.35 + 0.5 * pulse; ctx.lineWidth = 1.6;
           ctx.beginPath(); ctx.arc(xs[j] + dv[j] * spc, yA, 12 + 4 * pulse, 0, TAU); ctx.stroke(); ctx.restore();
         }
-        if (step === 4) label(ctx, '◀ ' + t('dragme') + ' ▶', xs[P] + dv[P] * spc, yA - 36, { size: 14, color: C.a1, align: 'center', alpha: 0.95 });
+        if (lab >= 0) label(ctx, '◀ ' + t('dragme') + ' ▶', xs[lab] + dv[lab] * spc, yA - 36, { size: 14, color: C.a1, align: 'center', alpha: 0.95 });
       }
       if (step < 2) return;
       // displacement against position
@@ -726,107 +787,290 @@ function makeSample(sr) { // synthetic example signal (not a real voice): harmon
 }
 
 /* ======================================================================
-   Stage 3 · microphone at one point
+   Stage 3 · microphone at one point, told step by step.
+   Steps: 0 a microphone, and the particle in front of it · 1 its displacement against time ·
+   2 a real voice: record one, or use the example · 3 the whole recording, played ·
+   4 a moment of it in slow motion, with the air it travels through.
+   Example recording: the file voice.mp3 next to this page; while it does not exist, a synthetic signal.
    ====================================================================== */
 {
-  const ctx = canvas('c3');
+  const ctx = canvas('c3'), cv = ctx.cv;
   const air = makeAir(46, 4, 33);
-  const bm = $('s3mic'), brc = $('s3rec'), bp = $('s3play'), st = $('s3st');
-  let tm = 0, stream = null, an = null, buf = null, peak = 0.05, recState = null;
-  const status = (k) => { st.dataset.k = k || ''; st.textContent = k ? t(k) : ''; };
-  async function micOn() {
-    const ac = audio();
-    if (!ac || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { status('micno'); return; }
-    status('micask');
-    try { if (navigator.audioSession) navigator.audioSession.type = 'play-and-record'; } catch (e) { /* not supported */ }
-    try {
-      stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
-    } catch (e) { stream = null; status('micno'); return; }
-    if (sections[active].id !== 's3') { micOff(); return; }
-    const src = ac.createMediaStreamSource(stream);
-    an = ac.createAnalyser(); an.fftSize = 2048; buf = new Float32Array(an.fftSize);
-    src.connect(an);                       // not connected to the speakers: no feedback
-    bm.setAttribute('aria-pressed', 'true'); setBtn(bm, 'micoff');
-    brc.disabled = !window.MediaRecorder;
-    status(window.MediaRecorder ? 'micon' : 'recno');
+  const brc = $('s3rec'), bex = $('s3ex'), bpl = $('s3play'), stEl = $('s3st');
+  const REC_S = 3;        // seconds recorded
+  const SLOW = 150;       // slow motion: 1 s on screen is 1/150 s of sound
+  const DAIR = 0.008;     // seconds of sound held by the row of air, from the vocal cords to the microphone
+  const DCH = 0.025;      // seconds of sound in the slow-motion graph
+  const LOOP = 0.06;      // seconds of sound the slow motion goes through, again and again
+  const TW = 4;           // seconds of history in the pure-note graph
+  let tm = 0, chartT0 = 0;
+  let clip = null;        // { data, sr, peak, kind: 'voice' | 'example' | 'synthetic' }
+  let ov = null;          // the whole clip, one column of the graph each: lowest and highest value
+  let stream = null, an = null, buf = null, mr = null, recT0 = 0, livePk = 0.05, live = null;
+  let playT0 = -1, center = 0, tau = 0, locPk = 1, touched = false, grabbing = false, G = null;
+  const status = (k) => { stEl.dataset.k = k || ''; stEl.textContent = k ? t(k) : ''; };
+  const dur = () => clip.data.length / clip.sr;
+  const smp = (tt) => { const i = Math.round(tt * clip.sr); return i >= 0 && i < clip.data.length ? clip.data[i] : 0; };
+  const playing = () => !!(clip && AC && playT0 >= 0 && voices.size > 0 && AC.currentTime - playT0 < dur());
+  function setCenter(c) {            // the moment shown in slow motion, and the loudest value around it
+    center = clamp(c, LOOP / 2, Math.max(LOOP / 2, dur() - LOOP / 2));
+    tau = center - LOOP / 2 + DCH;
+    const i0 = Math.max(0, Math.round((center - LOOP / 2) * clip.sr)), i1 = Math.min(clip.data.length, Math.round((center + LOOP / 2) * clip.sr));
+    locPk = 1e-9; for (let i = i0; i < i1; i++) locPk = Math.max(locPk, Math.abs(clip.data[i]));
+    locPk = Math.max(locPk, 0.2 * clip.peak);      // a quiet moment stays small instead of filling the graph
   }
+  function loudest() {               // centre of the LOOP-long stretch with the most energy
+    const d0 = clip.data, w = Math.max(1, Math.min(d0.length, Math.round(LOOP * clip.sr)));
+    let e = 0, best = -1, bi = 0;
+    for (let i = 0; i < d0.length; i++) {
+      e += d0[i] * d0[i]; if (i >= w) e -= d0[i - w] * d0[i - w];
+      if (i >= w - 1 && e > best) { best = e; bi = i - w + 1; }
+    }
+    return (bi + w / 2) / clip.sr;
+  }
+  function setClip(c) {
+    let m = 1e-9; for (let i = 0; i < c.data.length; i++) m = Math.max(m, Math.abs(c.data[i]));
+    clip = { data: c.data, sr: c.sr, kind: c.kind, peak: m }; ov = null; setCenter(loudest());
+  }
+  function play() { if (!clip || !audio()) return; stopSounds(); playBuffer(clip.data, clip.sr); playT0 = AC.currentTime; }
   function micOff() {
-    if (recState) { try { recState.stop(); } catch (e) {} recState = null; }
+    if (mr && mr.state === 'recording') { try { mr.stop(); } catch (e) { /* already stopped */ } }
     if (stream) stream.getTracks().forEach((tr) => tr.stop());
     try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { /* not supported */ }
     stream = null; an = null;
-    bm.setAttribute('aria-pressed', 'false'); setBtn(bm, 'mic'); setBtn(brc, 'rec');
-    brc.disabled = true;
   }
-  bm.addEventListener('click', () => { if (stream) { micOff(); status(''); } else micOn(); });
-  brc.addEventListener('click', () => {
-    if (!stream || recState) return;
-    const chunks = []; let rec;
-    try { rec = new MediaRecorder(stream); } catch (e) { status('recno'); return; }
-    rec.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
-    rec.onstop = async () => {
-      recState = null; setBtn(brc, 'rec'); brc.disabled = !stream;
-      try {
-        const ab = await new Blob(chunks, { type: rec.mimeType }).arrayBuffer();
-        const ab2 = await audio().decodeAudioData(ab);
-        shared.voice = { data: new Float32Array(ab2.getChannelData(0)), sr: ab2.sampleRate };
-        bp.disabled = false; status('recok');
-        if (S.s6) S.s6.invalidate();
-      } catch (e) { status('recno'); }
-    };
-    recState = rec; rec.start(); setBtn(brc, 'recording'); brc.disabled = true;
-    setTimeout(() => { if (rec.state === 'recording') rec.stop(); }, 2000);
+  const P3 = stepper('s3', 4, (s) => {
+    touched = false;
+    if (s === 1) chartT0 = tm;
+    show(brc, s >= 2); setBtn(brc, s === 2 ? 'recvoice' : 'recagain');
+    show(bex, s === 2); show(bpl, s >= 3);
+    if (s === 2) show(P3.nx, !!clip);
+    hint(brc, s === 2 && !clip); hint(bex, false);
+    if (s < 3) { stopSounds(); playT0 = -1; }
+    if (s === 4) setCenter(center);
   });
-  bp.addEventListener('click', () => { if (shared.voice) playBuffer(shared.voice.data, shared.voice.sr); });
+  async function record() {
+    if (mr) return;
+    hint(brc, false); hint(bex, false); stopSounds(); playT0 = -1;
+    const ac = audio();
+    if (!ac || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) {
+      status(window.MediaRecorder ? 'micno' : 'recno'); hint(bex, true); return;
+    }
+    P3.go(2); status('micask');
+    try { if (navigator.audioSession) navigator.audioSession.type = 'play-and-record'; } catch (e) { /* not supported */ }
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+    } catch (e) { stream = null; micOff(); status('micno'); hint(bex, true); return; }
+    if (sections[active].id !== 's3' || P3.step !== 2) { micOff(); status(''); return; }
+    status('');
+    const src = ac.createMediaStreamSource(stream);
+    an = ac.createAnalyser(); an.fftSize = 2048; buf = new Float32Array(an.fftSize);
+    src.connect(an);                       // not connected to the speakers: no feedback
+    const chunks = [];
+    try { mr = new MediaRecorder(stream); } catch (e) { mr = null; micOff(); status('recno'); hint(bex, true); return; }
+    mr.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
+    mr.onstop = async () => {
+      const type = mr.mimeType; mr = null; micOff();
+      brc.disabled = false; bex.disabled = false; P3.pv.disabled = false;
+      try {
+        const b = await audio().decodeAudioData(await new Blob(chunks, { type }).arrayBuffer());
+        const data = new Float32Array(b.getChannelData(0));
+        shared.voice = { data, sr: b.sampleRate }; if (S.s6) S.s6.invalidate();
+        setClip({ data, sr: b.sampleRate, kind: 'voice' }); status('recok');
+        if (sections[active].id === 's3') { P3.go(3); play(); } else P3.go(2);
+      } catch (e) { status('recno'); P3.go(2); }
+    };
+    live = null; livePk = 0.05;
+    recT0 = ac.currentTime; mr.start();
+    brc.disabled = true; bex.disabled = true; P3.pv.disabled = true;
+    setTimeout(() => { if (mr && mr.state === 'recording') mr.stop(); }, REC_S * 1000);
+  }
+  async function example() {
+    if (mr) return;
+    hint(bex, false); micOff();
+    const ac = audio(); if (!ac) return;
+    let c = null;
+    try {
+      const r = await fetch('voice.mp3');
+      if (r.ok) { const b = await ac.decodeAudioData(await r.arrayBuffer()); c = { data: new Float32Array(b.getChannelData(0)), sr: b.sampleRate, kind: 'example' }; }
+    } catch (e) { c = null; }
+    if (!c) { if (!shared.sample) shared.sample = makeSample(44100); c = { data: shared.sample.data, sr: shared.sample.sr, kind: 'synthetic' }; }
+    setClip(c); status(c.kind === 'synthetic' ? 'exsynth' : '');
+    if (sections[active].id === 's3') { P3.go(3); play(); }
+  }
+  brc.addEventListener('click', record);
+  bex.addEventListener('click', example);
+  bpl.addEventListener('click', play);
+  // pointer: step 3, tap the graph to choose a moment; step 4, drag the box along the whole recording
+  const at = (e) => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  const timeAt = (x) => clamp((x - G.L) / (G.R - G.L), 0, 1) * dur();
+  const over = (y) => (P3.step === 3 && y > G.cTop - 10) || (P3.step === 4 && y > G.oTop - 14 && y < G.oBot + 14);
+  cv.addEventListener('pointerdown', (e) => {
+    if (!G || !clip) return;
+    const [x, y] = at(e); if (!over(y)) return;
+    if (P3.step === 3) { setCenter(timeAt(x)); P3.go(4); return; }
+    touched = true; grabbing = true; setCenter(timeAt(x));
+    cv.setPointerCapture(e.pointerId); e.preventDefault();
+  });
+  cv.addEventListener('pointermove', (e) => {
+    if (!G || !clip) return;
+    const [x, y] = at(e);
+    if (grabbing) { setCenter(timeAt(x)); return; }
+    cv.style.cursor = over(y) ? 'pointer' : '';
+  });
+  const release = () => { grabbing = false; };
+  cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', release);
+  function caption() {
+    P3.say(P3.step === 2 && mr ? t('s3crec')(Math.max(1, Math.ceil(REC_S - (AC.currentTime - recT0)))) : t('s3c' + P3.step));
+  }
   S.s3 = {
     ctx,
     draw(dt) {
-      const { W, H } = ctx.cv; clear(ctx); tm += dt;
-      const L = 24, R = W - 24, lam = (R - L) * 0.45, k = TAU / lam, w = TAU * 0.5, A = 0.5 / k;
-      const xi = (x, tt) => A * Math.sin(k * (x - L) - w * tt);
-      const top = 26, airH = H * 0.3;
+      const { W, H } = cv; clear(ctx); tm += dt; P3.st += dt;
+      const s = P3.step;
+      caption();
+      const L = 24, R = W - 40, xm = R;                // the microphone at the right end of the air
+      const top = 36, airH = Math.max(36, H * 0.24), yA = top + airH / 2;
+      const cTop = top + airH + 30, cBot = H - 8;
+      G = { L, R, cTop, oTop: 0, oBot: 0 };
+      // displacement of the air at x (px), at this moment
+      const lamP = (R - L) * 0.45, kP = TAU / lamP, A0 = 0.5 / kP, wP = TAU * 0.5;
+      const note = (x, tt) => A0 * Math.sin(kP * (x - L) - wP * tt);   // a pure note
+      const AV = Math.max(4, (R - L) * 0.025);          // largest displacement drawn for a voice
+      const lag = (x) => (xm - x) / (xm - L) * DAIR;     // seconds the sound takes from x to the microphone
+      let d;
+      if (s <= 1 || (s === 2 && !an)) d = (x) => note(x, tm);
+      else if (s === 2) {                                // recording: the live sound
+        an.getFloatTimeDomainData(buf);
+        let m = 0; for (let i = 0; i < buf.length; i++) m = Math.max(m, Math.abs(buf[i]));
+        livePk = Math.max(0.02, livePk * 0.995, m);
+        const sr = AC.sampleRate;
+        d = (x) => AV * buf[buf.length - 1 - Math.round(lag(x) * sr)] / livePk;
+      } else if (s === 3) {                              // the recording at its real speed, while it plays
+        const pt = playing() ? AC.currentTime - playT0 : -1;
+        d = pt < 0 ? () => 0 : (x) => AV * smp(pt - lag(x)) / clip.peak;
+      } else {                                           // slow motion
+        tau += dt / SLOW; if (tau > center + LOOP / 2) tau = center - LOOP / 2 + DCH;
+        d = (x) => AV * smp(tau - lag(x)) / locPk;
+      }
+      // vocal cords at the left end, moving with the air next to them
+      const px = L - 10 + d(L);
+      ctx.save(); ctx.strokeStyle = C.a1; ctx.lineWidth = 3; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(px, top + 4); ctx.lineTo(px, top + airH - 4); ctx.stroke(); ctx.restore();
+      label(ctx, t('vocal'), L - 14, top - 12, { size: 12, color: C.a1, alpha: 0.85 });
       ctx.save(); ctx.fillStyle = C.ink; ctx.globalAlpha = 0.78;
       for (const p of air) {
         if (W < 600 && !p.few) continue;
-        const x0 = L + p.u * (R - L); ctx.beginPath(); ctx.arc(x0 + xi(x0, tm), top + p.v * airH, p.s, 0, TAU); ctx.fill();
+        const x0 = L + p.u * (R - L); ctx.beginPath(); ctx.arc(x0 + d(x0), top + p.v * airH, p.s, 0, TAU); ctx.fill();
       }
       ctx.restore();
-      // microphone at x = xm
-      const xm = R;                         // microphone at the right end, above the newest point of the plot
+      // the microphone, and the particle in front of it: rest position, displacement, particle
+      const dm = d(xm);
       ctx.save(); ctx.strokeStyle = C.a1; ctx.fillStyle = C.a1; ctx.lineWidth = 1.6;
-      ctx.beginPath(); ctx.ellipse(xm, top - 14, 5, 7.5, 0, 0, TAU); ctx.fill();
-      ctx.beginPath(); ctx.arc(xm, top - 14, 9, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke(); ctx.restore();
-      dot(ctx, xm + xi(xm, tm), top + airH / 2, 4.5, C.a1);
-      // displacement at the microphone against time
-      const py = top + airH + 30 + (H - top - airH - 30) / 2, ph = (H - top - airH - 30) * 0.38;
-      axes(ctx, L, py, R + 6, ph * 1.25, ph * 1.15, t('time'), null);
-      dirLabels(ctx, L, py, ph * 1.25, ph * 1.15);
-      if (an) {
-        an.getFloatTimeDomainData(buf);
-        let i0 = 1; for (let i = 1; i < 1024; i++) { if (buf[i - 1] < 0 && buf[i] >= 0) { i0 = i; break; } }
-        let m = 0; for (let i = 0; i < buf.length; i++) m = Math.max(m, Math.abs(buf[i]));
-        peak = Math.max(0.02, peak * 0.96, m);
-        const n = 1000, xs = [], ys = [];
-        for (let i = 0; i < n; i++) { xs.push(L + (R - L) * i / (n - 1)); ys.push(py - ph * buf[i0 + i] / peak); }
-        nib(ctx, xs, ys, C.curve, 2.6);
-        label(ctx, t('yourvoice'), R, py - ph * 1.2, { size: 13, align: 'right', color: C.curve });
-        label(ctx, `${Math.round(1000 * n / AC.sampleRate)} ms`, L + 8, py + 18, { size: 12, alpha: 0.6 });
-      } else {
-        const Tw = 4;  // seconds of history; newest on the right
-        nibFn(ctx, L, R, (x) => py - ph * xi(xm, tm - Tw + Tw * (x - L) / (R - L)) / A, C.curve, 3.4);
-        const yd = py - ph * xi(xm, tm) / A;
-        pencil(ctx, xm, top - 4, xm, yd, C.a1, 0.7);
-        if (Math.abs(yd - py) > 6) arrow(ctx, xm, py, xm, yd, C.a1, 1.4);
-        dot(ctx, R, yd, 4.5, C.a1);
+      ctx.beginPath(); ctx.ellipse(xm, top - 16, 5, 7.5, 0, 0, TAU); ctx.fill();
+      ctx.beginPath(); ctx.arc(xm, top - 16, 9, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke(); ctx.restore();
+      label(ctx, t('micro'), xm - 14, top - 12, { size: 12, align: 'right', color: C.a1, alpha: 0.85 });
+      pencil(ctx, xm, top, xm, top + airH, C.ink, 0.5);
+      if (Math.abs(dm) > 3) arrow(ctx, xm, yA - 12, xm + dm, yA - 12, C.a1, 1.3);
+      dot(ctx, xm + dm, yA, 5.5, C.a1);
+      if (s === 0) return;
+      const py = (cTop + cBot) / 2, ph = (cBot - cTop) * 0.36;
+      const C0 = Math.max(1, Math.round(R - L));
+      // one vertical line per column, from the lowest to the highest value of the sound in it
+      const bars = (lo, hi, n, pk, y0, h, alpha) => {
+        ctx.save(); ctx.strokeStyle = C.curve; ctx.globalAlpha = alpha; ctx.lineWidth = 1; ctx.beginPath();
+        for (let c = 0; c < n; c++) { const x = L + c + 0.5; ctx.moveTo(x, y0 - h * hi[c] / pk); ctx.lineTo(x, y0 - h * lo[c] / pk + 0.6); }
+        ctx.stroke(); ctx.restore();
+      };
+      if (s === 1 || (s === 2 && !mr)) {
+        // the pure note at the microphone against time; the newest point under the microphone
+        axes(ctx, L, py, R + 8, ph * 1.25, ph * 1.15, t('time'), null);
+        if (ph > 26) dirLabels(ctx, L, py, ph * 1.25, ph * 1.15);
+        const x0 = Math.max(L, R - (R - L) * (tm - chartT0) / TW);
+        if (R - x0 > 2) nibFn(ctx, x0, R, (x) => py - ph * note(xm, tm - TW * (R - x) / (R - L)) / A0, C.curve, 3.2);
+        const yp = py - ph * dm / A0;
+        pencil(ctx, xm, top + airH, xm, yp, C.a1, 0.6);
+        if (Math.abs(yp - py) > 6) arrow(ctx, xm, py, xm, yp, C.a1, 1.4);
+        dot(ctx, xm, yp, 5, C.a1);
+        return;
       }
+      if (s === 2) {
+        // recording: the graph of the whole recording, drawn as it comes in
+        if (!live || live.n !== C0) live = { n: C0, lo: new Float32Array(C0), hi: new Float32Array(C0), x: 0 };
+        const xNow = Math.floor(clamp((AC.currentTime - recT0) / REC_S, 0, 1) * C0);
+        const nNew = Math.min(buf.length, Math.max(1, Math.round(dt * AC.sampleRate))), span = Math.max(1, xNow - live.x);
+        for (let c = live.x; c < xNow; c++) {   // the newest samples, spread over the new columns
+          const a = buf.length - nNew + Math.floor((c - live.x) / span * nNew), b = Math.max(a + 1, buf.length - nNew + Math.floor((c + 1 - live.x) / span * nNew));
+          let lo = 0, hi = 0; for (let i = a; i < b; i++) { lo = Math.min(lo, buf[i]); hi = Math.max(hi, buf[i]); }
+          live.lo[c] = lo; live.hi[c] = hi;
+        }
+        live.x = Math.max(live.x, xNow);
+        axes(ctx, L, py, R + 8, ph * 1.25, ph * 1.15, t('time'), null);
+        if (ph > 26) dirLabels(ctx, L, py, ph * 1.25, ph * 1.15);
+        bars(live.lo, live.hi, live.x, livePk, py, ph, 0.9);
+        dot(ctx, L + live.x, py - ph * buf[buf.length - 1] / livePk, 5, C.a1);
+        label(ctx, `${REC_S} s`, L + 8, py + 18, { size: 12, alpha: 0.6 });
+        return;
+      }
+      if (!ov || ov.n !== C0) {
+        ov = { n: C0, lo: new Float32Array(C0), hi: new Float32Array(C0) };
+        const d0 = clip.data, per = d0.length / C0;
+        for (let c = 0; c < C0; c++) {
+          let lo = 0, hi = 0;
+          for (let i = Math.floor(c * per); i < Math.floor((c + 1) * per); i++) { const v = d0[i]; if (v < lo) lo = v; if (v > hi) hi = v; }
+          ov.lo[c] = lo; ov.hi[c] = hi;
+        }
+      }
+      const pulse = 0.5 + 0.5 * Math.sin(P3.st * 4);
+      if (s === 3) {
+        // the whole recording; a line follows it while it plays
+        axes(ctx, L, py, R + 8, ph * 1.25, ph * 1.15, t('time'), null);
+        if (ph > 26) dirLabels(ctx, L, py, ph * 1.25, ph * 1.15);
+        bars(ov.lo, ov.hi, C0, clip.peak, py, ph, 0.9);
+        label(ctx, `${dur().toFixed(1)} s`, L + 8, py + 18, { size: 12, alpha: 0.6 });
+        if (playing()) { const xp = L + (R - L) * (AC.currentTime - playT0) / dur(); pencil(ctx, xp, py - ph * 1.2, xp, py + ph * 1.1, C.a1, 0.9); }
+        // where to tap: the loudest moment
+        const xc = L + (R - L) * center / dur();
+        ctx.save(); ctx.strokeStyle = C.a1; ctx.globalAlpha = 0.35 + 0.5 * pulse; ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.arc(xc, py, 14 + 5 * pulse, 0, TAU); ctx.stroke(); ctx.restore();
+        label(ctx, t('tapme'), clamp(xc, L + 40, R - 40), py - ph * 1.05, { size: 14, color: C.a1, align: 'center', alpha: 0.95 });
+        return;
+      }
+      // step 4. Above: the whole recording, small, with a box on the moment shown in slow motion
+      const oTop = cTop, oh = Math.max(28, (cBot - cTop) * 0.2), oBot = oTop + oh, oy = (oTop + oBot) / 2;
+      G.oTop = oTop; G.oBot = oBot;
+      pencil(ctx, L, oy, R, oy, C.ink, 0.3);
+      bars(ov.lo, ov.hi, C0, clip.peak, oy, oh * 0.45, 0.6);
+      const xa = L + (R - L) * (center - LOOP / 2) / dur(), xb = L + (R - L) * (center + LOOP / 2) / dur();
+      const bw = Math.max(16, xb - xa), bx = (xa + xb) / 2 - bw / 2;
+      ctx.save(); ctx.strokeStyle = C.a1; ctx.lineWidth = 1.8; ctx.strokeRect(bx, oTop, bw, oh); ctx.restore();
+      if (!touched) {
+        ctx.save(); ctx.strokeStyle = C.a1; ctx.globalAlpha = 0.3 + 0.5 * pulse; ctx.lineWidth = 1.4;
+        ctx.strokeRect(bx - 3 - 3 * pulse, oTop - 3 - 3 * pulse, bw + 6 + 6 * pulse, oh + 6 + 6 * pulse); ctx.restore();
+        label(ctx, '◀ ' + t('dragme') + ' ▶', clamp(bx + bw / 2, L + 60, R - 60), oTop - 8, { size: 13, color: C.a1, align: 'center', alpha: 0.95 });
+      }
+      // below: that moment, 150 times slower; the newest point under the microphone
+      const dTop = oBot + 26, py2 = (dTop + cBot) / 2, ph2 = (cBot - dTop) * 0.36;
+      pencil(ctx, bx, oBot, L, dTop - 6, C.a1, 0.35); pencil(ctx, bx + bw, oBot, R, dTop - 6, C.a1, 0.35);
+      axes(ctx, L, py2, R + 8, ph2 * 1.25, ph2 * 1.15, t('time'), null);
+      if (ph2 > 26) dirLabels(ctx, L, py2, ph2 * 1.25, ph2 * 1.15);
+      nibFn(ctx, L, R, (x) => py2 - ph2 * smp(tau - DCH * (R - x) / (R - L)) / locPk, C.curve, 2.8, 1, 1.5);
+      const yp = py2 - ph2 * smp(tau) / locPk;
+      pencil(ctx, xm, top + airH, xm, yp, C.a1, 0.6);
+      dot(ctx, xm, yp, 5, C.a1);
+      label(ctx, `${Math.round(DCH * 1000)} ms`, L + 8, py2 + 18, { size: 12, alpha: 0.6 });
     },
-    leave() { micOff(); if (st.dataset.k === 'micon' || st.dataset.k === 'micask') status(''); },
-    lang() { setBtn(bm, stream ? 'micoff' : 'mic'); setBtn(brc, recState ? 'recording' : 'rec'); setBtn(bp, 'playrec'); if (st.dataset.k) status(st.dataset.k); },
+    leave() { micOff(); if (stEl.dataset.k === 'micask') status(''); },
+    lang() { caption(); if (stEl.dataset.k) status(stEl.dataset.k); },
   };
+  P3.go(0);
 }
 
 /* ======================================================================
-   Stage 4 · guitar string: only the waves that fit
+   Stage 4 · guitar string, told step by step.
+   Steps: 0 which waves fit on a string tied at both ends (the reader drags the wave) ·
+   1 each wave that fits is a pure note (tap to hear it) · 2 plucking: all at once ·
+   3 which ones sound (checkboxes) · 4 how strongly each one sounds (sliders)
    ====================================================================== */
 /* Guitar string: amplitudes of an ideal string plucked at a fraction P of its length,
    a_n ∝ sin(n π P) / n²  (Fletcher & Rossing, 1998, The Physics of Musical Instruments,
@@ -837,108 +1081,205 @@ const STRING_AMPS = (() => { const a = GUITAR.slice(0, 6).map(Math.abs), m = Mat
 const MODE_COL = [C.a1, C.a2, C.a3, C.a1, C.a2, C.a3];
 const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
 {
-  const ctx = canvas('c4');
-  /* One "pulsar" button. Three presets choose which frequencies it plucks:
-     'one' = only n = 1, 'six' = n = 1..6, 'all' = n = 1..KG (first 6 from the sliders,
-     the rest with the GUITAR amplitudes). Moving a slider or a checkbox keeps the preset. */
-  const N = 6, on = [true, false, false, false, false, false], amp = STRING_AMPS.slice();
-  const box = $('s4modes'), eq = $('s4eq'), st = $('s4st');
-  const PRE = { one: $('s4one'), six: $('s4six'), all: $('s4all') };
-  let tm = 0, mode = 'one';
-  const sliders = [], checks = [], names = [];
-  for (let n = 1; n <= N; n++) {
-    const lab = document.createElement('label');
-    const sw = document.createElement('span'); sw.className = 'sw'; sw.style.background = MODE_COL[n - 1];
-    const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = on[n - 1]; cb.setAttribute('aria-label', `n = ${n}`);
-    const nm = document.createElement('span');
-    const r = document.createElement('input'); r.type = 'range'; r.min = 0; r.max = 100; r.value = Math.round(amp[n - 1] * 100); r.setAttribute('aria-label', `a${n}`);
-    cb.addEventListener('change', () => { on[n - 1] = cb.checked; });
-    r.addEventListener('input', () => { amp[n - 1] = r.value / 100; });
-    lab.append(sw, cb, nm, r); box.appendChild(lab);
-    sliders.push(r); checks.push(cb); names.push(nm);
-  }
-  function setMode(m) {
-    mode = m;
-    const onArr = m === 'one' ? [true, false, false, false, false, false] : Array(N).fill(true);
-    for (let i = 0; i < N; i++) { amp[i] = STRING_AMPS[i]; on[i] = onArr[i]; sliders[i].value = Math.round(amp[i] * 100); checks[i].checked = on[i]; }
-    for (const k in PRE) PRE[k].setAttribute('aria-pressed', k === m ? 'true' : 'false');
-    st.textContent = m === 'all' ? T[lang].more(KG - N, N + 1, KG) : '';
-  }
-  for (const k in PRE) PRE[k].addEventListener('click', () => setMode(k));
-  /* signed amplitude of frequency n (1-based) as it will be plucked */
+  const ctx = canvas('c4'), cv = ctx.cv;
+  const N = 6, on = Array(N).fill(true), amp = STRING_AMPS.slice();
+  let rest = true;                                        // n = 7…KG sound too
+  const box = $('s4modes'), eq = $('s4eq'), bpk = $('s4pluck'), bone = $('s4one'), bsix = $('s4six');
   const g1 = Math.abs(GUITAR[0]);
-  const ampOf = (n) => (n <= N ? (on[n - 1] ? Math.sign(GUITAR[n - 1]) * amp[n - 1] * g1 : 0) : (mode === 'all' ? GUITAR[n - 1] : 0));
-  $('s4pluck').addEventListener('click', () => {
-    const ac = audio(); if (!ac) return;
+  const ampOf = (n) => (n <= N ? (on[n - 1] ? Math.sign(GUITAR[n - 1]) * amp[n - 1] * g1 : 0) : (rest ? GUITAR[n - 1] : 0));
+  const gam = (n) => 0.7 + n * F1_STRING / 1800;         // how fast frequency n dies out (1/s): the higher, the faster (chosen by ear)
+  const NU = 1;                                          // drawn vibration of n = 1 (Hz): slow motion
+  let tm = 0, q = 1.5;                                   // q: half waves on the string in step 0
+  const found = new Set(), heard = new Set(), plucked = new Set();
+  let lastHeard = 0, pluckAt = -1, toneN = 0, toneAt = -1, lastCfg = '', touched = false, grab = false, grabDx = 0, G = null;
+  const cfg = () => on.map((b) => (b ? 1 : 0)).join('') + (rest ? '+' : '');
+  // controls: one row per frequency (checkbox, name, amplitude slider), and one checkbox for n = 7…KG
+  const sliders = [], checks = [], names = [];
+  const row = (cls) => { const l = document.createElement('label'); if (cls) l.className = cls; box.appendChild(l); return l; };
+  for (let n = 1; n <= N; n++) {
+    const lab = row(), cb = document.createElement('input'), nm = document.createElement('span'), r = document.createElement('input');
+    cb.type = 'checkbox'; cb.setAttribute('aria-label', `n = ${n}`);
+    nm.className = 'nm'; nm.style.color = MODE_COL[n - 1];
+    r.type = 'range'; r.min = 0; r.max = 100; r.setAttribute('aria-label', `a${n}`);
+    cb.addEventListener('change', () => { on[n - 1] = cb.checked; hint(box, false); });
+    r.addEventListener('input', () => { amp[n - 1] = r.value / 100; hint(box, false); });
+    lab.append(cb, nm, r); sliders.push(r); checks.push(cb); names.push(nm);
+  }
+  const restCb = document.createElement('input'), restNm = document.createElement('span');
+  restCb.type = 'checkbox'; restCb.addEventListener('change', () => { rest = restCb.checked; hint(box, false); });
+  row('rest').append(restCb, restNm);
+  function sync() { for (let i = 0; i < N; i++) { checks[i].checked = on[i]; sliders[i].value = Math.round(amp[i] * 100); } restCb.checked = rest; }
+  bone.addEventListener('click', () => { on.fill(false); on[0] = true; rest = false; sync(); hint(box, false); });
+  bsix.addEventListener('click', () => { on.fill(true); rest = false; sync(); hint(box, false); });
+  function sound(list) {               // list of [n, amplitude]: decaying sines, as in a plucked string
+    const ac = audio(); if (!ac) return false;
     stopSounds();
     const sr = ac.sampleRate, len = Math.round(sr * 3), d = new Float32Array(len);
-    const K = mode === 'all' ? KG : N;
-    for (let n = 1; n <= K; n++) {
-      const a = ampOf(n), f = n * F1_STRING; if (!a) continue; if (f > 0.45 * sr) break;
-      const w = TAU * f / sr, cw = Math.cos(w), sw = Math.sin(w);
-      const k = Math.exp(-(0.7 + f / 1800) / sr);       // decay per sample: higher frequencies die faster (chosen by ear)
+    for (const [n, a] of list) {
+      const f = n * F1_STRING; if (!a || f > 0.45 * sr) continue;
+      const w = TAU * f / sr, cw = Math.cos(w), sw = Math.sin(w), k = Math.exp(-gam(n) / sr);
       let x = 1, y = 0;                                   // rotating phasor: y = e^{-γt} sin(2π f t)
-      for (let i = 0; i < len; i++) {
-        d[i] += a * y;
-        const nx = (x * cw - y * sw) * k; y = (x * sw + y * cw) * k; x = nx;
-      }
+      for (let i = 0; i < len; i++) { d[i] += a * y; const nx = (x * cw - y * sw) * k; y = (x * sw + y * cw) * k; x = nx; }
     }
     for (let i = 0; i < Math.min(len, 200); i++) d[i] *= i / 200;
     playBuffer(d, sr, 0.9);
+    return true;
+  }
+  const P4 = stepper('s4', 4, (s) => {
+    touched = false; lastHeard = 0; stopSounds(); pluckAt = -1; toneAt = -1;
+    show(bpk, s >= 2); show(bone, s >= 3); show(bsix, s >= 3); show(box, s >= 3);
+    box.classList.toggle('noamp', s < 4);
+    hint(bpk, s === 2); hint(box, s >= 3);
+    if (s === 0) P4.nx.disabled = found.size < 3;
+    if (s === 1) P4.nx.disabled = heard.size < 3;
+    if (s === 2) P4.nx.disabled = true;
+    if (s === 3) { plucked.clear(); P4.nx.disabled = true; }
   });
-  const show = () => {
-    PRE.all.textContent = T[lang].guitar(KG);
+  bpk.addEventListener('click', () => {
+    const list = []; for (let n = 1; n <= (rest ? KG : N); n++) list.push([n, ampOf(n)]);
+    if (!sound(list)) return;
+    pluckAt = tm; toneAt = -1; hint(bpk, false);
+    lastCfg = cfg(); plucked.add(lastCfg);
+    if (P4.step === 2 || (P4.step === 3 && plucked.size >= 2)) P4.nx.disabled = false;
+  });
+  function tapMode(n) {
+    if (!sound([[n, 1]])) return;
+    toneN = n; toneAt = tm; pluckAt = -1; heard.add(n); lastHeard = n;
+    if (P4.step === 1 && heard.size >= 3) P4.nx.disabled = false;
+  }
+  // how strongly frequency n vibrates now: it dies out after a pluck or a tap, as in the sound
+  const envP = (n) => (pluckAt >= 0 ? Math.exp(-gam(n) * (tm - pluckAt)) : 0);              // after a pluck
+  const envT = (n) => (toneAt >= 0 && n === toneN ? Math.exp(-gam(n) * (tm - toneAt)) : 0); // after a tap on its panel
+  const env = (n) => Math.max(envP(n), envT(n));
+  const fitN = () => { const n0 = Math.round(q); return n0 >= 1 && Math.abs(Math.log(q / n0)) < 0.035 ? n0 : 0; };
+  function caption() {
+    const s = P4.step, e = noteName(F1_STRING); let c = t('s4c' + s);
+    if (s === 0) { const n0 = fitN(); c = n0 ? t('s4cfit')(n0) : found.size >= 3 ? t('s4cok') : touched ? t('s4cno') : t('s4c0'); }
+    if (s === 1 && lastHeard) c = t('s4hear')(lastHeard, noteName(lastHeard * F1_STRING), e);
+    if (s === 2 && pluckAt >= 0) c = t('s4c2ok')(e);
+    if (s === 3 && pluckAt >= 0 && cfg() === lastCfg) c = lastCfg === '100000' ? t('s4only') : lastCfg === '111111+' ? t('s4all')(e) : lastCfg === '111111' ? t('s4six6') : t('s4mix');
+    P4.say(c);
+  }
+  // pointer: step 0, drag the wave (its first crest) to stretch or squeeze it; later, tap a panel to hear its note
+  const at = (e) => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  const panelAt = (x, y) => (G ? G.panels.find((p) => x >= p.x && x <= p.x + p.w && y >= p.y && y <= p.y + p.h) : null);
+  cv.addEventListener('pointerdown', (e) => {
+    if (!G) return;
+    const [x, y] = at(e);
+    if (P4.step === 0) { grab = true; touched = true; grabDx = x - G.xc; cv.setPointerCapture(e.pointerId); e.preventDefault(); return; }
+    const p = panelAt(x, y); if (p) { touched = true; tapMode(p.n); }
+  });
+  cv.addEventListener('pointermove', (e) => {
+    if (!G) return;
+    const [x, y] = at(e);
+    if (grab) { const xc = clamp(x - grabDx, G.L + (G.R - G.L) / 13, G.R); q = clamp((G.R - G.L) / (2 * (xc - G.L)), 0.5, 6.5); return; }
+    cv.style.cursor = P4.step === 0 ? 'grab' : panelAt(x, y) ? 'pointer' : '';
+  });
+  const release = () => { grab = false; };
+  cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', release);
+  const textW = (s, size) => { ctx.save(); ctx.font = `${size}px ${TEXT}`; const w = ctx.measureText(s).width; ctx.restore(); return w; };
+  const names6 = () => {
     for (let n = 1; n <= N; n++) names[n - 1].textContent = `n=${n} · ${noteName(n * F1_STRING)}`;
-    st.textContent = mode === 'all' ? T[lang].more(KG - N, N + 1, KG) : '';
+    restNm.textContent = t('rest7')(KG);
     tex(eq, `\\begin{gathered} f_n = n\\,f_1,\\quad n = 1, 2, 3, \\dots \\\\ f_1 = ${F1_STRING.toFixed(1)}\\ \\mathrm{Hz}\\ (\\text{${noteName(F1_STRING)}}) \\end{gathered}`);
   };
-  setMode('one'); show();
   S.s4 = {
     ctx,
     draw(dt) {
-      const { W, H } = ctx.cv; clear(ctx); tm += dt;
-      const nu = 0.32;
+      const { W, H } = cv; clear(ctx); tm += dt; P4.st += dt;
+      const s = P4.step, pulse = 0.5 + 0.5 * Math.sin(P4.st * 4);
       const L = 34, R = W - 34;
-      const K = mode === 'all' ? KG : N;
-      const as = []; for (let n = 1; n <= K; n++) as.push(ampOf(n) / g1);
-      // the string: sum of the frequencies that will be plucked
-      const sy = H * 0.16, sh = H * 0.1;
+      G = { L, R, xc: 0, panels: [] };
+      if (s === 0) {
+        // a wave of q half waves, starting at the left peg; it fits when q is a whole number
+        const sy = H * 0.46, Aw = Math.min(H * 0.24, (R - L) * 0.2);
+        const n0 = fitN(); if (n0) { found.add(n0); if (found.size >= 3) P4.nx.disabled = false; }
+        const qq = n0 || q, col = n0 ? MODE_COL[(n0 - 1) % 6] : C.ink, osc = n0 ? Math.cos(TAU * 0.8 * tm) : 1;
+        const peg = (x, c) => { ctx.save(); ctx.fillStyle = c; ctx.fillRect(x - 3, sy - 18, 6, 36); ctx.restore(); };
+        pencil(ctx, L, sy, R, sy, C.ink, 0.35);
+        if (n0) {
+          ctx.save(); ctx.strokeStyle = col; ctx.globalAlpha = 0.45; ctx.lineWidth = 1; ctx.setLineDash([5, 4]);
+          for (const sg of [1, -1]) { ctx.beginPath(); for (let x = L; x <= R + 0.5; x += 2) { const yy = sy - sg * Aw * Math.sin(qq * Math.PI * (x - L) / (R - L)); x === L ? ctx.moveTo(x, yy) : ctx.lineTo(x, yy); } ctx.stroke(); }
+          ctx.restore();
+        }
+        nibFn(ctx, L, R, (x) => sy - Aw * Math.sin(qq * Math.PI * (x - L) / (R - L)) * osc, col, 3.4, n0 ? 1 : 0.85);
+        peg(L, n0 ? C.a2 : C.ink); peg(R, n0 ? C.a2 : C.a1);
+        if (n0) for (let j = 1; j < n0; j++) dot(ctx, L + (R - L) * j / n0, sy, 3, C.ink, 0.85);
+        else {     // the right end would have to leave its peg
+          const yE = sy - Aw * Math.sin(qq * Math.PI);
+          ctx.save(); ctx.strokeStyle = C.a1; ctx.lineWidth = 1.8; ctx.setLineDash([4, 3]);
+          ctx.beginPath(); ctx.moveTo(R, yE); ctx.lineTo(R, sy); ctx.stroke(); ctx.setLineDash([]);
+          ctx.beginPath(); ctx.moveTo(R - 6, yE - 6); ctx.lineTo(R + 6, yE + 6); ctx.moveTo(R - 6, yE + 6); ctx.lineTo(R + 6, yE - 6); ctx.stroke(); ctx.restore();
+          if (Math.abs(yE - sy) > 14) label(ctx, t('nofit'), R - 12, yE + (yE < sy ? -10 : 20), { size: 13, align: 'right', color: C.a1 });
+        }
+        // the handle: the first crest
+        G.xc = L + (R - L) / (2 * qq);
+        if (!touched) {
+          ctx.save(); ctx.strokeStyle = C.a1; ctx.globalAlpha = 0.35 + 0.5 * pulse; ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.arc(G.xc, sy - Aw, 12 + 4 * pulse, 0, TAU); ctx.stroke(); ctx.restore();
+          label(ctx, '◀ ' + t('dragme') + ' ▶', clamp(G.xc, L + 60, R - 60), sy - Aw - 24, { size: 14, color: C.a1, align: 'center', alpha: 0.95 });
+        }
+        // the ones found
+        if (found.size) {
+          let x = L; const y = Math.min(H - 14, sy + Aw + 44);
+          label(ctx, t('fits'), x, y, { size: 14, alpha: 0.8 }); x += textW(t('fits'), 14) + 10;
+          for (const n of [...found].sort((a, b) => a - b)) { const sN = `n = ${n}`; label(ctx, sN, x, y, { size: 14, color: MODE_COL[(n - 1) % 6] }); x += textW(sN, 14) + 14; }
+        }
+        caption();
+        return;
+      }
+      // the string, at the top: the sum of every frequency that sounds
+      const K = rest ? KG : N, sy = Math.max(30, H * 0.14), sh = Math.min(40, H * 0.1);
       let amax = 0; for (let i = 0; i < N; i++) amax += STRING_AMPS[i];
+      const as = []; for (let n = 1; n <= K; n++) { const v = ampOf(n) / g1 * envP(n) + Math.sign(GUITAR[n - 1]) * envT(n); as.push(Math.abs(v) > 0.002 ? v : 0); }
+      const ph = TAU * NU * tm;
       pencil(ctx, L, sy, R, sy, C.ink, 0.45);
       nibFn(ctx, L, R, (x) => {
-        let s = 0; const u = (x - L) / (R - L);
-        for (let n = 1; n <= K; n++) if (as[n - 1]) s += as[n - 1] * Math.sin(n * Math.PI * u) * Math.cos(TAU * n * nu * tm);
-        return sy - sh * s / amax * 1.25;
-      }, C.curve, 3.8);
-      for (const x of [L, R]) { dot(ctx, x, sy, 5, C.ink); }
-      label(ctx, t('sum'), L - 4, sy - sh - 6, { size: 13, alpha: 0.7, italic: true });
-      // each wave that fits (first 6): small panels, added together to make the string above
+        let v = 0; const u = (x - L) / (R - L);
+        for (let n = 1; n <= K; n++) if (as[n - 1]) v += as[n - 1] * Math.sin(n * Math.PI * u) * Math.cos(n * ph);
+        return sy - sh * v / amax * 1.25;
+      }, C.curve, 3.8, s === 1 ? 0.5 : 1);
+      for (const x of [L, R]) dot(ctx, x, sy, 5, C.ink);
+      label(ctx, t('sum'), L - 4, Math.max(12, sy - sh - 6), { size: 13, alpha: 0.7, italic: true });
+      // each wave that fits (the first 6): small panels, added together they make the string above
       const gTop = sy + sh * 1.35 + 34;
       label(ctx, t('sumof'), L - 4, gTop - 12, { size: 13, alpha: 0.75, italic: true });
-      const cols = W < 600 ? 2 : 3, rows = Math.ceil(N / cols), gap = 26;
-      const pw = (R - L + 8 - gap * (cols - 1)) / cols, phh = (H - gTop - 8 - gap * 0.6 * (rows - 1)) / rows;
+      // as many columns as bring the panels closest to 2.2 times wider than tall, for any screen
+      const gap = 26;
+      let lay = null;
+      for (const c of [2, 3, 6]) {
+        const r = Math.ceil(N / c), w = (R - L + 8 - gap * (c - 1)) / c, h = (H - gTop - 8 - gap * 0.6 * (r - 1)) / r;
+        if (!lay || Math.min(w / 2.2, h) > lay.score) lay = { cols: c, pw: w, phh: h, score: Math.min(w / 2.2, h) };
+      }
+      const { cols, pw, phh } = lay, small = phh < 60, ty = small ? 15 : 19;
+      let next = 0; for (let n = 1; n <= N; n++) if (!heard.has(n)) { next = n; break; }
       for (let n = 1; n <= N; n++) {
         const ci = (n - 1) % cols, ri = Math.floor((n - 1) / cols);
         const x0 = L - 4 + ci * (pw + gap), y0 = gTop + ri * (phh + gap * 0.6);
-        const isOn = on[n - 1], a = isOn ? amp[n - 1] : 0, col = MODE_COL[n - 1];
-        // panel frame
-        ctx.save(); ctx.strokeStyle = C.ink; ctx.globalAlpha = isOn ? 0.35 : 0.15; ctx.lineWidth = 1;
+        G.panels.push({ n, x: x0, y: y0, w: pw, h: phh });
+        const isOn = on[n - 1], a = isOn ? amp[n - 1] : 0, col = MODE_COL[n - 1], e = env(n);
+        // panel frame: lit while it sounds; pulsing on the next one to tap in step 1
+        ctx.save(); ctx.strokeStyle = e > 0.05 ? col : C.ink; ctx.globalAlpha = e > 0.05 ? 0.5 + 0.5 * e : isOn ? 0.35 : 0.15; ctx.lineWidth = e > 0.05 ? 2 : 1;
         ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x0, y0, pw, phh, 8) : ctx.rect(x0, y0, pw, phh); ctx.stroke(); ctx.restore();
-        // "+" between panels
+        if (s === 1 && n === next && (toneAt < 0 || tm - toneAt > 1.2)) {
+          ctx.save(); ctx.strokeStyle = C.a1; ctx.globalAlpha = 0.3 + 0.5 * pulse; ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x0 - 3 - 2 * pulse, y0 - 3 - 2 * pulse, pw + 6 + 4 * pulse, phh + 6 + 4 * pulse, 10) : ctx.rect(x0 - 3, y0 - 3, pw + 6, phh + 6); ctx.stroke(); ctx.restore();
+          label(ctx, t('tapme'), x0 + pw / 2, y0 + phh - 8, { size: 13, color: C.a1, align: 'center', alpha: 0.95 });
+        }
         if (n > 1) {
           const px = ci === 0 ? x0 - 15 : x0 - gap / 2;
           label(ctx, '+', px, y0 + phh / 2 + 7, { size: 20, align: 'center', alpha: 0.7 });
         }
         // title: n, note, frequency
-        mlabel(ctx, [['n', 'i'], [` = ${n}`, 'r']], x0 + 10, y0 + 19, { size: 14, alpha: isOn ? 0.95 : 0.35 });
-        label(ctx, noteName(n * F1_STRING), x0 + 58, y0 + 19, { size: 13, color: col, alpha: isOn ? 0.95 : 0.35 });
-        mlabel(ctx, n === 1 ? [['f', 'i'], ['1', 's']] : [[`${n}`, 'r'], ['f', 'i'], ['1', 's']], x0 + pw - 10, y0 + 19, { size: 14, align: 'right', alpha: isOn ? 0.8 : 0.3 });
-        if (isOn && phh >= 70) mlabel(ctx, [['a', 'i'], [`${n}`, 's'], [` = ${a.toFixed(2)}`, 'r']], x0 + pw - 10, y0 + phh - 8, { size: 13, align: 'right', alpha: 0.75 });
-        // a short string between two pegs, the envelope of the wave, its nodes, and the wave now
-        const xl = x0 + 16, xr = x0 + pw - 16, cy = y0 + 24 + (phh - 40) / 2, hmax = Math.max(4, (phh - 40) * 0.42);
+        mlabel(ctx, [['n', 'i'], [` = ${n}`, 'r']], x0 + 8, y0 + ty, { size: small ? 12 : 14, alpha: isOn ? 0.95 : 0.35 });
+        label(ctx, noteName(n * F1_STRING), x0 + (small ? 46 : 58), y0 + ty, { size: small ? 12 : 13, color: col, alpha: isOn ? 0.95 : 0.35 });
+        if (pw > 110) mlabel(ctx, n === 1 ? [['f', 'i'], ['1', 's']] : [[`${n}`, 'r'], ['f', 'i'], ['1', 's']], x0 + pw - 10, y0 + ty, { size: small ? 12 : 14, align: 'right', alpha: isOn ? 0.8 : 0.3 });
+        if (s === 4 && isOn && phh >= 70) mlabel(ctx, [['a', 'i'], [`${n}`, 's'], [` = ${a.toFixed(2)}`, 'r']], x0 + pw - 10, y0 + phh - 8, { size: 13, align: 'right', alpha: 0.75 });
+        // a short string between two pegs: the shape of the wave (dashed), its nodes, and the wave while it sounds
+        const xl = x0 + 14, xr = x0 + pw - 14, cy = y0 + ty + 4 + (phh - ty - 4) / 2, hmax = Math.max(3, (phh - ty - 12) * 0.42);
         const u = (x) => (x - xl) / (xr - xl);
         pencil(ctx, xl, cy, xr, cy, C.ink, 0.3);
-        if (a > 0) {
+        if (isOn || s < 3) {
           ctx.save(); ctx.strokeStyle = col; ctx.globalAlpha = 0.45; ctx.lineWidth = 1; ctx.setLineDash([5, 4]);
           for (const sg2 of [1, -1]) {
             ctx.beginPath();
@@ -946,14 +1287,16 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
             ctx.stroke();
           }
           ctx.restore();
-          const sg = Math.sign(GUITAR[n - 1]);
-          nibFn(ctx, xl, xr, (x) => cy - hmax * sg * Math.sin(n * Math.PI * u(x)) * Math.cos(TAU * n * nu * tm), col, 2.6);
+          const sg = Math.sign(GUITAR[n - 1]), aa = a * envP(n) + envT(n);
+          if (aa > 0.003) nibFn(ctx, xl, xr, (x) => cy - hmax * sg * Math.min(1, aa * 1.6) * Math.sin(n * Math.PI * u(x)) * Math.cos(n * ph), col, 2.6);
         }
         for (let j = 0; j <= n; j++) dot(ctx, xl + (xr - xl) * j / n, cy, j === 0 || j === n ? 3.2 : 2.4, C.ink, isOn ? 0.85 : 0.3);
       }
+      caption();
     },
-    lang() { show(); },
+    lang() { names6(); caption(); },
   };
+  sync(); names6(); P4.go(0);
 }
 
 /* ======================================================================

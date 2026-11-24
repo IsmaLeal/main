@@ -7,6 +7,21 @@
   <meta name="description" content="Sonido, ondas y frecuencias: una página interactiva.">
   <link rel="stylesheet" href="../vendor/katex/katex.min.css">
   <link rel="stylesheet" href="../outreach.css">
+  <style>
+    /* this page only: the control the story points at, the guitar's per-frequency controls, phones held sideways */
+    .hint { animation: hint 1.3s ease-in-out infinite; border-color: var(--a1) !important; }
+    @keyframes hint { 0%, 100% { box-shadow: 0 0 0 0 rgba(254, 172, 158, 0); } 50% { box-shadow: 0 0 0 5px rgba(254, 172, 158, 0.45); } }
+    @media (prefers-reduced-motion: reduce) { .hint { animation: none; box-shadow: 0 0 0 3px rgba(254, 172, 158, 0.6); } }
+    #s4 .modes { grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr)); gap: 0.35rem 1.1rem; border-radius: 0.35rem; }
+    #s4 .modes label { white-space: nowrap; min-width: 0; cursor: pointer; }
+    #s4 .modes .nm { min-width: 4.2em; }
+    #s4 .modes .rest { grid-column: 1 / -1; }
+    #s4 .modes.noamp input[type="range"] { display: none; }
+    @media (max-width: 860px) and (orientation: landscape) and (max-height: 520px) {
+      #s3.stage, #s4.stage { grid-template-columns: minmax(11rem, 0.7fr) minmax(0, 1.3fr); grid-template-rows: none; padding: 2.6rem 2.4rem 0.6rem 1rem; }
+      #s3 .txt, #s4 .txt { align-self: center; max-height: none; }
+    }
+  </style>
   <script defer src="../vendor/katex/katex.min.js"></script>
   <script defer src="./fourier.js"></script>
 </head>
@@ -73,15 +88,17 @@
   <section class="stage" id="s3" aria-labelledby="s3h">
     <div class="txt">
       <h2 id="s3h"><span class="num">3</span><span data-i18n="s3h">Un micrófono</span></h2>
-      <p data-i18n="s3p1">Un micrófono mide el desplazamiento del aire en un solo punto a lo largo del tiempo. La gráfica se parece.</p>
-      <p data-i18n="s3p2">Mi voz grabada es esa gráfica, y es mucho menos perfecta que una nota pura. Prueba con la tuya.</p>
+      <p data-i18n="s3p1">Un micrófono mide el desplazamiento del aire en un solo punto, a lo largo del tiempo.</p>
     </div>
     <div class="fig">
       <div class="cv"><canvas id="c3" role="img" aria-label="Micrófono en un punto del aire y gráfica del desplazamiento frente al tiempo"></canvas></div>
+      <p class="caption" id="s3cap" aria-live="polite"></p>
       <div class="ctl">
-        <button type="button" id="s3mic" aria-pressed="false" data-i18n="mic">🎙 tu voz</button>
-        <button type="button" id="s3rec" disabled data-i18n="rec">● grabar 2 s</button>
-        <button type="button" id="s3play" disabled data-i18n="playrec">▶ escuchar grabación</button>
+        <button type="button" id="s3prev" data-i18n="prev">← atrás</button>
+        <button type="button" id="s3next" class="primary" data-i18n="next">siguiente →</button>
+        <button type="button" id="s3rec" class="primary" data-i18n="recvoice">🎙 grabar mi voz</button>
+        <button type="button" id="s3ex" data-i18n="example">▶ grabación de ejemplo</button>
+        <button type="button" id="s3play" data-i18n="listen">▶ escuchar</button>
       </div>
       <div class="status" id="s3st" aria-live="polite"></div>
     </div>
@@ -91,19 +108,19 @@
   <section class="stage" id="s4" aria-labelledby="s4h">
     <div class="txt">
       <h2 id="s4h"><span class="num">4</span><span data-i18n="s4h">Una cuerda de guitarra</span></h2>
-      <p data-i18n="s4p1">Una nota de guitarra tampoco es un seno puro. La cuerda está atada por los dos extremos, así que solo persisten las ondas que caben.</p>
-      <p data-i18n="s4p2">Cada onda que cabe es una nota pura: la fundamental (Mi), la misma nota una octava más arriba (Mi), luego un Si, y más. Todas sonando a la vez: un Mi con timbre de guitarra.</p>
+      <p data-i18n="s4p1">Una nota de guitarra tampoco es un seno puro. ¿Por qué?</p>
       <div class="eq" id="s4eq"></div>
     </div>
     <div class="fig">
       <div class="cv"><canvas id="c4" role="img" aria-label="Cuerda atada por los dos extremos y las ondas que caben en ella"></canvas></div>
+      <p class="caption" id="s4cap" aria-live="polite"></p>
       <div class="modes" id="s4modes"></div>
-      <div class="status" id="s4st" aria-live="polite"></div>
       <div class="ctl">
+        <button type="button" id="s4prev" data-i18n="prev">← atrás</button>
+        <button type="button" id="s4next" class="primary" data-i18n="next">siguiente →</button>
         <button type="button" id="s4pluck" class="primary" data-i18n="pluck">▶ pulsar</button>
-        <button type="button" id="s4one" aria-pressed="true" data-i18n="onlyfund">solo la fundamental</button>
-        <button type="button" id="s4six" aria-pressed="false" data-i18n="six">marcar las 6</button>
-        <button type="button" id="s4all" aria-pressed="false">marcar las 100 de una guitarra</button>
+        <button type="button" id="s4one" data-i18n="onlyfund">solo la fundamental</button>
+        <button type="button" id="s4six" data-i18n="six">marcar las 6</button>
       </div>
     </div>
   </section>
