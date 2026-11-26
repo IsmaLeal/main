@@ -24,8 +24,8 @@
     #s4 .modes .rest { grid-column: 1 / -1; }
     #s4 .modes.noamp input[type="range"] { display: none; }
     @media (max-width: 860px) and (orientation: landscape) and (max-height: 520px) {
-      #s3.stage, #s4.stage { grid-template-columns: minmax(11rem, 0.7fr) minmax(0, 1.3fr); grid-template-rows: none; padding: 2.6rem 2.4rem 0.6rem 1rem; }
-      #s3 .txt, #s4 .txt { align-self: center; max-height: none; }
+      .stage:not(.title):not(.end) { grid-template-columns: minmax(11rem, 0.7fr) minmax(0, 1.3fr); grid-template-rows: none; padding: 2.6rem 2.4rem 0.6rem 1rem; }
+      .stage:not(.title):not(.end) .txt { align-self: center; max-height: none; }
     }
   </style>
   <script defer src="../vendor/katex/katex.min.js"></script>

@@ -537,6 +537,44 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
   const P = 2, LAST = 7;                        // the particle moved first; the last step
   const AMP = 0.42, DMAX = 0.45, TOL = 0.1;     // wave amplitude, largest drag, circle tolerance, in spacings between big particles
   const W0 = TAU * 0.55;                        // angular frequency of the wave (rad/s)
+  // the ear of the Manim scene (fourier_circles.py: ear_walls without the canal, and ossicles), in units of the eardrum's
+  // height from the umbo (the eardrum's centre), x inwards and y up
+  const EAR = 0.11;                             // largest swing of the umbo, in those units
+  const PIVOT = [0.3, 0.7];                     // the axis the malleus and the incus turn about
+  const MALLEUS = [[0, 0], [0, 0.2], [-0.05, 0.4], [-0.06, 0.46], [0.02, 0.55], [0.16, 0.6], [0.22, 0.72], [0.14, 0.84], [0, 0.84],
+    [-0.09, 0.74], [-0.1, 0.62], [-0.16, 0.47], [-0.15, 0.41], [-0.12, 0.38], [-0.08, 0.2]];
+  const INCUS = [[0.41, 0.17], [0.39, 0.3], [0.41, 0.5], [0.47, 0.6], [0.61, 0.7], [0.63, 0.76], [0.53, 0.8], [0.43, 0.88], [0.31, 0.86],
+    [0.25, 0.74], [0.29, 0.62], [0.33, 0.5], [0.31, 0.3], [0.34, 0.2]];
+  const STAPES = [[0.84, 0.33], [0.74, 0.32], [0.62, 0.27], [0.52, 0.2], [0.47, 0.17], [0.52, 0.14], [0.62, 0.07], [0.74, 0.02], [0.84, 0.01]];
+  const drumX = (y) => -0.24 * y * y - 0.16 * y;   // the eardrum at rest: x at height y
+  // the ear with its umbo at (ux, uy), u pixels per unit, the umbo moved `swing` inwards
+  function drawEar(ux, uy, u, swing) {
+    const [qx, qy] = PIVOT, c = Math.cos(swing / qy), sn = Math.sin(swing / qy);
+    const turn = ([x, y]) => [qx + c * (x - qx) - sn * (y - qy), qy + sn * (x - qx) + c * (y - qy)];
+    const path = (Q, smooth, closed) => {
+      const n = Q.length, at = (i) => { const [x, y] = Q[closed ? (i + n) % n : clamp(i, 0, n - 1)]; return [ux + u * x, uy - u * y]; };
+      ctx.beginPath(); ctx.moveTo(...at(0));
+      for (let i = 0; i < (closed ? n : n - 1); i++) {
+        const p0 = at(i - 1), p1 = at(i), p2 = at(i + 1), p3 = at(i + 2);
+        if (smooth) ctx.bezierCurveTo(p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6, p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6, p2[0], p2[1]);
+        else ctx.lineTo(p2[0], p2[1]);
+      }
+      ctx.stroke();
+    };
+    const slide = turn(INCUS[0])[0] - INCUS[0][0];   // how far in the incus' tip goes: the stapes with it
+    const drum = [];
+    for (let i = 0; i < 8; i++) {
+      const y = -0.5 * i / 7, x = drumX(y), hold = 1 - 4 * y * y, [tx, ty] = turn([x, y]);   // fixed at the rim, bowing with the umbo
+      drum.push([x + hold * (tx - x), y + hold * (ty - y)]);
+    }
+    const attic = drumX(0.5) - 0.1;
+    path([[attic, 0.5], [attic, 1], [0.84, 1], [0.84, 0.39]]);                       // the attic and the far wall, down to the oval window
+    path([[0.84, -0.05], [0.84, -0.5], [drumX(-0.5), -0.5]]);                        // from below the window back to the eardrum's rim
+    path(drum);
+    path(MALLEUS.map(turn), true, true); path(INCUS.map(turn), true, true);
+    path(STAPES.map(([x, y]) => [x + slide, y]), true);
+    path([[0.84 + slide, 0.33], [0.84 + slide, 0.01]]);                             // the stapes' footplate, in the oval window
+  }
   const key1 = $('s1key'), cap = $('s1cap'), pv = $('s1prev'), nx = $('s1next'), btn = $('s1play'), slow = $('s1slow'), sp = $('s1speed'), again = $('s1again');
   const ease = (u) => { u = clamp(u, 0, 1); return u * u * (3 - 2 * u); };
   const show = (el, on) => { el.style.display = on ? '' : 'none'; };
@@ -617,10 +655,12 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
       if (step === 0) tm += dt;
       if (step === LAST && playing) tm += dt * (1 - parseFloat(sp.value));
       if (step === 5 && solved >= 0 && st - solved > 0.9) setStep(6);
-      const L = Math.max(70, 20 + 0.06 * W), R = W - 34;                    // air spans [L, R]
-      const N = W < 600 ? 5 : 7, spc = (R - L) / N, xs = [];
-      for (let j = 0; j < N; j++) xs.push(L + (j + 0.5) * spc);
       const top = 34, airH = H * 0.4;
+      const N = W < 600 ? 5 : 7, earU = Math.min(airH / 1.5, 0.14 * W);     // earU: the ear's unit, the eardrum's height (px)
+      // air spans [L, R]; to the right of R: the air's largest swing, then the ear (1.08 units wide), then 10 px
+      const L = Math.max(70, 20 + 0.06 * W), R = (W - 16 - 1.08 * earU + AMP * L / N) / (1 + AMP / N);
+      const spc = (R - L) / N, xs = [];
+      for (let j = 0; j < N; j++) xs.push(L + (j + 0.5) * spc);
       const M = 7, rowY = (r) => top + airH * (0.1 + 0.8 * r / (M - 1));   // the particles of a column
       const py = top + airH + 34 + (H - top - airH - 34) / 2, ph = (H - top - airH - 34) * 0.38;
       const A = AMP * spc, k = TAU / ((R - L) * 0.7);
@@ -642,6 +682,10 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
         ctx.beginPath(); ctx.moveTo(px, top + 6); ctx.lineTo(px, top + airH - 6); ctx.stroke(); ctx.restore();
         label(ctx, t('vocal'), L - 20, top + airH + 16, { size: 12, color: C.a1, align: 'center', alpha: 0.85 * amp });
         label(ctx, t('ear') + ' →', R, top + airH + 16, { size: 12, align: 'right', alpha: 0.7 * amp });
+        // the ear: its eardrum moves with the air next to it
+        ctx.save(); ctx.globalAlpha = amp; ctx.strokeStyle = C.ink; ctx.lineWidth = Math.max(1.2, 0.022 * earU); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        drawEar(R + A + 6 + 0.24 * earU, top + airH / 2 + 0.25 * earU, earU, EAR * amp * xi(R) / A);
+        ctx.restore();
       }
       if (cloud > 0.01) {
         ctx.save(); ctx.fillStyle = C.ink; ctx.globalAlpha = cloud;
