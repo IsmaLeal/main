@@ -45,7 +45,7 @@ const T = {
     next: 'siguiente →', again: '↻ otra vez',
     pause: '⏸ pausar', play: '▶ seguir', slow: 'cámara lenta',
     position: 'posición', displacement: 'desplazamiento', time: 'tiempo', right: 'derecha', left: 'izquierda',
-    vocal: 'cuerda vocale', ear: 'oído',
+    vocal: 'cuerda vocal', ear: 'oído',
     rest: 'resto',
     s2h: 'Una nota es una frecuencia',
     s2p1: 'Una nota musical se define por su frecuencia: cuántas veces por segundo vibra el aire. 440 veces es un La.',
