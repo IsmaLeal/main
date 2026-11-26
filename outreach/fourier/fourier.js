@@ -45,7 +45,7 @@ const T = {
     next: 'siguiente →', again: '↻ otra vez',
     pause: '⏸ pausar', play: '▶ seguir', slow: 'cámara lenta',
     position: 'posición', displacement: 'desplazamiento', time: 'tiempo', right: 'derecha', left: 'izquierda',
-    vocal: 'cuerdas vocales', ear: 'oído',
+    vocal: 'cuerda vocale', ear: 'oído',
     rest: 'resto',
     s2h: 'Una nota es una frecuencia',
     s2p1: 'Una nota musical se define por su frecuencia: cuántas veces por segundo vibra el aire. 440 veces es un La.',
@@ -617,7 +617,7 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
       if (step === 0) tm += dt;
       if (step === LAST && playing) tm += dt * (1 - parseFloat(sp.value));
       if (step === 5 && solved >= 0 && st - solved > 0.9) setStep(6);
-      const L = 70, R = W - 34;                    // air spans [L, R]
+      const L = Math.max(70, 20 + 0.06 * W), R = W - 34;                    // air spans [L, R]
       const N = W < 600 ? 5 : 7, spc = (R - L) / N, xs = [];
       for (let j = 0; j < N; j++) xs.push(L + (j + 0.5) * spc);
       const top = 34, airH = H * 0.4;
