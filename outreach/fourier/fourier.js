@@ -1161,6 +1161,13 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
   const found = new Set(), heard = new Set();
   let pluckedOnce = false, lastHeard = 0, pluckAt = -1, toneN = 0, toneAt = -1, lastCfg = '', touched = false, grab = false, gx0 = 0, gv0 = 0, G = null;
   const cfg = () => on.map((b) => (b ? 1 : 0)).join('') + (rest ? '+' : '');
+  // one button leads at a time (class primary): 'pluck' until the reader has heard what the step asks for, then 'next'
+  let pluckedHere = false;                                // plucked in this step, with the waves as they are now
+  function lead() {
+    const s = P4.step, pk = s >= 1 && (s === 3 || (s === 1 ? P4.nx.disabled : !pluckedHere));   // step 1: until "next" is unlocked
+    bpk.classList.toggle('primary', pk); P4.nx.classList.toggle('primary', !pk);
+  }
+  function changed() { hint(box, false); pluckedHere = false; lead(); }   // the reader changed the waves: there is a new sound to pluck
   // controls: one row per frequency (checkbox, name, amplitude slider), and one checkbox for n = 7…KG
   const sliders = [], checks = [], names = [];
   const row = (cls) => { const l = document.createElement('label'); if (cls) l.className = cls; box.appendChild(l); return l; };
@@ -1169,16 +1176,16 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
     cb.type = 'checkbox'; cb.setAttribute('aria-label', `n = ${n}`);
     nm.className = 'nm'; nm.style.color = MODE_COL[n - 1];
     r.type = 'range'; r.min = 0; r.max = 100; r.setAttribute('aria-label', `a${n}`);
-    cb.addEventListener('change', () => { on[n - 1] = cb.checked; hint(box, false); });
-    r.addEventListener('input', () => { amp[n - 1] = r.value / 100; hint(box, false); });
+    cb.addEventListener('change', () => { on[n - 1] = cb.checked; changed(); });
+    r.addEventListener('input', () => { amp[n - 1] = r.value / 100; changed(); });
     lab.append(cb, nm, r); sliders.push(r); checks.push(cb); names.push(nm);
   }
   const restCb = document.createElement('input'), restNm = document.createElement('span');
-  restCb.type = 'checkbox'; restCb.addEventListener('change', () => { rest = restCb.checked; hint(box, false); });
+  restCb.type = 'checkbox'; restCb.addEventListener('change', () => { rest = restCb.checked; changed(); });
   row('rest').append(restCb, restNm);
   function sync() { for (let i = 0; i < N; i++) { checks[i].checked = on[i]; sliders[i].value = Math.round(amp[i] * 100); } restCb.checked = rest; }
-  bone.addEventListener('click', () => { on.fill(false); on[0] = true; rest = false; sync(); hint(box, false); });
-  bsix.addEventListener('click', () => { on.fill(true); rest = false; sync(); hint(box, false); });
+  bone.addEventListener('click', () => { on.fill(false); on[0] = true; rest = false; sync(); changed(); });
+  bsix.addEventListener('click', () => { on.fill(true); rest = false; sync(); changed(); });
   function sound(list) {               // list of [n, amplitude]: decaying sines, as in a plucked string
     const ac = audio(); if (!ac) return false;
     stopSounds();
@@ -1194,13 +1201,14 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
     return true;
   }
   const P4 = stepper('s4', 3, (s) => {
-    touched = false; lastHeard = 0; stopSounds(); pluckAt = -1; toneAt = -1;
+    touched = false; lastHeard = 0; stopSounds(); pluckAt = -1; toneAt = -1; pluckedHere = false;
     show(bpk, s >= 1); show(bone, s >= 2); show(bsix, s >= 2); show(box, s >= 2);
     box.classList.toggle('noamp', s < 3);
     hint(bpk, false); hint(box, s >= 2);
     if (s === 0) P4.nx.disabled = found.size < 3;
     if (s === 1) P4.nx.disabled = heard.size < 3 && !pluckedOnce;
     keyMsg($('s4key'), s === 0 ? (found.size >= 3 ? 's4k0' : '') : s <= 2 ? 's4k1' : 's4k3');
+    lead();
   });
   bpk.addEventListener('click', () => {
     const list = []; for (let n = 1; n <= (rest ? KG : N); n++) list.push([n, ampOf(n)]);
@@ -1208,11 +1216,13 @@ const F1_STRING = 440 * Math.pow(2, -17 / 12);           // E, 164.81 Hz
     pluckAt = tm; toneAt = -1; hint(bpk, false);
     lastCfg = cfg();
     pluckedOnce = true; if (P4.step === 1) P4.nx.disabled = false;
+    pluckedHere = true; lead();
   });
   function tapMode(n) {
     if (!sound([[n, 1]])) return;
     toneN = n; toneAt = tm; pluckAt = -1; heard.add(n); lastHeard = n;
     if (P4.step === 1 && heard.size >= 3) P4.nx.disabled = false;
+    lead();
   }
   // how strongly frequency n vibrates now: it dies out after a pluck or a tap, as in the sound
   const envP = (n) => (pluckAt >= 0 ? Math.exp(-gam(n) * (tm - pluckAt)) : 0);              // after a pluck
